@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+    <metal:content-core fill-slot="main">
+        <style type="text/css">
+            
+            .cover {
+                height: 300px;
+                position: relative;
+            }
+            
+            .cover blockquote {
+                color: white;
+                position: absolute;
+                bottom: 1em;
+                border: none;
+                margin: 0;
+                padding: 0;
+                left: 1em;
+                font-size: 21pt;
+                width: 45%;
+                line-height: 1.1em;
+                text-shadow: -1px 0 black, 0 1px black,
+                      1px 0 black, 0 -1px black
+            }
+        
+        </style>
+            
+        <div class="cover" 
+             tal:attributes="style string:background-image: url(${view/cover});">
+            <blockquote tal:content="context/quote" />
+        </div>
+        <h5>Plone contributor</h5>
+        <h1 tal:content="context/Title" />
+        <h3>Contributing since: <span tal:content="context/creation_date" /></h3>
+        
+        <section>
+            <h2>Activity</h2>
+            <article>Lorem</article>
+            <article>Lorem</article>
+        </section>
+        
+    </metal:content-core>
+
+</body>
+</html>

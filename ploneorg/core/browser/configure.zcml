@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/browser"
+    i18n_domain="ploneorg.core">
+
+    <page
+        name="contributor_view"
+        class=".contributor.ContributorView"
+        for="*"
+        permission="zope2.View"
+        template="contributor.pt"
+        />
+    
+
+</configure>
