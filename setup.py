@@ -30,6 +30,7 @@ setup(name='ploneorg.core',
           'plone.app.contenttypes',
           'wildcard.foldercontents',
           'collective.cover',
+          'pycountry',
           'mr.cabot'
       ],
       entry_points="""
