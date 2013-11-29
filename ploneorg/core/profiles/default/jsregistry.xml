@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<object name="portal_javascripts">
+
+ <javascript
+    id="++resource++collective.js.bootstrap/js/bootstrap.min.js"
+    cacheable="False" compression="safe" cookable="False"
+    enabled="False" expression=""  inline="False" />
+
+</object>
