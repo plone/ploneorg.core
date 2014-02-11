@@ -7,6 +7,14 @@
 
   <five:registerPackage package="." initialize=".initialize" />
 
+  <include package=".browser" />
+
+  <genericsetup:importStep
+    name="ploneorg.core.setupstep"
+    title="ploneorg.core special import handlers"
+    description=""
+    handler="ploneorg.core.setuphandlers.setupVarious" />
+
   <genericsetup:registerProfile
       name="default"
       title="ploneorg.core"
@@ -14,8 +22,5 @@
       description="Installs the ploneorg.core package"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
-  <!-- -*- extra stuff goes here -*- -->
-  
-  <include package=".browser" />
-  
+
 </configure>
