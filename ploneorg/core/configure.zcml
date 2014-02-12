@@ -9,6 +9,16 @@
 
   <include package=".browser" />
 
+  <adapter
+    factory=".userschemaextender.UserDataPanelExtender"
+    provides="plone.z3cform.fieldsets.interfaces.IFormExtender" />
+
+  <adapter
+    provides=".userschemaextender.IEnhancedUserDataSchema"
+    for="plone.app.layout.navigation.interfaces.INavigationRoot"
+    factory=".userschemaextender.EnhancedUserDataSchemaAdapter"
+    />
+
   <genericsetup:importStep
     name="ploneorg.core.setupstep"
     title="ploneorg.core special import handlers"
