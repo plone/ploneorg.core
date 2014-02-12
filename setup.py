@@ -30,8 +30,7 @@ setup(name='ploneorg.core',
           'plone.app.contenttypes',
           'wildcard.foldercontents',
           'collective.cover',
-          'pycountry',
-          'mr.cabot'
+          'collective.monkeypatcher'
       ],
       entry_points="""
       # -*- Entry points: -*-

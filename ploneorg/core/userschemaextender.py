@@ -18,8 +18,22 @@ class IEnhancedUserDataSchema(model.Schema):
     github_username = schema.TextLine(
         title=_(u"Github username"),
         description=_(u"[Contributor] The GitHub username for personal stats retrieval"),
-        required=True
+        required=False
     )
+
+    stackoverflow_username = schema.TextLine(
+        title=_(u"StackOverflow username"),
+        description=_(u"[Contributor] The StackOverflow username for personal stats retrieval"),
+        required=False
+    )
+
+    contrib_email_addresses = schema.List(
+        title=_(u"Contributor e-mail addresses"),
+        description=_(u"[Contributor] The e-mail addresses that you've used as contributor in all the supported sources."),
+        value_type=schema.TextLine(),
+        required=False,
+        missing_value=[],
+        default=[])
 
 
 class EnhancedUserDataSchemaAdapter(AccountPanelSchemaAdapter):

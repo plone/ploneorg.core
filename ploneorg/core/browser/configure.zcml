@@ -1,14 +1,13 @@
 <configure
     xmlns="http://namespaces.zope.org/browser"
+    xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="ploneorg.core">
 
-    <page
-        name="contributor_view"
-        class=".contributor.ContributorView"
-        for="*"
-        permission="zope2.View"
-        template="contributor.pt"
-        />
-    
+    <browser:page
+      name="profile"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".contributor.contributorProfile"
+      permission="zope2.View"
+      />
 
 </configure>
