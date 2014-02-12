@@ -19,7 +19,7 @@
     <div class="jumbotron">
       <p class="pull-right"><a class="btn btn-primary btn-lg" role="button">Edit profile</a></p>
       <img class="img-circle"
-           tal:attributes="src view/get_member_image">
+           tal:attributes="src view/get_member_image" />
     </div>
 
     <h5>Plone contributor</h5>
