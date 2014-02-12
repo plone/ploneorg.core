@@ -18,8 +18,30 @@
 
     <div class="jumbotron">
       <p class="pull-right"><a class="btn btn-primary btn-lg" role="button">Edit profile</a></p>
-      <img class="img-circle"
-           tal:attributes="src view/get_member_image">
+      <div class="row">
+        <div class="col-md-4">
+          <img class="img-circle"
+               tal:attributes="src view/get_member_image">
+        </div>
+        <div class="col-md-4">
+          <ul class="member_info">
+            <li tal:condition="python:contributor.getProperty('twitter_username')">
+              <i class="fa fa-twitter"></i>
+              <span tal:replace="python:contributor.getProperty('twitter_username')">Twitter username</span>
+            </li>
+            <li tal:condition="python:contributor.getProperty('home_page')">
+              <i class="fa fa-globe"></i>
+              <span tal:replace="python:contributor.getProperty('home_page')">Homepage</span>
+            </li>
+            <li tal:condition="python:contributor.getProperty('github_username')">
+              <i class="fa fa-github"></i>
+              <span tal:replace="python:contributor.getProperty('github_username')">GitHub</span>
+            </li>
+        </div>
+        <div class="col-md-4">
+          <img src="/++theme++ploneorg.theme/img/badges_fake.png" />
+        </div>
+      </div>
     </div>
 
     <h5>Plone contributor</h5>

@@ -3,4 +3,5 @@
   <property name="github_username" type="string"></property>
   <property name="stackoverflow_username" type="string"></property>
   <property name="contrib_email_addresses" type="lines"></property>
+  <property name="twitter_username" type="string"></property>
 </object>

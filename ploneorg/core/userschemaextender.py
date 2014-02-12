@@ -27,6 +27,12 @@ class IEnhancedUserDataSchema(model.Schema):
         required=False
     )
 
+    twitter_username = schema.TextLine(
+        title=_(u"Twitter username"),
+        description=_(u"[Contributor] The Twitter username for personal stats retrieval"),
+        required=False
+    )
+
     contrib_email_addresses = schema.List(
         title=_(u"Contributor e-mail addresses"),
         description=_(u"[Contributor] The e-mail addresses that you've used as contributor in all the supported sources."),
