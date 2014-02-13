@@ -31,7 +31,8 @@ setup(name='ploneorg.core',
           'wildcard.foldercontents',
           'collective.cover',
           'collective.monkeypatcher',
-          'pycountry'
+          'pycountry',
+          'plone.formwidget.multifile'
       ],
       entry_points="""
       # -*- Entry points: -*-
