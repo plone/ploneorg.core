@@ -24,18 +24,27 @@
                tal:attributes="src view/get_member_image">
         </div>
         <div class="col-md-4">
-          <ul class="member_info">
-            <li tal:condition="python:contributor.getProperty('twitter_username')">
+          <ul class="member-info">
+            <li tal:define="twitter python:contributor.getProperty('twitter_username')"
+                tal:condition="twitter">
               <i class="fa fa-twitter"></i>
-              <span tal:replace="python:contributor.getProperty('twitter_username')">Twitter username</span>
+              <a tal:attributes="src string:https://twitter.com/${twitter}">
+                <span tal:replace="twitter">Twitter username</span>
+              </a>
             </li>
-            <li tal:condition="python:contributor.getProperty('home_page')">
+            <li tal:define="home_page python:contributor.getProperty('home_page')"
+                tal:condition="home_page">
               <i class="fa fa-globe"></i>
-              <span tal:replace="python:contributor.getProperty('home_page')">Homepage</span>
+              <a tal:attributes="src string:${home_page}">
+                <span tal:replace="home_page">Homepage</span>
+              </a>
             </li>
-            <li tal:condition="python:contributor.getProperty('github_username')">
+            <li tal:define="github python:contributor.getProperty('github_username')"
+                tal:condition="github">
               <i class="fa fa-github"></i>
-              <span tal:replace="python:contributor.getProperty('github_username')">GitHub</span>
+              <a tal:attributes="src string:https://github.com/${github}">
+                <span tal:replace="github">GitHub</span>
+              </a>
             </li>
         </div>
         <div class="col-md-4">
@@ -46,21 +55,39 @@
 
     <h5>Plone contributor</h5>
     <h1 tal:content="python:contributor.getProperty('fullname')" />
-    <h3>Contributing since: 2006</h3>
-            <!--
-        <div class="cover"
-             tal:attributes="style string:background-image: url(${view/cover});">
- <blockquote tal:content="context/quote" />
-        </div>
-        <h5>Plone contributor</h5>
-        <h1 tal:content="context/Title" />
-        <h3>Contributing since: <span tal:content="context/creation_date" /></h3>
- -->
-        <section>
-            <h2>Activity</h2>
-            <article>Lorem</article>
-            <article>Lorem</article>
-        </section>
+    <h4>Contributing since: 2006</h4>
+
+    <section class="well clearfix">
+        <h2>Activity</h2>
+        <h4>First commit: 09.26.2011</h4>
+        <article>
+          <h5>Summary</h5>
+          <div class="fact-data fact-data-info">
+            <h1>85</h1>
+            <h2>Plone Contributions</h2>
+          </div>
+          <div class="fact-data fact-data-info">
+            <h1>35</h1>
+            <h2>Plone Commits</h2>
+          </div>
+          <div class="fact-data fact-data-info">
+            <h1>450</h1>
+            <h2>Collective Commits</h2>
+          </div>
+          <div class="fact-data fact-data-info">
+            <h1>20</h1>
+            <h2>Mails on list</h2>
+          </div>
+          <div class="fact-data fact-data-info">
+            <h1>9</h1>
+            <h2>StackOverflow</h2>
+          </div>
+          <div class="fact-data fact-data-info">
+            <h1>20</h1>
+            <h2>Tweets about Plone</h2>
+          </div>
+        </article>
+    </section>
 
   </metal:content-core>
 
