@@ -92,7 +92,7 @@ def fetch(config):
 
     try:
         data['github']['plone'] = fetch_github(config, 'plone')
-        data['github']['collective'] = fetch_github(config, 'plone')
+        data['github']['collective'] = fetch_github(config, 'collective')
     except IOError, E:
         logger.exception('An IOError happend, probably a read timeout')
         exit(1)
