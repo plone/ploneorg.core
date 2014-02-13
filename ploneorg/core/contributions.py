@@ -152,20 +152,29 @@ def fetch_github(config, organization):
 
 def upload(config, json_string):
     url = config.get('general', 'upload_url')
+    upload_user = config.get('general', 'upload_user')
+    upload_password = config.get('general', 'upload_password')
     logger.info('Upload data to "%s"...' % url)
     headers = {'Content-type': 'application/json',
                'Accept': 'text/plain'}
-    r = requests.post(url, data=json_string, headers=headers)
+    r = requests.post(
+        url, data=json_string, headers=headers,
+        allow_redirects=False,  # don't redirect to the login form for unauth
+        auth=requests.auth.HTTPBasicAuth(upload_user, upload_password))
     if r.status_code != 200:
+        content = '*content stripped*' if (r.status_code == 302) else r.content
         message = (
             'Someting went wrong uploading the contribution data to\n' +
             '%s\n\n' % url +
             '---- Response ----\n' +
             'status: %s, reason: %s\n' % (r.status_code, r.reason) +
-            r.content + '\n\n'
+            content + '\n\n'
             '---- Data to upload ----\n' +
             json_string)
         logger.error(message)
+        if r.status_code == 302:
+            logger.error('Upload error: The 302 status code probably is a '
+                         'redirect after a failed authentication')
     else:
         logger.debug('Response:\n' + r.content)
         logger.info('Done.')
@@ -178,11 +187,7 @@ def is_valid_data_file(parser, path):
        return
 
     with open(path, 'r') as f:
-        try:
-            return json.load(f)
-        except Exception, E:
-            parser.error('could not read upload file: %s' % repr(E))
-            return
+        return f.read()
 
 
 def update_contributions():

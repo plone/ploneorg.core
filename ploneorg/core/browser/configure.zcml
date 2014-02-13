@@ -3,6 +3,8 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="ploneorg.core">
 
+    <include package="Products.CMFCore" file="permissions.zcml" />
+
     <browser:page
       name="profile"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
@@ -14,7 +16,7 @@
       name="update-contributor-data"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".contributor.UpdateContributorData"
-      permission="zope2.View"
+      permission="cmf.ManagePortal"
       />
 
 </configure>
