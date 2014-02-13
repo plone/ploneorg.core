@@ -34,6 +34,7 @@ setup(name='ploneorg.core',
           'collective.monkeypatcher',
           'PyGithub',
           'requests',
+          'pycountry'
       ],
       entry_points="""
       # -*- Entry points: -*-

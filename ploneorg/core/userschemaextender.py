@@ -11,9 +11,17 @@ from plone.supermodel import model
 from plone.z3cform.fieldsets import extensible
 
 from ploneorg.core import _
+from ploneorg.core.vocabularies import country_vocabulary
 
 
 class IEnhancedUserDataSchema(model.Schema):
+
+    country = schema.Choice(
+        title=_(u"Country"),
+        description=_(u"Please, enter your country."),
+        source=country_vocabulary,
+        required=False,
+    )
 
     github_username = schema.TextLine(
         title=_(u"Github username"),
@@ -27,9 +35,15 @@ class IEnhancedUserDataSchema(model.Schema):
         required=False
     )
 
-    contrib_email_addresses = schema.List(
-        title=_(u"Contributor e-mail addresses"),
-        description=_(u"[Contributor] The e-mail addresses that you've used as contributor in all the supported sources."),
+    twitter_username = schema.TextLine(
+        title=_(u"Twitter username"),
+        description=_(u"[Contributor] The Twitter username for personal stats retrieval"),
+        required=False
+    )
+
+    additional_emails = schema.List(
+        title=_(u"Additional emails"),
+        description=_(u"Contributions are usually keyed on email, but often people use work and home addresses for email, or move jobs and gain new addresses. Enter all email addresses that represent you in the Plone community here, so we can include these contributions."),
         value_type=schema.TextLine(),
         required=False,
         missing_value=[],

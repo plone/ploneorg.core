@@ -43,10 +43,14 @@ class contributorProfile(BrowserView):
 
     def contributor(self):
         member_data = self.get_member_data()
+        import pdb; pdb.set_trace()
         return {'fullname': member_data.getProperty('fullname'),
                 'name': member_data.getName(),
-                'github_username': member_data.getProperty('github_username'),
-                'github_contributions': member_data.getProperty('github_contributions')}
+                'github': member_data.getProperty('github_username'),
+                'plone_commits': member_data.getProperty('plone_commits'),
+                'collective_commits': member_data.getProperty('collective_commits'),
+                'home_page': member_data.getProperty('home_page'),
+                'twitter': member_data.getProperty('twitter_username')}
 
     @memoize_contextless
     def portal(self):
@@ -131,9 +135,9 @@ class UpdateContributorData(JsonApiView):
                 member_name = member.getName()
                 github_username = member.getProperty('github_username') or member_name
                 if github_username in commits_by_user:
-                    commits = commits_by_user[github_username]
+                    commits = int(commits_by_user[github_username])
                     member.setMemberProperties(mapping={properties_key: commits})
-                    updated_members [member_name] = github_username
+                    updated_members[member_name] = github_username
                     unknown_github_users.remove(github_username)
 
             response_data['github'][org] = {'updatedMembers': updated_members,

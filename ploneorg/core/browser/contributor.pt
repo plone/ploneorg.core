@@ -18,29 +18,74 @@
 
     <div class="jumbotron">
       <p class="pull-right"><a class="btn btn-primary btn-lg" role="button">Edit profile</a></p>
-      <img class="img-circle"
-           tal:attributes="src view/get_member_image" />
+      <div class="row">
+        <div class="col-md-4">
+          <img class="img-circle"
+               tal:attributes="src view/get_member_image" />
+        </div>
+        <div class="col-md-4">
+          <ul class="member-info">
+            <li tal:condition="contributor/twitter">
+              <i class="fa fa-twitter"></i>
+              <a tal:attributes="href string:https://twitter.com/${contributor/twitter}">
+                <span tal:replace="contributor/twitter">Twitter username</span>
+              </a>
+            </li>
+            <li tal:condition="contributor/home_page">
+              <i class="fa fa-globe"></i>
+              <a tal:attributes="href string:${contributor/home_page}">
+                <span tal:replace="contributor/home_page">Homepage</span>
+              </a>
+            </li>
+            <li tal:condition="contributor/github">
+              <i class="fa fa-github"></i>
+              <a tal:attributes="href string:https://github.com/${contributor/github}">
+                <span tal:replace="contributor/github">GitHub</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <img src="/++theme++ploneorg.theme/img/badges_fake.png" />
+        </div>
+      </div>
     </div>
 
     <h5>Plone contributor</h5>
     <h1 tal:content="contributor/fullname" />
-    <h3>Contributing since: 2006</h3>
-            <!--
-        <div class="cover"
-             tal:attributes="style string:background-image: url(${view/cover});">
- <blockquote tal:content="context/quote" />
-        </div>
-        <h5>Plone contributor</h5>
-        <h1 tal:content="context/Title" />
-        <h3>Contributing since: <span tal:content="context/creation_date" /></h3>
- -->
-        <section>
-            <h2>Activity</h2>
-            <article tal:condition="contributor/github_contributions">
-              Github: <span tal:replace="contributor/github_contributions">107</span>
-            </article>
-            <article>Lorem</article>
-        </section>
+    <h4>Contributing since: 2006</h4>
+
+    <section class="well clearfix">
+        <h2>Activity</h2>
+        <h4>First commit: 09.26.2011</h4>
+        <article>
+          <h5>Summary</h5>
+          <div class="fact-data fact-data-info">
+            <h1>85</h1>
+            <h2>Plone Contributions</h2>
+          </div>
+          <div class="fact-data fact-data-info">
+            <h1 tal:content="contributor/plone_commits">35</h1>
+            <h2>Plone Commits</h2>
+          </div>
+          <div class="fact-data fact-data-info">
+            <h1 tal:content="contributor/collective_commits">450</h1>
+            <h2>Collective Commits</h2>
+          </div>
+          <div class="fact-data fact-data-info">
+            <h1>20</h1>
+            <h2>Mails on list</h2>
+          </div>
+          <div class="fact-data fact-data-info">
+            <h1>9</h1>
+            <h2>StackOverflow</h2>
+          </div>
+          <div class="fact-data fact-data-info">
+            <h1>20</h1>
+            <h2>Tweets about Plone</h2>
+          </div>
+        </article>
+    </section>
 
   </metal:content-core>
 
