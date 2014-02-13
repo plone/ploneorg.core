@@ -3,4 +3,7 @@
   <property name="github_username" type="string"></property>
   <property name="stackoverflow_username" type="string"></property>
   <property name="contrib_email_addresses" type="lines"></property>
+  <property name="plone_commits" type="int">0</property>
+  <property name="collective_commits" type="int">0</property>
+  <property name="stackoverflow_activity" type="int">0</property>
 </object>

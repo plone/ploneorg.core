@@ -27,14 +27,19 @@ setup(name='ploneorg.core',
       install_requires=[
           'setuptools',
           'ploneorg.theme',
+          'plone.api',
           'plone.app.contenttypes',
           'wildcard.foldercontents',
           'collective.cover',
-          'collective.monkeypatcher'
+          'collective.monkeypatcher',
+          'PyGithub',
+          'requests',
       ],
       entry_points="""
       # -*- Entry points: -*-
       [z3c.autoinclude.plugin]
       target = plone
+      [console_scripts]
+      update_contributions = ploneorg.core.contributions:update_contributions
       """,
       )

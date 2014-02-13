@@ -24,3 +24,6 @@ data
 dist
 docs/_build
 *.mo
+contributor_data/
+include/
+lib/

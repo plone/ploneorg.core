@@ -14,7 +14,7 @@
                                dummy python:request.set('disable_border',1)" />
 
   <metal:content-core fill-slot="main"
-                      tal:define="contributor view/get_member_data">
+                      tal:define="contributor view/contributor">
 
     <div class="jumbotron">
       <p class="pull-right"><a class="btn btn-primary btn-lg" role="button">Edit profile</a></p>
@@ -23,7 +23,7 @@
     </div>
 
     <h5>Plone contributor</h5>
-    <h1 tal:content="python:contributor.getProperty('fullname')" />
+    <h1 tal:content="contributor/fullname" />
     <h3>Contributing since: 2006</h3>
             <!--
         <div class="cover"
@@ -36,7 +36,9 @@
  -->
         <section>
             <h2>Activity</h2>
-            <article>Lorem</article>
+            <article tal:condition="contributor/github_contributions">
+              Github: <span tal:replace="contributor/github_contributions">107</span>
+            </article>
             <article>Lorem</article>
         </section>
 

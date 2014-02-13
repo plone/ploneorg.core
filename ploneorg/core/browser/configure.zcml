@@ -10,4 +10,11 @@
       permission="zope2.View"
       />
 
+    <browser:page
+      name="update-contributor-data"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".contributor.UpdateContributorData"
+      permission="zope2.View"
+      />
+
 </configure>
