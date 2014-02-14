@@ -35,6 +35,8 @@ setup(name='ploneorg.core',
           'PyGithub',
           'requests',
           'pycountry'
+          'pycountry',
+          'plone.formwidget.multifile'
       ],
       entry_points="""
       # -*- Entry points: -*-
