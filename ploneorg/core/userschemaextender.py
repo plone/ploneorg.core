@@ -25,25 +25,33 @@ class IEnhancedUserDataSchema(model.Schema):
 
     github_username = schema.TextLine(
         title=_(u"Github username"),
-        description=_(u"[Contributor] The GitHub username for personal stats retrieval"),
+        description=_(u"[Contributor] The GitHub username for "
+                      "personal stats retrieval"),
         required=False
     )
 
     stackoverflow_username = schema.TextLine(
         title=_(u"StackOverflow username"),
-        description=_(u"[Contributor] The StackOverflow username for personal stats retrieval"),
+        description=_(u"[Contributor] The StackOverflow username "
+                      "for personal stats retrieval"),
         required=False
     )
 
     twitter_username = schema.TextLine(
         title=_(u"Twitter username"),
-        description=_(u"[Contributor] The Twitter username for personal stats retrieval"),
+        description=_(u"[Contributor] The Twitter username for personal "
+                      "stats retrieval"),
         required=False
     )
 
     additional_emails = schema.List(
         title=_(u"Additional emails"),
-        description=_(u"Contributions are usually keyed on email, but often people use work and home addresses for email, or move jobs and gain new addresses. Enter all email addresses that represent you in the Plone community here, so we can include these contributions."),
+        description=_(
+            u"Contributions are usually keyed on email, but often people "
+            u"use work and home addresses for email, or move jobs and gain "
+            u"new addresses. Enter all email addresses that represent you "
+            u"in the Plone community here, so we can include these "
+            u"contributions."),
         value_type=schema.TextLine(),
         required=False,
         missing_value=[],

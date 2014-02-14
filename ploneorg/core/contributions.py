@@ -8,7 +8,6 @@ import json
 import logging
 import os
 import requests
-import sys
 
 logging.basicConfig()
 logger = logging.getLogger('contributions')
@@ -26,7 +25,6 @@ class User(object):
     def add_contributions(self, repo, count):
         self.repos[repo] = count
         self.contributions += count
-
 
     def __str__(self):
         return '%s: %s (%s repos)' % (self.name,
@@ -83,13 +81,12 @@ def find_data_dir(config):
 
 def get_auth(config):
     admin_user = config.get('general', 'admin_user')
-    admin_password = config.get('general', 'admin_password')    
+    admin_password = config.get('general', 'admin_password')
     return requests.auth.HTTPBasicAuth(admin_user, admin_password)
 
 
 def write_data(config, json_string):
     '''Write the data do a json file.'''
-
     data_dir = find_data_dir(config)
     isodate = datetime.now().isoformat()
     filename = "contributions.%s.json" % isodate
@@ -107,7 +104,7 @@ def fetch(config):
         data['github']['plone'] = fetch_github(config, 'plone')
         data['github']['collective'] = fetch_github(config, 'collective')
         data['stackoverflow'] = fetch_stackoverflow(config)
-    except IOError, E:
+    except IOError:
         logger.exception('An IOError happend, probably a read timeout')
         exit(1)
     json_string = json.dumps(data, cls=JSONEncoder, sort_keys=True, indent=4)
@@ -136,7 +133,7 @@ def fetch_github(config, organization):
         'contributions': contributions,
         'unknown': []}
 
-    repos = check_debug_limit(organization.get_repos(), 'repos')                            
+    repos = check_debug_limit(organization.get_repos(), 'repos')
 
     for repo in repos:
         try:
@@ -165,10 +162,12 @@ def fetch_stackoverflow(config):
     # get all stackoverflow ids form member profiles
     logger.info('Fetch data from stackoverflow...')
     logger.info('...Get stackoverflow ids from Plone.')
-    url = config.get('general', 'plone_url') + '/@@contributor-stackoverflow-ids'
+    url = (config.get('general', 'plone_url') +
+           '/@@contributor-stackoverflow-ids')
     r = requests.get(
-        url, allow_redirects=False,  # don't redirect to the login form for unauth
-        auth=get_auth(config))
+        url, auth=get_auth(config),
+        allow_redirects=False)  # don't redirect to the login form for unauth
+
     if r.status_code != 200:
         msg = ("Can't fetch stackoverflow user ids from plone."
                'status: %s.') % r.status_code
@@ -190,12 +189,13 @@ def fetch_stackoverflow(config):
     logger.info('Done.')
     return stackoverflow_users
 
+
 def _so_activity_for_user(userid, member_id):
-     # FIXME: something better is needed here.
-     # FIXME: ask for top answerers last month also?
-     logger.debug('...plone member: %s, so userid: %s' % (member_id, userid))
-     from random import choice
-     return choice([0,0,0,0,0,5,8,11,14,18,21])
+    # FIXME: something better is needed here.
+    # FIXME: ask for top answerers last month also?
+    logger.debug('...plone member: %s, so userid: %s' % (member_id, userid))
+    from random import choice
+    return choice([0, 0, 0, 0, 0, 5, 8, 11, 14, 18, 21])
 
 
 def upload(config, json_string):
@@ -229,15 +229,14 @@ def upload(config, json_string):
 def is_valid_data_file(parser, path):
     '''Validate the file input on the command line'''
     if not os.path.exists(path):
-       parser.error('The file "%s" does not exist!' % path)
-       return
+        parser.error('The file "%s" does not exist!' % path)
+        return
 
     with open(path, 'r') as f:
         return f.read()
 
 
 def update_contributions():
-    
     # Parse the config and the command line arguments
     base_dir = find_base()
     config = SafeConfigParser()
@@ -250,7 +249,8 @@ def update_contributions():
               "you give further command line arguments!)"),
         type=lambda path: is_valid_data_file(argparser, path))
     argparser.add_argument(
-        '--fetch-only', help='Only collect the data. Do not upload it to plone',
+        '--fetch-only',
+        help='Only collect the data. Do not upload it to plone',
         action='store_true')
     argparser.add_argument(
         '--debug', action='store_true', help='Print debug output')
@@ -265,7 +265,8 @@ def update_contributions():
     if args.debug_limit:
         global debug_limit
         debug_limit = args.debug_limit
-        logger.info('Limit the number of fetched object per task to %s' % debug_limit)
+        logger.info('Limit the number of fetched object per task to %s' %
+                    debug_limit)
 
     # upload the data from the given file
     if args.upload:

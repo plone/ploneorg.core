@@ -1,23 +1,21 @@
-from copy import deepcopy
+import datetime
 import json
 import re
 
 from OFS.Image import Image
 
-from zope.interface import implements
-from zope.component import queryUtility
-from zope.component.hooks import getSite
-from zope.publisher.interfaces import IPublishTraverse, NotFound
-
-import plone.api as api
-from plone.registry.interfaces import IRegistry
+from plone import api
 from plone.memoize.view import memoize_contextless
 
 from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
-import datetime
+from zope.component.hooks import getSite
+from zope.interface import implements
+from zope.publisher.interfaces import IPublishTraverse
+from zope.publisher.interfaces import NotFound
+
 
 STACKOVERFLOW_RE = re.compile(r'http[s]*://stackoverflow\.com/([0-9]+).*')
 
@@ -110,7 +108,8 @@ class JsonApiView(BrowserView):
         self.request.response.setHeader("Content-type", "application/json")
 
         # set the status
-        lock = (status != 200)  # prevent later status modification if we return an error
+        lock = (status != 200)  # prevent later status modification if
+                                # we return an error
         self.request.response.setStatus(status, reason=reason, lock=lock)
 
         json_data = {'status': status,
@@ -132,27 +131,32 @@ class UpdateContributorData(JsonApiView):
             commits_by_user = data['github'][org]['contributions']
             updated_members = {}  # map member to github username
             unknown_github_users = commits_by_user.keys()
-            # create the key that should be defined in memberdata_properties.xml
+            # create the key that should be defined in
+            # memberdata_properties.xml
             properties_key = '%s_commits' % org
             for member in members:
                 # use the github_username if added to the profile. otherwise
                 # we fall back to the plone username.
                 member_name = member.getName()
-                github_username = member.getProperty('github_username') or member_name
+                github_username = (member.getProperty('github_username') or
+                                   member_name)
                 if github_username in commits_by_user:
                     commits = int(commits_by_user[github_username])
-                    member.setMemberProperties(mapping={properties_key: commits})
+                    member.setMemberProperties(
+                        mapping={properties_key: commits})
                     updated_members[member_name] = github_username
                     unknown_github_users.remove(github_username)
 
-            response_data['github'][org] = {'updatedMembers': updated_members,
-                                            'unknownGithubUsers': unknown_github_users}
+            response_data['github'][org] = {
+                'updatedMembers': updated_members,
+                'unknownGithubUsers': unknown_github_users}
 
     def add_stackoverflow_data(self, members, data, response_data):
         answers_by_member = data['stackoverflow']
         for member in members:
             answers = answers_by_member.get(member.getName(), 0)
-            member.setMemberProperties(mapping={'stackoverflow_answers': answers})
+            member.setMemberProperties(
+                mapping={'stackoverflow_answers': answers})
 
     def __call__(self):
         data = self.read_json()

@@ -75,13 +75,17 @@ def setupVarious(context):
     front_page = getattr(portal, 'front-page', False)
     if front_page and not IDexterityContent.providedBy(front_page):
         portal.manage_delObjects('front-page')
-        frontpage = createContentInContainer(portal, 'Document', title=u"front-page", checkConstraints=False)
+        frontpage = createContentInContainer(portal, 'Document',
+                                             title=u"front-page",
+                                             checkConstraints=False)
         frontpage.exclude_from_nav = True
         frontpage.language = pl.getDefaultLanguage()
         frontpage.reindexObject()
         logger.info("DX default content site setup successfully.")
     elif not front_page:
-        frontpage = createContentInContainer(portal, 'Document', title=u"front-page", checkConstraints=False)
+        frontpage = createContentInContainer(portal, 'Document',
+                                             title=u"front-page",
+                                             checkConstraints=False)
         frontpage.exclude_from_nav = True
         frontpage.language = pl.getDefaultLanguage()
         frontpage.reindexObject()

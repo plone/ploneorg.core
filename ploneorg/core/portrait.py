@@ -1,11 +1,11 @@
-from OFS.Image import Image
+from cStringIO import StringIO
 from AccessControl import Unauthorized
+from OFS.Image import Image
+from PIL import Image as PILImage
+
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.permissions import ManageUsers
-
-from PIL import Image as PILImage
-from cStringIO import StringIO
 
 
 def changeMemberPortrait(self, portrait, id=None):
@@ -49,7 +49,8 @@ def convertSquareImage(image_file):
 
     if image.size[0] > 250 or image.size[1] > 250:
         image.thumbnail((250, 9800), PILImage.ANTIALIAS)
-        image = image.transform((250, 250), PILImage.EXTENT, (0, 0, 250, 250), PILImage.BICUBIC)
+        image = image.transform((250, 250), PILImage.EXTENT,
+                                (0, 0, 250, 250), PILImage.BICUBIC)
 
     new_file = StringIO()
     image.save(new_file, format, quality=88)
