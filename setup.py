@@ -34,7 +34,6 @@ setup(name='ploneorg.core',
           'collective.monkeypatcher',
           'PyGithub',
           'requests',
-          'pycountry'
           'pycountry',
           'plone.formwidget.multifile'
       ],

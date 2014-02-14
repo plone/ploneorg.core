@@ -17,8 +17,10 @@ from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
+import datetime
 
 STACKOVERFLOW_RE = re.compile(r'http[s]*://stackoverflow\.com/([0-9]+).*')
+
 
 class contributorProfile(BrowserView):
     """ Return an user profile ../profile/{username} """
@@ -63,7 +65,7 @@ class contributorProfile(BrowserView):
     def portal(self):
         return getSite()
 
-    def has_complete_profile(self):d
+    def has_complete_profile(self):
         pm = getToolByName(self.portal(), 'portal_membership')
         user = pm.getAuthenticatedMember()
         portrait = pm.getPersonalPortrait()
@@ -95,11 +97,11 @@ class JSONEncoder(json.JSONEncoder):
 
         return super(JSONEncoder, self).default(obj)
 
-    
+
 class JsonApiView(BrowserView):
 
     def read_json(self):
-      return json.loads(self.request.get('BODY'))
+        return json.loads(self.request.get('BODY'))
 
     def to_json(self, data):
         return json.dumps(data, indent=4, cls=JSONEncoder)
@@ -121,8 +123,8 @@ class JsonApiView(BrowserView):
 
     def json_error(self, data, status, reason):
         return self.json(data, status=status, reason=reason)
-    
-  
+
+
 class UpdateContributorData(JsonApiView):
 
     def add_github_data(self, members, data, response_data):
@@ -150,8 +152,8 @@ class UpdateContributorData(JsonApiView):
         answers_by_member = data['stackoverflow']
         for member in members:
             answers = answers_by_member.get(member.getName(), 0)
-            member.setMemberProperties(mapping={'stackoverflow_answers': answers}) 
-            
+            member.setMemberProperties(mapping={'stackoverflow_answers': answers})
+
     def __call__(self):
         data = self.read_json()
         response_data = {'github': {},
@@ -160,7 +162,7 @@ class UpdateContributorData(JsonApiView):
         self.add_github_data(members, data, response_data)
         self.add_stackoverflow_data(members, data, response_data)
         return self.json_success(response_data)
-                
+
 
 class StackOverflowIds(JsonApiView):
 
@@ -174,5 +176,3 @@ class StackOverflowIds(JsonApiView):
                     so_uid = match.groups()[0]
                     response_data[member.getName()] = so_uid
         return self.json_success(response_data)
-        
-        
