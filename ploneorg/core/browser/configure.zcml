@@ -19,4 +19,11 @@
       permission="cmf.ManagePortal"
       />
 
+    <browser:page
+      name="contributor-stackoverflow-ids"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".contributor.StackOverflowIds"
+      permission="cmf.ManagePortal"
+      />
+
 </configure>

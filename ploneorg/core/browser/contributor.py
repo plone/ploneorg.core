@@ -1,5 +1,6 @@
 from copy import deepcopy
 import json
+import re
 
 from OFS.Image import Image
 
@@ -16,6 +17,8 @@ from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
+
+STACKOVERFLOW_RE = re.compile(r'http[s]*://stackoverflow\.com/([0-9]+).*')
 
 class contributorProfile(BrowserView):
     """ Return an user profile ../profile/{username} """
@@ -43,20 +46,24 @@ class contributorProfile(BrowserView):
 
     def contributor(self):
         member_data = self.get_member_data()
-        import pdb; pdb.set_trace()
         return {'fullname': member_data.getProperty('fullname'),
                 'name': member_data.getName(),
                 'github': member_data.getProperty('github_username'),
                 'plone_commits': member_data.getProperty('plone_commits'),
-                'collective_commits': member_data.getProperty('collective_commits'),
+                'collective_commits': member_data.getProperty(
+                    'collective_commits'),
                 'home_page': member_data.getProperty('home_page'),
-                'twitter': member_data.getProperty('twitter_username')}
+                'twitter': member_data.getProperty('twitter_username'),
+                'stackoverflow_username': member_data.getProperty(
+                    'stackoverflow_username'),
+                'stackoverflow_answers': member_data.getProperty(
+                    'stackoverflow_answers')}
 
     @memoize_contextless
     def portal(self):
         return getSite()
 
-    def has_complete_profile(self):
+    def has_complete_profile(self):d
         pm = getToolByName(self.portal(), 'portal_membership')
         user = pm.getAuthenticatedMember()
         portrait = pm.getPersonalPortrait()
@@ -118,15 +125,11 @@ class JsonApiView(BrowserView):
   
 class UpdateContributorData(JsonApiView):
 
-    def __call__(self):
-        data = self.read_json()
-        response_data = {'github': {}}
-        # github data
+    def add_github_data(self, members, data, response_data):
         for org in ['plone', 'collective']:
             commits_by_user = data['github'][org]['contributions']
             updated_members = {}  # map member to github username
             unknown_github_users = commits_by_user.keys()
-            members = api.user.get_users()
             # create the key that should be defined in memberdata_properties.xml
             properties_key = '%s_commits' % org
             for member in members:
@@ -143,7 +146,33 @@ class UpdateContributorData(JsonApiView):
             response_data['github'][org] = {'updatedMembers': updated_members,
                                             'unknownGithubUsers': unknown_github_users}
 
+    def add_stackoverflow_data(self, members, data, response_data):
+        answers_by_member = data['stackoverflow']
+        for member in members:
+            answers = answers_by_member.get(member.getName(), 0)
+            member.setMemberProperties(mapping={'stackoverflow_answers': answers}) 
+            
+    def __call__(self):
+        data = self.read_json()
+        response_data = {'github': {},
+                         'stackoverflow': {}}
+        members = api.user.get_users()
+        self.add_github_data(members, data, response_data)
+        self.add_stackoverflow_data(members, data, response_data)
         return self.json_success(response_data)
                 
-                
+
+class StackOverflowIds(JsonApiView):
+
+    def __call__(self):
+        response_data = {}
+        for member in api.user.get_users():
+            so_url = member.getProperty('stackoverflow_username')
+            if so_url:
+                match = STACKOVERFLOW_RE.match(so_url)
+                if match:
+                    so_uid = match.groups()[0]
+                    response_data[member.getName()] = so_uid
+        return self.json_success(response_data)
+        
         

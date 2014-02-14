@@ -4,7 +4,7 @@
   <property name="stackoverflow_username" type="string"></property>
   <property name="plone_commits" type="int">0</property>
   <property name="collective_commits" type="int">0</property>
-  <property name="stackoverflow_activity" type="int">0</property>
+  <property name="stackoverflow_answers" type="int">0</property>
   <property name="additional_emails" type="lines"></property>
   <property name="twitter_username" type="string"></property>
 </object>

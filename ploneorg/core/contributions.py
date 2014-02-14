@@ -64,6 +64,13 @@ def find_base():
     return path
 
 
+def check_debug_limit(iterable, type_):
+    if debug_limit:
+        logger.info('Debug limit for %s: %s' % (type_, debug_limit))
+        return iterable[:debug_limit]
+    return iterable
+
+
 def find_data_dir(config):
     '''Calculate the data dir and make sure it exists'''
     base = find_base()
@@ -72,6 +79,12 @@ def find_data_dir(config):
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
     return data_dir
+
+
+def get_auth(config):
+    admin_user = config.get('general', 'admin_user')
+    admin_password = config.get('general', 'admin_password')    
+    return requests.auth.HTTPBasicAuth(admin_user, admin_password)
 
 
 def write_data(config, json_string):
@@ -93,6 +106,7 @@ def fetch(config):
     try:
         data['github']['plone'] = fetch_github(config, 'plone')
         data['github']['collective'] = fetch_github(config, 'collective')
+        data['stackoverflow'] = fetch_stackoverflow(config)
     except IOError, E:
         logger.exception('An IOError happend, probably a read timeout')
         exit(1)
@@ -122,10 +136,7 @@ def fetch_github(config, organization):
         'contributions': contributions,
         'unknown': []}
 
-    repos = organization.get_repos()
-    if debug_limit:
-        logger.debug('Limit number or repos fetched to %s' % debug_limit)
-        repos = repos[:debug_limit]
+    repos = check_debug_limit(organization.get_repos(), 'repos')                            
 
     for repo in repos:
         try:
@@ -150,17 +161,52 @@ def fetch_github(config, organization):
     return data
 
 
+def fetch_stackoverflow(config):
+    # get all stackoverflow ids form member profiles
+    logger.info('Fetch data from stackoverflow...')
+    logger.info('...Get stackoverflow ids from Plone.')
+    url = config.get('general', 'plone_url') + '/@@contributor-stackoverflow-ids'
+    r = requests.get(
+        url, allow_redirects=False,  # don't redirect to the login form for unauth
+        auth=get_auth(config))
+    if r.status_code != 200:
+        msg = ("Can't fetch stackoverflow user ids from plone."
+               'status: %s.') % r.status_code
+        if r.status_code == 302:
+            msg += 'This might be and authentication error.'
+        logger.error(msg)
+        logger.error('Cannot fetch stackoverflow data. Exit.')
+        exit(1)
+    stackoverflow_users = r.json()['data']
+
+    logger.info('...Start getting data from stackoverflow.')
+    plone_member_ids = check_debug_limit(stackoverflow_users.keys(),
+                                         'stackoverflow users')
+    for member_id in plone_member_ids:
+        stackoverflow_id = stackoverflow_users[member_id]
+        activity = _so_activity_for_user(stackoverflow_id, member_id)
+        stackoverflow_users[member_id] = activity
+
+    logger.info('Done.')
+    return stackoverflow_users
+
+def _so_activity_for_user(userid, member_id):
+     # FIXME: something better is needed here.
+     # FIXME: ask for top answerers last month also?
+     logger.debug('...plone member: %s, so userid: %s' % (member_id, userid))
+     from random import choice
+     return choice([0,0,0,0,0,5,8,11,14,18,21])
+
+
 def upload(config, json_string):
-    url = config.get('general', 'upload_url')
-    upload_user = config.get('general', 'upload_user')
-    upload_password = config.get('general', 'upload_password')
+    url = config.get('general', 'plone_url') + '/@@update-contributor-data'
     logger.info('Upload data to "%s"...' % url)
     headers = {'Content-type': 'application/json',
                'Accept': 'text/plain'}
     r = requests.post(
         url, data=json_string, headers=headers,
         allow_redirects=False,  # don't redirect to the login form for unauth
-        auth=requests.auth.HTTPBasicAuth(upload_user, upload_password))
+        auth=get_auth(config))
     if r.status_code != 200:
         content = '*content stripped*' if (r.status_code == 302) else r.content
         message = (
