@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from plone.app.dexterity import PloneMessageFactory as _PMF
 from plone.app.textfield import RichText
 from plone.directives import form

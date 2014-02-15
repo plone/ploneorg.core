@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from ConfigParser import SafeConfigParser
 from datetime import datetime
 from github import Github

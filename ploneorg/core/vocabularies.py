@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import pycountry
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary

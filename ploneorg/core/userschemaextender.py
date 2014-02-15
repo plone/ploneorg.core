@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from zope import schema
 from zope.component import adapter
 from zope.interface import Interface

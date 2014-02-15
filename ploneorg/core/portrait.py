@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from cStringIO import StringIO
 from AccessControl import Unauthorized
 from OFS.Image import Image
