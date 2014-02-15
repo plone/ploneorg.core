@@ -19,41 +19,41 @@ from ploneorg.core.vocabularies import country_vocabulary
 class IEnhancedUserDataSchema(model.Schema):
 
     country = schema.Choice(
-        title=_(u"Country"),
-        description=_(u"Please, enter your country."),
+        title=_(u'Country'),
+        description=_(u'Please, enter your country.'),
         source=country_vocabulary,
         required=False,
     )
 
     github_username = schema.TextLine(
-        title=_(u"Github username"),
-        description=_(u"[Contributor] The GitHub username for "
-                      "personal stats retrieval"),
+        title=_(u'Github username'),
+        description=_(u'[Contributor] The GitHub username for '
+                      'personal stats retrieval'),
         required=False
     )
 
     stackoverflow_username = schema.TextLine(
-        title=_(u"StackOverflow username"),
-        description=_(u"[Contributor] The StackOverflow username "
-                      "for personal stats retrieval"),
+        title=_(u'StackOverflow username'),
+        description=_(u'[Contributor] The StackOverflow username '
+                      'for personal stats retrieval'),
         required=False
     )
 
     twitter_username = schema.TextLine(
-        title=_(u"Twitter username"),
-        description=_(u"[Contributor] The Twitter username for personal "
-                      "stats retrieval"),
+        title=_(u'Twitter username'),
+        description=_(u'[Contributor] The Twitter username for personal '
+                      'stats retrieval'),
         required=False
     )
 
     additional_emails = schema.List(
-        title=_(u"Additional emails"),
+        title=_(u'Additional emails'),
         description=_(
-            u"Contributions are usually keyed on email, but often people "
-            u"use work and home addresses for email, or move jobs and gain "
-            u"new addresses. Enter all email addresses that represent you "
-            u"in the Plone community here, so we can include these "
-            u"contributions."),
+            u'Contributions are usually keyed on email, but often people '
+            u'use work and home addresses for email, or move jobs and gain '
+            u'new addresses. Enter all email addresses that represent you '
+            u'in the Plone community here, so we can include these '
+            u'contributions.'),
         value_type=schema.TextLine(),
         required=False,
         missing_value=[],
@@ -68,4 +68,4 @@ class EnhancedUserDataSchemaAdapter(AccountPanelSchemaAdapter):
 class UserDataPanelExtender(extensible.FormExtender):
     def update(self):
         fields = Fields(IEnhancedUserDataSchema)
-        self.add(fields, prefix="IEnhancedUserDataSchema")
+        self.add(fields, prefix='IEnhancedUserDataSchema')

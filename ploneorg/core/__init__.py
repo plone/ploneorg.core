@@ -2,7 +2,7 @@
 
 from zope.i18nmessageid import MessageFactory
 
-_ = MessageFactory("ploneorg")
+_ = MessageFactory('ploneorg')
 
 
 def initialize(context):

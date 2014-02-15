@@ -60,7 +60,7 @@ def find_base():
             path = None
             break
     if path is None:
-        raise IOError("contributions.cfg not found")
+        raise IOError('contributions.cfg not found')
     return path
 
 
@@ -91,7 +91,7 @@ def write_data(config, json_string):
     '''Write the data do a json file.'''
     data_dir = find_data_dir(config)
     isodate = datetime.now().isoformat()
-    filename = "contributions.%s.json" % isodate
+    filename = 'contributions.%s.json' % isodate
     path = os.path.join(data_dir, filename)
     with open(path, 'w') as f:
         f.write(json_string)
@@ -247,8 +247,8 @@ def update_contributions():
     argparser = argparse.ArgumentParser()
     argparser.add_argument(
         '--upload', metavar='path/to/contributions.xxx.json',
-        help=("Only upload the data from the specified file. (Even if"
-              "you give further command line arguments!)"),
+        help=('Only upload the data from the specified file. (Even if '
+              'you give further command line arguments!)'),
         type=lambda path: is_valid_data_file(argparser, path))
     argparser.add_argument(
         '--fetch-only',

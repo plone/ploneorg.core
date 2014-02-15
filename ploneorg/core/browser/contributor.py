@@ -107,7 +107,7 @@ class JsonApiView(BrowserView):
         return json.dumps(data, indent=4, cls=JSONEncoder)
 
     def json(self, data, status=200, reason=None):
-        self.request.response.setHeader("Content-type", "application/json")
+        self.request.response.setHeader('Content-type', 'application/json')
 
         # set the status
         lock = (status != 200)  # prevent later status modification if

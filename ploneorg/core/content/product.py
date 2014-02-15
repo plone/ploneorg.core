@@ -64,7 +64,7 @@ class IProduct(model.Schema):
 
     form.fieldset(
         'URLs',
-        label=u"Product URLs",
+        label=u'Product URLs',
         fields=['pypi_link', 'github_link', 'homepage']
     )
 
@@ -74,40 +74,40 @@ class IProduct(model.Schema):
     )
 
     summary = RichText(
-        title=_(u"Short summary"),
-        description=_(u"The summary of the features of the product."),
+        title=_(u'Short summary'),
+        description=_(u'The summary of the features of the product.'),
         required=True
     )
 
     form.widget(screenshots=MultiFileFieldWidget)
     screenshots = schema.List(
         title=u'Screenshots',
-        description=_(u"Upload some screenshots showing the main product "
-                      u"functionality and features."),
+        description=_(u'Upload some screenshots showing the main product '
+                      u'functionality and features.'),
         value_type=NamedFile()
     )
 
     categories = schema.List(
-        title=_(u"Categories"),
+        title=_(u'Categories'),
         value_type=schema.Choice(
             vocabulary=product_categories),
         required=False,
     )
 
     pypi_link = schema.TextLine(
-        title=_(u"Pypi URL"),
-        description=_(u"The PyPi egg URL for the releases of this product."),
+        title=_(u'Pypi URL'),
+        description=_(u'The PyPi egg URL for the releases of this product.'),
         required=True
     )
 
     github_link = schema.TextLine(
-        title=_(u"GitHub URL"),
-        description=_(u"The GitHub repo URL for this product."),
+        title=_(u'GitHub URL'),
+        description=_(u'The GitHub repo URL for this product.'),
         required=True
     )
 
     homepage = schema.TextLine(
-        title=_(u"Homepage URL"),
-        description=_(u"The home page URL for this product, if any."),
+        title=_(u'Homepage URL'),
+        description=_(u'The home page URL for this product, if any.'),
         required=True
     )
