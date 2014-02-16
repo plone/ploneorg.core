@@ -35,7 +35,8 @@ setup(name='ploneorg.core',
           'PyGithub',
           'requests',
           'pycountry',
-          'plone.formwidget.multifile'
+          'plone.formwidget.multifile',
+          'Py-StackExchange'
       ],
       entry_points="""
       # -*- Entry points: -*-
