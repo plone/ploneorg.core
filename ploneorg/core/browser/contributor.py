@@ -19,7 +19,8 @@ from zope.publisher.interfaces import IPublishTraverse
 from zope.publisher.interfaces import NotFound
 
 
-STACKOVERFLOW_RE = re.compile(r'http[s]*://stackoverflow\.com/([0-9]+).*')
+STACKOVERFLOW_RE = re.compile(
+    r'http[s]*://stackoverflow\.com/users/([0-9]+).*')
 
 
 class contributorProfile(BrowserView):
@@ -129,8 +130,16 @@ class JsonApiView(BrowserView):
 class UpdateContributorData(JsonApiView):
 
     def add_github_data(self, members, data, response_data):
+        github = 'github'
+        if github not in data:
+            response_data[github] = 'No data for github available.'
+            return
         for org in ['plone', 'collective']:
-            commits_by_user = data['github'][org]['contributions']
+            if org not in data:
+                response_data[github][org] = (
+                    'No data for org "%s" available.' % github)
+                continue
+            commits_by_user = data[github][org]['contributions']
             updated_members = {}  # map member to github username
             unknown_github_users = commits_by_user.keys()
             # create the key that should be defined in
@@ -149,14 +158,21 @@ class UpdateContributorData(JsonApiView):
                     updated_members[member_name] = github_username
                     unknown_github_users.remove(github_username)
 
-            response_data['github'][org] = {
+            response_data[github][org] = {
                 'updatedMembers': updated_members,
                 'unknownGithubUsers': unknown_github_users}
 
     def add_stackoverflow_data(self, members, data, response_data):
-        answers_by_member = data['stackoverflow']
+        stackoverflow = 'stackoverflow'
+        if stackoverflow not in data:
+            response_data[stackoverflow] = (
+                'No data for stackoverflow available.')
+            return
+        answers_by_member = data[stackoverflow]
         for member in members:
-            answers = answers_by_member.get(member.getName(), 0)
+            member_name = member.getName()
+            answers = answers_by_member.get(member_name, 0)
+            response_data[stackoverflow][member_name] = answers
             member.setMemberProperties(
                 mapping={'stackoverflow_answers': answers})
 

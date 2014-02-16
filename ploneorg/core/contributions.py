@@ -10,6 +10,8 @@ import json
 import logging
 import os
 import requests
+import stackexchange
+
 
 logging.basicConfig()
 logger = logging.getLogger('contributions')
@@ -178,26 +180,34 @@ def fetch_stackoverflow(config):
         logger.error(msg)
         logger.error('Cannot fetch stackoverflow data. Exit.')
         exit(1)
+
     stackoverflow_users = r.json()['data']
 
     logger.info('...Start getting data from stackoverflow.')
     plone_member_ids = check_debug_limit(stackoverflow_users.keys(),
                                          'stackoverflow users')
+    stackoverflow = stackexchange.Site(stackexchange.StackOverflow)
     for member_id in plone_member_ids:
         stackoverflow_id = stackoverflow_users[member_id]
-        activity = _so_activity_for_user(stackoverflow_id, member_id)
+        activity = _so_activity_for_user(stackoverflow, stackoverflow_id,
+                                         member_id)
         stackoverflow_users[member_id] = activity
 
     logger.info('Done.')
     return stackoverflow_users
 
 
-def _so_activity_for_user(userid, member_id):
+def _so_activity_for_user(stackoverflow, userid, member_id):
     # FIXME: something better is needed here.
     # FIXME: ask for top answerers last month also?
     logger.debug('...plone member: %s, so userid: %s' % (member_id, userid))
-    from random import choice
-    return choice([0, 0, 0, 0, 0, 5, 8, 11, 14, 18, 21])
+    user = stackoverflow.user(userid)
+    user.tags.fetch()
+    for tag in user.tags:
+        print tag.name, tag.count
+        if tag.name == u'plone':
+            return tag.count
+    return 0
 
 
 def upload(config, json_string):
