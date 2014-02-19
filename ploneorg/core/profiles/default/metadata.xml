@@ -3,7 +3,8 @@
   <version>1000</version>
   <dependencies>
     <dependency>profile-plone.app.dexterity:default</dependency>
-    <dependency>profile-plone.app.contenttypes:default</dependency>
+    <dependency>profile-plone.app.contenttypes:plone-content</dependency>
+    <dependency>profile-plone.app.event:default</dependency>
     <dependency>profile-plone.formwidget.autocomplete:default</dependency>
     <dependency>profile-wildcard.foldercontents:default</dependency>
     <dependency>profile-ploneorg.theme:default</dependency>
