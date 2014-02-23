@@ -49,8 +49,9 @@ class contributorProfile(BrowserView):
 
     def contributor(self):
         member_data = self.get_member_data()
+
         return {'fullname': member_data.getProperty('fullname'),
-                'name': member_data.getName(),
+                'name': member_data.getUserName(),
                 'github': member_data.getProperty('github_username'),
                 'plone_commits': member_data.getProperty('plone_commits'),
                 'collective_commits': member_data.getProperty(
@@ -148,7 +149,7 @@ class UpdateContributorData(JsonApiView):
             for member in members:
                 # use the github_username if added to the profile. otherwise
                 # we fall back to the plone username.
-                member_name = member.getName()
+                member_name = member.getUserName()
                 github_username = (member.getProperty('github_username') or
                                    member_name)
                 if github_username in commits_by_user:
@@ -170,7 +171,7 @@ class UpdateContributorData(JsonApiView):
             return
         answers_by_member = data[stackoverflow]
         for member in members:
-            member_name = member.getName()
+            member_name = member.getUserName()
             answers = answers_by_member.get(member_name, 0)
             response_data[stackoverflow][member_name] = answers
             member.setMemberProperties(
@@ -196,5 +197,5 @@ class StackOverflowIds(JsonApiView):
                 match = STACKOVERFLOW_RE.match(so_url)
                 if match:
                     so_uid = match.groups()[0]
-                    response_data[member.getName()] = so_uid
+                    response_data[member.getUserName()] = so_uid
         return self.json_success(response_data)
