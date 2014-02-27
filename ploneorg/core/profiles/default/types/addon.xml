@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<object name="product" meta_type="Dexterity FTI" i18n:domain="plone"
+<object name="addon" meta_type="Dexterity FTI" i18n:domain="plone"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title" i18n:translate="">product</property>
+ <property name="title" i18n:translate="">Add-on</property>
  <property name="description"
-    i18n:translate="">A Plone product add-on</property>
+    i18n:translate="">A Plone add-on product</property>
  <!-- <property name="icon_expr">string:${portal_url}/document_icon.png</property> -->
- <property name="factory">product</property>
+ <property name="factory">addon</property>
  <property
-    name="add_view_expr">string:${folder_url}/++add++product</property>
+    name="add_view_expr">string:${folder_url}/++add++addon</property>
  <property name="link_target"></property>
  <property name="immediate_view">view</property>
  <property name="global_allow">True</property>
@@ -26,7 +26,7 @@
   <element
      value="plone.app.referenceablebehavior.referenceable.IReferenceable"/>
  </property>
- <property name="schema">ploneorg.core.content.product.IProduct</property>
+ <property name="schema">ploneorg.core.content.addon.IAddon</property>
  <property name="model_source"></property>
  <property name="model_file"></property>
  <property name="schema_policy">dexterity</property>

@@ -58,7 +58,7 @@ product_categories = SimpleVocabulary(
     )
 
 
-class IProduct(model.Schema):
+class IAddon(model.Schema):
     """ A Plone product
     """
 
