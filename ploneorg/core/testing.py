@@ -30,23 +30,23 @@ class PloneAppContenttypes(PloneSandboxLayer):
                                            ['Manager'],
                                            [])
         login(portal, 'admin')
-        portal.portal_workflow.setDefaultChain("simple_publication_workflow")
+        portal.portal_workflow.setDefaultChain('simple_publication_workflow')
         applyProfile(portal, 'ploneorg.core:default')
 
         setRoles(portal, TEST_USER_ID, ['Manager'])
         portal.invokeFactory(
-            "Folder",
+            'Folder',
             id='TEST_FOLDER_ID',
-            title=u"Test Folder"
+            title=u'Test Folder'
         )
 
 
 PLONEORG_CORE_FIXTURE = PloneAppContenttypes()
 PLONEORG_CORE_INTEGRATION_TESTING = IntegrationTesting(
     bases=(PLONEORG_CORE_FIXTURE,),
-    name="PloneorgCore:Integration"
+    name='PloneorgCore:Integration'
 )
 PLONEORG_CORE_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(PLONEORG_CORE_FIXTURE,),
-    name="PloneorgCore:Functional"
+    name='PloneorgCore:Functional'
 )

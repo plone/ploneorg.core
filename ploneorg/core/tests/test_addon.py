@@ -8,12 +8,11 @@ from plone.dexterity.interfaces import IDexterityFTI
 
 from ploneorg.core.content.addon import IAddon
 
-from ploneorg.core.testing import (
-    PLONEORG_CORE_INTEGRATION_TESTING,
-    PLONEORG_CORE_FUNCTIONAL_TESTING
-)
+from ploneorg.core.testing import PLONEORG_CORE_INTEGRATION_TESTING
+from ploneorg.core.testing import PLONEORG_CORE_FUNCTIONAL_TESTING
 
-from plone.app.testing import TEST_USER_ID, setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import setRoles
 
 
 class DocumentIntegrationTest(unittest.TestCase):
