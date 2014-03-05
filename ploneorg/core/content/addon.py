@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from plone.app.dexterity import PloneMessageFactory as _PMF
 from plone.app.textfield import RichText
 from plone.directives import form
@@ -55,7 +55,36 @@ product_categories = SimpleVocabulary(
                 title=_(u'Widgets')),
      SimpleTerm(value=u'other',
                 title=_(u'Other'))]
-    )
+)
+
+certification_checklist = SimpleVocabulary(
+    [SimpleTerm(value=u'pypi_page',
+                title=_(u'Has a curated PyPi page (README.rst/README.md)')),
+     SimpleTerm(value=u'public_repo',
+                title=_(u'Has a public and open to contributions repo (GitHub/BitBucket, etc)')),
+     SimpleTerm(value=u'updated_last_plone_version',
+                title=_(u'Works on latest Plone version')),
+     SimpleTerm(value=u'dexterity_ready',
+                title=_(u'Dexterity ready')),
+     SimpleTerm(value=u'proper_screenshots',
+                title=_(u'Has proper screenshots')),
+     SimpleTerm(value=u'used_in_production',
+                title=_(u'Widely used in production')),
+     SimpleTerm(value=u'install_uninstall_profile',
+                title=_(u'Uninstall profile, installs and uninstalls cleanly')),
+     SimpleTerm(value=u'code_structure',
+                title=_(u'Code structure follows best practice')),
+     SimpleTerm(value=u'maintained',
+                title=_(u'Existed and maintained for at least 6 months')),
+     SimpleTerm(value=u'internal_documentation',
+                title=_(u'Internal documentation (documentation, interfaces, etc.)')),
+     SimpleTerm(value=u'enduser_documentation',
+                title=_(u'End-user documentation')),
+     SimpleTerm(value=u'tested',
+                title=_(u'Fair test coverage')),
+     SimpleTerm(value=u'i18n',
+                title=_(u'Internationalized')), ]
+)
 
 
 class IAddon(model.Schema):
@@ -64,8 +93,14 @@ class IAddon(model.Schema):
 
     form.fieldset(
         'URLs',
-        label=u'Product URLs',
+        label=u'URLs',
         fields=['pypi_link', 'github_link', 'homepage']
+    )
+
+    form.fieldset(
+        'quality',
+        label=u'Quality review',
+        fields=['certification', ]
     )
 
     title = schema.TextLine(
@@ -110,4 +145,13 @@ class IAddon(model.Schema):
         title=_(u'Homepage URL'),
         description=_(u'The home page URL for this product, if any.'),
         required=True
+    )
+
+    form.widget(certification=CheckBoxFieldWidget)
+    certification = schema.Set(
+        title=_(u'Certification checklist'),
+        description=_(u'This is the feature checklist of add-on developing. Once the product accomplish all of them, you can send it for review and earn the certified add-on badge.'),
+        value_type=schema.Choice(
+            vocabulary=certification_checklist),
+        required=False
     )
