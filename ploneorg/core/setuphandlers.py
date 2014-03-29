@@ -9,9 +9,7 @@ import transaction
 
 PROFILE_ID = 'profile-ploneorg.core:default'
 # Specify the indexes you want, with ('index_name', 'index_type')
-INDEXES = (('subscribed_users', 'KeywordIndex'),
-           ('subscribed_items', 'FieldIndex'),
-           ('community_type', 'FieldIndex'),
+INDEXES = (('addon_categories', 'KeywordIndex'),
            )
 
 
@@ -67,32 +65,31 @@ def setupVarious(context):
     portal = context.getSite()
     logger = logging.getLogger(__name__)
 
-    # Re-enable this lately when having catalog indexes
-    # add_catalog_indexes(portal, logger)
+    add_catalog_indexes(portal, logger)
 
     # Add the DX front-page object if needed
-    pl = getToolByName(portal, 'portal_languages')
-    from plone.dexterity.interfaces import IDexterityContent
-    front_page = getattr(portal, 'front-page', False)
-    if front_page and not IDexterityContent.providedBy(front_page):
-        portal.manage_delObjects('front-page')
-        frontpage = createContentInContainer(portal, 'Document',
-                                             title=u'front-page',
-                                             checkConstraints=False)
-        frontpage.exclude_from_nav = True
-        frontpage.language = pl.getDefaultLanguage()
-        frontpage.reindexObject()
-        logger.info('DX default content site setup successfully.')
-    elif not front_page:
-        frontpage = createContentInContainer(portal, 'Document',
-                                             title=u'front-page',
-                                             checkConstraints=False)
-        frontpage.exclude_from_nav = True
-        frontpage.language = pl.getDefaultLanguage()
-        frontpage.reindexObject()
-        logger.info('DX default content site setup successfully.')
+    # pl = getToolByName(portal, 'portal_languages')
+    # from plone.dexterity.interfaces import IDexterityContent
+    # front_page = getattr(portal, 'front-page', False)
+    # if front_page and not IDexterityContent.providedBy(front_page):
+    #     portal.manage_delObjects('front-page')
+    #     frontpage = createContentInContainer(portal, 'Document',
+    #                                          title=u'front-page',
+    #                                          checkConstraints=False)
+    #     frontpage.exclude_from_nav = True
+    #     frontpage.language = pl.getDefaultLanguage()
+    #     frontpage.reindexObject()
+    #     logger.info('DX default content site setup successfully.')
+    # elif not front_page:
+    #     frontpage = createContentInContainer(portal, 'Document',
+    #                                          title=u'front-page',
+    #                                          checkConstraints=False)
+    #     frontpage.exclude_from_nav = True
+    #     frontpage.language = pl.getDefaultLanguage()
+    #     frontpage.reindexObject()
+    #     logger.info('DX default content site setup successfully.')
 
-    # Set the default page to the homepage view
-    portal.setDefaultPage('front-page')
+    # # Set the default page to the homepage view
+    # portal.setDefaultPage('front-page')
 
     transaction.commit()

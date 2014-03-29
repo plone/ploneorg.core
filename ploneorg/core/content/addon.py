@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+from five import grok
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from plone.app.dexterity import PloneMessageFactory as _PMF
 from plone.app.textfield import RichText
 from plone.directives import form
 from plone.formwidget.multifile import MultiFileFieldWidget
+from plone.indexer import indexer
 from plone.namedfile.field import NamedFile
 from plone.supermodel import model
 
@@ -144,7 +146,6 @@ class IAddon(model.Schema):
     homepage = schema.TextLine(
         title=_(u'Homepage URL'),
         description=_(u'The home page URL for this product, if any.'),
-        required=True
     )
 
     form.widget(certification=CheckBoxFieldWidget)
@@ -155,3 +156,16 @@ class IAddon(model.Schema):
             vocabulary=certification_checklist),
         required=False
     )
+
+
+@indexer(IAddon)
+def addon_categories(context):
+    """Create a catalogue indexer, registered as an adapter, which can
+    populate the ``context.categories`` value and index it.
+    """
+    return context.categories
+grok.global_adapter(addon_categories, name='addon_categories')
+
+
+# class View(grok.View):
+#     grok.context(IAddon)
