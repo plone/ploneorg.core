@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+from Acquisition import aq_inner
+from OFS.Image import Pdata
 
+from plone import api
 from zope import schema
 from zope.component import adapter
 from zope.interface import Interface
@@ -7,16 +10,33 @@ from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 from z3c.form.field import Fields
 
+from plone.autoform import directives as form
 from plone.app.users.browser.account import AccountPanelSchemaAdapter
 from plone.app.users.browser.userdatapanel import UserDataPanel
+from plone.namedfile.field import NamedBlobImage
+from plone.namedfile.file import NamedBlobImage as NamedBlobImageFile
+
 from plone.supermodel import model
 from plone.z3cform.fieldsets import extensible
+
+from Products.PlonePAS.tools.membership import default_portrait
 
 from ploneorg.core import _
 from ploneorg.core.vocabularies import country_vocabulary
 
 
 class IEnhancedUserDataSchema(model.Schema):
+
+    large_portrait = NamedBlobImage(
+        title=_(u'label_large_portrait', default=u'Large Portrait'),
+        description=_(
+            u'help_large_portrait',
+            default=u'You can set a large hero portrait image for display on '
+                    u'your community profile. Recommended '
+                    u'image size is X pixels wide by Y pixels tall.'
+        ),
+        required=False)
+    form.widget(large_portrait='plone.app.users.schema.PortraitFieldWidget')
 
     country = schema.Choice(
         title=_(u'Country'),
@@ -63,9 +83,53 @@ class IEnhancedUserDataSchema(model.Schema):
 class EnhancedUserDataSchemaAdapter(AccountPanelSchemaAdapter):
     schema = IEnhancedUserDataSchema
 
+    def get_large_portrait(self):
+        portal = api.portal.get()
+        mt = api.portal.get_tool(name='portal_membership')
+        if not self.context.getId():
+            return None
+        value = mt.getPersonalPortrait(self.context.getId() + '_large')
+        if aq_inner(value) == aq_inner(getattr(portal,
+                                               default_portrait,
+                                               None)):
+            return None
+        # Sometimes it got saved with this, no time to know why.
+        if isinstance(value.data, Pdata):
+            return NamedBlobImageFile(value.data.data, contentType=value.content_type,
+                      filename=getattr(value, 'filename', None))
+        else:
+            return NamedBlobImageFile(value.data, contentType=value.content_type,
+                                  filename=getattr(value, 'filename', None))
+
+    def set_large_portrait(self, value):
+        mt = api.portal.get_tool(name='portal_membership')
+        if value is None:
+            mt.deletePersonalPortrait(str(self.context.getId() + '_large'))
+        else:
+            portrait_file = value.open()
+            portrait_file.filename = value.filename
+            mt.changeMemberPortrait(portrait_file, str(self.context.getId() + '_large'))
+
+    large_portrait = property(get_large_portrait, set_large_portrait)
+
 
 @adapter(Interface, IDefaultBrowserLayer, UserDataPanel)
 class UserDataPanelExtender(extensible.FormExtender):
     def update(self):
-        fields = Fields(IEnhancedUserDataSchema)
-        self.add(fields, prefix='IEnhancedUserDataSchema')
+        fields = Fields(
+            IEnhancedUserDataSchema,
+            prefix="IEnhancedUserDataSchema")
+        self.add(fields)
+
+
+from z3c.form import util
+
+
+def toWidgetValueTextLinesFix(self, value):
+    """Convert from text lines to HTML representation."""
+    # if the value is the missing value, then an empty list is produced.
+    if value is self.field.missing_value:
+        return u''
+    if not value:
+        return u''
+    return u'\n'.join(util.toUnicode(v) for v in value)

@@ -26,7 +26,6 @@ setup(name='ploneorg.core',
       extras_require={'test': ['plone.app.testing[robot]>=4.2.2']},
       install_requires=[
           'setuptools',
-          'five.grok',
           'ploneorg.theme',
           'plone.api',
           'plone.app.contenttypes',

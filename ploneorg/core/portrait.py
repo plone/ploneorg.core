@@ -9,6 +9,10 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.permissions import ManageUsers
 
+from PIL import ImageOps
+
+import PIL
+
 
 def changeMemberPortrait(self, portrait, id=None):
     """update the portait of a member.
@@ -32,30 +36,47 @@ def changeMemberPortrait(self, portrait, id=None):
     if isinstance(safe_id, unicode):
         safe_id = str(safe_id)
 
-    if authenticated_id and id != authenticated_id:
+    valid_id = id == authenticated_id or id == authenticated_id + '_large'
+
+    if authenticated_id and not valid_id:
         # Only Managers can change portraits of others.
         if not _checkPermission(ManageUsers, self):
             raise Unauthorized
     if portrait and portrait.filename:
-        #scaled, mimetype = scale_image(portrait, max_size=(250, 250))
-        scaled, mimetype = convertSquareImage(portrait)
+        if not id.endswith('_large'):
+            # Override default resizing
+            scaled, mimetype = convertSquareImage(portrait)
+        else:
+            scaled, mimetype = adjust_large_image(portrait)
+
         portrait = Image(id=safe_id, file=scaled, title='')
         membertool = getToolByName(self, 'portal_memberdata')
         membertool._setPortrait(portrait, safe_id)
 
 
 def convertSquareImage(image_file):
-    image = PILImage.open(image_file)
+    CONVERT_SIZE = (250, 250)
+    image = PIL.Image.open(image_file)
     format = image.format
     mimetype = 'image/%s' % format.lower()
 
-    if image.size[0] > 250 or image.size[1] > 250:
-        image.thumbnail((250, 9800), PILImage.ANTIALIAS)
-        image = image.transform((250, 250), PILImage.EXTENT,
-                                (0, 0, 250, 250), PILImage.BICUBIC)
-
+    result = ImageOps.fit(image, CONVERT_SIZE, method=PIL.Image.ANTIALIAS, centering=(0, 0))
     new_file = StringIO()
-    image.save(new_file, format, quality=88)
+    result.save(new_file, format, quality=88)
+    new_file.seek(0)
+
+    return new_file, mimetype
+
+
+def adjust_large_image(large_image):
+    CONVERT_SIZE = (1200, 400)
+    image = PIL.Image.open(large_image)
+    format = image.format
+    mimetype = 'image/%s' % format.lower()
+
+    result = ImageOps.fit(image, CONVERT_SIZE, method=PIL.Image.ANTIALIAS, centering=(0, 0))
+    new_file = StringIO()
+    result.save(new_file, format, quality=88)
     new_file.seek(0)
 
     return new_file, mimetype

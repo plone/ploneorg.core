@@ -18,6 +18,11 @@ from zope.interface import implements
 from zope.publisher.interfaces import IPublishTraverse
 from zope.publisher.interfaces import NotFound
 
+BADGE_TEAMS = ['foundation.members',
+               'board.members',
+               'team.testing',
+               'team.ui',
+               'team.installers']
 
 STACKOVERFLOW_RE = re.compile(
     r'http[s]*://stackoverflow\.com/users/([0-9]+).*')
@@ -65,7 +70,7 @@ class contributorProfile(BrowserView):
 
     @memoize_contextless
     def portal(self):
-        return getSite()
+        return api.portal.get()
 
     def has_complete_profile(self):
         pm = getToolByName(self.portal(), 'portal_membership')
@@ -81,14 +86,23 @@ class contributorProfile(BrowserView):
             return False
 
     def get_member_data(self):
-        pm = getToolByName(self.portal(), 'portal_membership')
+        pm = api.portal.get_tool(name='portal_membership')
         user = pm.getMemberById(self.username)
         return user
 
     def get_member_image(self):
-        pm = getToolByName(self.portal(), 'portal_membership')
+        pm = api.portal.get_tool(name='portal_membership')
         portrait = pm.getPersonalPortrait(self.username)
         return portrait.absolute_url()
+
+    def get_member_large_image(self):
+        pm = api.portal.get_tool(name='portal_membership')
+        portrait = pm.getPersonalPortrait(self.username + '_large')
+        return portrait.absolute_url()
+
+    def get_user_badges(self):
+        # import ipdb;ipdb.set_trace()
+        pass
 
 
 class JSONEncoder(json.JSONEncoder):

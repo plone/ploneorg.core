@@ -11,7 +11,7 @@ from plone.testing import z2
 from zope.configuration import xmlconfig
 
 
-class PloneAppContenttypes(PloneSandboxLayer):
+class PloneOrgCore(PloneSandboxLayer):
 
     defaultBases = (PLONE_FIXTURE,)
 
@@ -41,7 +41,7 @@ class PloneAppContenttypes(PloneSandboxLayer):
         )
 
 
-PLONEORG_CORE_FIXTURE = PloneAppContenttypes()
+PLONEORG_CORE_FIXTURE = PloneOrgCore()
 PLONEORG_CORE_INTEGRATION_TESTING = IntegrationTesting(
     bases=(PLONEORG_CORE_FIXTURE,),
     name='PloneorgCore:Integration'

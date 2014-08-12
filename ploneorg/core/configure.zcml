@@ -1,8 +1,8 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
-    xmlns:grok="http://namespaces.zope.org/grok"
     xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:plone="http://namespaces.plone.org/plone"
     xmlns:monkey="http://namespaces.plone.org/monkey"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="ploneorg.core">
@@ -11,7 +11,7 @@
 
   <include package=".browser" />
 
-  <grok:grok package="." />
+  <include file="permissions.zcml" />
 
   <include package="plone.app.dexterity" />
   <include package="plone.app.contenttypes" />
@@ -30,6 +30,14 @@
     factory=".userschemaextender.EnhancedUserDataSchemaAdapter"
     />
 
+  <plone:behavior
+    title="Name from full name for foundation members"
+    description="Use the full name as name (basis for the id)"
+    provides=".behaviors.INameFromFullName"
+    factory=".behaviors.NameFromFullName"
+    for="ploneorg.core.content.foundationmember.IFoundationMember"
+    />
+
   <include package="collective.monkeypatcher" />
 
   <monkey:patch
@@ -37,6 +45,13 @@
       class="Products.PlonePAS.tools.membership.MembershipTool"
       original="changeMemberPortrait"
       replacement=".portrait.changeMemberPortrait"
+      />
+
+  <monkey:patch
+      description="Patch to fix the converter when rendering ++widget++form.widgets.portrait/@@download in new p.a.users zc3.form portrait widgets"
+      class="z3c.form.converter.TextLinesConverter"
+      original="toWidgetValue"
+      replacement=".userschemaextender.toWidgetValueTextLinesFix"
       />
 
   <genericsetup:importStep

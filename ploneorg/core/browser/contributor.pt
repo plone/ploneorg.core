@@ -16,7 +16,17 @@
   <metal:content-core fill-slot="main"
                       tal:define="contributor view/contributor">
 
-    <div class="jumbotron">
+    <div class="contributor-image-headline">
+      <img alt="" tal:attributes="src view/get_member_large_image" style="width: 100%;"><!--imatge de base de 1200x400px-->
+      <blockquote class="put-left">
+        <p>I like knowing that every day
+          when I wake up I could change
+          someone's life for the better</p>
+      </blockquote>
+    <!-- pots fer bq a esquerra i dreta només has de canviar left per right-->
+    </div>
+
+<!--     <div class="jumbotron">
       <p class="pull-right"><a class="btn btn-primary btn-lg" role="button">Edit profile</a></p>
       <div class="row">
         <div class="col-md-4">
@@ -45,11 +55,12 @@
             </li>
           </ul>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4"
+             tal:define="badges view/get_user_badges">
           <img src="/++theme++ploneorg.theme/img/badges_fake.png" />
         </div>
       </div>
-    </div>
+    </div> -->
 
     <h5>Plone contributor</h5>
     <h1 tal:content="contributor/fullname" />
