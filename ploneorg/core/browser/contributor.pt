@@ -16,6 +16,7 @@
   <metal:content-core fill-slot="main"
                       tal:define="contributor view/contributor">
 
+  <div class="heroimage">
     <div class="contributor-image-headline">
       <img alt="" tal:attributes="src view/get_member_large_image" style="width: 100%;"><!--imatge de base de 1200x400px-->
       <blockquote class="put-left">
@@ -25,7 +26,7 @@
       </blockquote>
     <!-- pots fer bq a esquerra i dreta només has de canviar left per right-->
     </div>
-
+  </div>
 <!--     <div class="jumbotron">
       <p class="pull-right"><a class="btn btn-primary btn-lg" role="button">Edit profile</a></p>
       <div class="row">

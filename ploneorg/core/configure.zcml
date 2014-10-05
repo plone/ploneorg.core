@@ -15,7 +15,6 @@
 
   <include package="plone.app.dexterity" />
   <include package="plone.app.contenttypes" />
-  <include package="plone.formwidget.autocomplete" />
   <include package="jarn.jsi18n" />
   <include package="wildcard.foldercontents" />
   <include package="ploneorg.theme" />

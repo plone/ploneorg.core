@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from plone import api
 from plone.dexterity.utils import createContentInContainer
 
 from Products.CMFCore.utils import getToolByName
@@ -67,29 +67,7 @@ def setupVarious(context):
 
     add_catalog_indexes(portal, logger)
 
-    # Add the DX front-page object if needed
-    # pl = getToolByName(portal, 'portal_languages')
-    # from plone.dexterity.interfaces import IDexterityContent
-    # front_page = getattr(portal, 'front-page', False)
-    # if front_page and not IDexterityContent.providedBy(front_page):
-    #     portal.manage_delObjects('front-page')
-    #     frontpage = createContentInContainer(portal, 'Document',
-    #                                          title=u'front-page',
-    #                                          checkConstraints=False)
-    #     frontpage.exclude_from_nav = True
-    #     frontpage.language = pl.getDefaultLanguage()
-    #     frontpage.reindexObject()
-    #     logger.info('DX default content site setup successfully.')
-    # elif not front_page:
-    #     frontpage = createContentInContainer(portal, 'Document',
-    #                                          title=u'front-page',
-    #                                          checkConstraints=False)
-    #     frontpage.exclude_from_nav = True
-    #     frontpage.language = pl.getDefaultLanguage()
-    #     frontpage.reindexObject()
-    #     logger.info('DX default content site setup successfully.')
-
-    # # Set the default page to the homepage view
-    # portal.setDefaultPage('front-page')
+    pproperties = api.portal.get_tool('portal_properties').site_properties
+    pproperties.icon_visibility = 'disabled'
 
     transaction.commit()
