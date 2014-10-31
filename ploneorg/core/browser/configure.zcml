@@ -26,4 +26,11 @@
       permission="cmf.ManagePortal"
       />
 
+    <browser:page
+      name="view"
+      for="ploneorg.core.content.homepage.IHomePage"
+      class=".homepage.HomePage"
+      permission="zope2.View"
+      />
+
 </configure>

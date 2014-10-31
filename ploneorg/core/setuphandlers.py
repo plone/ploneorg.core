@@ -70,4 +70,13 @@ def setupVarious(context):
     pproperties = api.portal.get_tool('portal_properties').site_properties
     pproperties.icon_visibility = 'disabled'
 
+    # Create homepage if not present
+    homepage = getattr(portal, 'homepage', False)
+    if not homepage:
+        homepage = createContentInContainer(portal, 'homepage', title=u"homepage", checkConstraints=False)
+        homepage.exclude_from_nav = True
+        logger.info("Default homepage site setup successfully.")
+
+    portal.setDefaultPage('homepage')
+
     transaction.commit()
