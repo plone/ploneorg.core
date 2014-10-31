@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:javascript fill-slot="javascript_head_slot" tal:omit-tag="">
+        <script type="text/javascript"
+            tal:attributes="src string:${context/absolute_url}/++theme++ploneorg.theme/components/zaccordion/js/jquery.zaccordion.min.js">
+        </script>
+    </metal:javascript>
+</head>
+
+<body>
+
+  <metal:block fill-slot="top_slot"
+                   tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                               disable_column_two python:request.set('disable_plone.rightcolumn',1);
+                               dummy python:request.set('disable_border',1)" />
+
+  <metal:content-core fill-slot="main">
+
+<ul id="slider">
+  <li>
+    <img src="++theme++ploneorg.theme/img/Victor.1200x400.png" alt="" />
+    <div>
+      <strong>City View</strong>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor lacus sollicitudin ligula sagittis.</p>
+    </div>
+  </li>
+  <li>
+    <img src="++theme++ploneorg.theme/img/Victor.1200x400.png" alt="" />
+    <div>
+      <strong>Knock Knock!</strong>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in condimentum sem.</p>
+    </div>
+  </li>
+  <li>
+    <img src="++theme++ploneorg.theme/img/Victor.1200x400.png" alt="" />
+    <div>
+      <strong>Cigars on Sale</strong>
+      <p>Duis viverra velit orci. Sed vestibulum mi nec est imperdiet sed ullamcorper augue molestie.</p>
+    </div>
+  </li>
+  <li>
+    <img src="++theme++ploneorg.theme/img/Victor.1200x400.png" alt="" />
+    <div>
+      <strong>On the Balcony</strong>
+      <p>Phasellus sed lectus nisl, eget cursus eros. Suspendisse posuere orci eu lorem luctus.</p>
+    </div>
+  </li>
+</ul>
+
+
+  </metal:content-core>
+
+</body>
+</html>
