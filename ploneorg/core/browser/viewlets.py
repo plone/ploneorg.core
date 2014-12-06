@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from plone.app.layout.viewlets import ViewletBase
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from plone.app.layout.viewlets import ViewletBase
 
 
 class HeroImage(ViewletBase):

@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
+from plone.app.content.interfaces import INameFromTitle
+from ploneorg.core.content.foundationmember import IFoundationMember
 from zope.component import adapts
 from zope.interface import implements
-
-from plone.app.content.interfaces import INameFromTitle
-
-from ploneorg.core.content.foundationmember import IFoundationMember
 
 
 class INameFromFullName(INameFromTitle):

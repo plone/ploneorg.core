@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from five import grok
-from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from plone.app.dexterity import PloneMessageFactory as _PMF
 from plone.app.textfield import RichText
 from plone.directives import form
@@ -8,12 +7,11 @@ from plone.formwidget.multifile import MultiFileFieldWidget
 from plone.indexer import indexer
 from plone.namedfile.field import NamedFile
 from plone.supermodel import model
-
+from ploneorg.core import _
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope import schema
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
-
-from ploneorg.core import _
 
 
 product_categories = SimpleVocabulary(

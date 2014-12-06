@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
+from Products.CMFCore.utils import getToolByName
 from plone import api
 from plone.dexterity.utils import createContentInContainer
 
-from Products.CMFCore.utils import getToolByName
-
 import logging
 import transaction
+
 
 PROFILE_ID = 'profile-ploneorg.core:default'
 # Specify the indexes you want, with ('index_name', 'index_type')
