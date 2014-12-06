@@ -122,8 +122,8 @@ class JsonApiView(BrowserView):
         self.request.response.setHeader('Content-type', 'application/json')
 
         # set the status
-        lock = (status != 200)  # prevent later status modification if
-                                # we return an error
+        # prevent later status modification if we return an error
+        lock = (status != 200)
         self.request.response.setStatus(status, reason=reason, lock=lock)
 
         json_data = {'status': status,

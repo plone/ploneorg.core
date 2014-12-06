@@ -90,11 +90,17 @@ class EnhancedUserDataSchemaAdapter(AccountPanelSchemaAdapter):
             return None
         # Sometimes it got saved with this, no time to know why.
         if isinstance(value.data, Pdata):
-            return NamedBlobImageFile(value.data.data, contentType=value.content_type,
-                      filename=getattr(value, 'filename', None))
+            return NamedBlobImageFile(
+                value.data.data,
+                contentType=value.content_type,
+                filename=getattr(value, 'filename', None)
+            )
         else:
-            return NamedBlobImageFile(value.data, contentType=value.content_type,
-                                  filename=getattr(value, 'filename', None))
+            return NamedBlobImageFile(
+                value.data,
+                contentType=value.content_type,
+                filename=getattr(value, 'filename', None)
+            )
 
     def set_large_portrait(self, value):
         mt = api.portal.get_tool(name='portal_membership')
@@ -103,7 +109,8 @@ class EnhancedUserDataSchemaAdapter(AccountPanelSchemaAdapter):
         else:
             portrait_file = value.open()
             portrait_file.filename = value.filename
-            mt.changeMemberPortrait(portrait_file, str(self.context.getId() + '_large'))
+            mt.changeMemberPortrait(portrait_file,
+                                    str(self.context.getId() + '_large'))
 
     large_portrait = property(get_large_portrait, set_large_portrait)
 

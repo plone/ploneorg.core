@@ -73,7 +73,11 @@ def setupVarious(context):
     # Create homepage if not present
     homepage = getattr(portal, 'homepage', False)
     if not homepage:
-        homepage = createContentInContainer(portal, 'homepage', title=u"homepage", checkConstraints=False)
+        homepage = createContentInContainer(
+            portal,
+            'homepage',
+            title=u"homepage",
+            checkConstraints=False)
         homepage.exclude_from_nav = True
         logger.info("Default homepage site setup successfully.")
 

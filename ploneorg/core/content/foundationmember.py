@@ -16,11 +16,16 @@ import unicodedata
 def country_vocabulary_maker(l):
     vocab_list = []
     for row in l:
-        entry = SimpleTerm(value=unicodedata.normalize('NFKD', row).encode('ascii', errors='ignore').decode('ascii'), title=_(row))
+        value = unicodedata.normalize('NFKD', row)
+        value = value.encode('ascii', errors='ignore')
+        value = value.decode('ascii')
+        entry = SimpleTerm(value=value, title=_(row))
         vocab_list.append(entry)
     return SimpleVocabulary(vocab_list)
 
-countries = country_vocabulary_maker([country.name for country in pycountry.countries])
+countries = country_vocabulary_maker(
+    [country.name for country in pycountry.countries]
+)
 
 
 class IFoundationMember(form.Schema):
@@ -119,7 +124,13 @@ class FoundationMember(Item):
 
         out = ""
         out += """<foundationmember id="%s">""" % self.getId()
-        for f in [f for f in self.Schema().fields() if (f.schemata in schematas) and f.getName() != 'id']:
-            out += "<%s>%s</%s>" % (f.getName(), getattr(self, f.accessor)(), f.getName())
+        fields = [f for f in self.Schema().fields()
+                  if (f.schemata in schematas) and f.getName() != 'id']
+        for f in fields:
+            out += "<%s>%s</%s>" % (
+                f.getName(),
+                getattr(self, f.accessor)(),
+                f.getName()
+            )
         out += "</foundationmember>"
         return out

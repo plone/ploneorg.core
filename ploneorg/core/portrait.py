@@ -56,7 +56,12 @@ def convertSquareImage(image_file):
     format = image.format
     mimetype = 'image/%s' % format.lower()
 
-    result = ImageOps.fit(image, CONVERT_SIZE, method=PIL.Image.ANTIALIAS, centering=(0, 0))
+    result = ImageOps.fit(
+        image,
+        CONVERT_SIZE,
+        method=PIL.Image.ANTIALIAS,
+        centering=(0, 0)
+    )
     new_file = StringIO()
     result.save(new_file, format, quality=88)
     new_file.seek(0)
@@ -70,7 +75,12 @@ def adjust_large_image(large_image):
     format = image.format
     mimetype = 'image/%s' % format.lower()
 
-    result = ImageOps.fit(image, CONVERT_SIZE, method=PIL.Image.ANTIALIAS, centering=(0, 0))
+    result = ImageOps.fit(
+        image,
+        CONVERT_SIZE,
+        method=PIL.Image.ANTIALIAS,
+        centering=(0, 0)
+    )
     new_file = StringIO()
     result.save(new_file, format, quality=88)
     new_file.seek(0)
