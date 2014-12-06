@@ -122,15 +122,15 @@ class FoundationMember(Item):
     def toXML(self, schematas=['contact', 'survey']):
         """To XML for Paul ;) """
 
-        out = ""
-        out += """<foundationmember id="%s">""" % self.getId()
+        out = ''
+        out += '<foundationmember id="%s">' % self.getId()
         fields = [f for f in self.Schema().fields()
                   if (f.schemata in schematas) and f.getName() != 'id']
         for f in fields:
-            out += "<%s>%s</%s>" % (
+            out += '<%s>%s</%s>' % (
                 f.getName(),
                 getattr(self, f.accessor)(),
                 f.getName()
             )
-        out += "</foundationmember>"
+        out += '</foundationmember>'
         return out

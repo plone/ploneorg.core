@@ -120,7 +120,7 @@ class UserDataPanelExtender(extensible.FormExtender):
     def update(self):
         fields = Fields(
             IEnhancedUserDataSchema,
-            prefix="IEnhancedUserDataSchema")
+            prefix='IEnhancedUserDataSchema')
         self.add(fields)
 
 

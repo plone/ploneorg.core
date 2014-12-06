@@ -76,10 +76,10 @@ def setupVarious(context):
         homepage = createContentInContainer(
             portal,
             'homepage',
-            title=u"homepage",
+            title=u'homepage',
             checkConstraints=False)
         homepage.exclude_from_nav = True
-        logger.info("Default homepage site setup successfully.")
+        logger.info('Default homepage site setup successfully.')
 
     portal.setDefaultPage('homepage')
 
