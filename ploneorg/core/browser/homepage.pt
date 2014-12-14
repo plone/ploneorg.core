@@ -23,39 +23,158 @@
 
   <metal:content-core fill-slot="main">
 
-<ul id="slider">
-  <li>
-    <img src="++theme++ploneorg.theme/img/Victor.1200x400.png" alt="" />
-    <div>
-      <strong>City View</strong>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor lacus sollicitudin ligula sagittis.</p>
-    </div>
-  </li>
-  <li>
-    <img src="++theme++ploneorg.theme/img/Victor.1200x400.png" alt="" />
-    <div>
-      <strong>Knock Knock!</strong>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in condimentum sem.</p>
-    </div>
-  </li>
-  <li>
-    <img src="++theme++ploneorg.theme/img/Victor.1200x400.png" alt="" />
-    <div>
-      <strong>Cigars on Sale</strong>
-      <p>Duis viverra velit orci. Sed vestibulum mi nec est imperdiet sed ullamcorper augue molestie.</p>
-    </div>
-  </li>
-  <li>
-    <img src="++theme++ploneorg.theme/img/Victor.1200x400.png" alt="" />
-    <div>
-      <strong>On the Balcony</strong>
-      <p>Phasellus sed lectus nisl, eget cursus eros. Suspendisse posuere orci eu lorem luctus.</p>
-    </div>
-  </li>
-</ul>
+    <ul id="slider">
+      <li>
+        <img src="++theme++ploneorg.theme/img/examples/images/slide0.gif" width="800" height="400" alt="" />
+        <div class="slider-bg"></div>
+        <div class="slider-info">
+          <strong>Lorem ipsum</strong>
+          <p class="slider-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor lacus sollicitudin ligula sagittis a ultricies nulla ultricies. Ut odio nisi, posuere sed blandit at, bibendum non dolor.</p>
+        </div>
+      </li>
+      <li>
+        <img src="++theme++ploneorg.theme/img/examples/images/slide1.gif" width="800" height="400" alt="" />
+        <div class="slider-bg"></div>
+        <div class="slider-info">
+          <strong>Dolor Sit</strong>
+          <p class="slider-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in condimentum sem. Aenean faucibus dignissim auctor. In ut libero vitae augue laoreet iaculis at a tellus.</p>
+        </div>
+      </li>
+      <li>
+        <img src="++theme++ploneorg.theme/img/examples/images/slide2.gif" width="800" height="400" alt="" />
+        <div class="slider-bg"></div>
+        <div class="slider-info">
+          <strong>Donec Ultrices</strong>
+          <p class="slider-text">Duis viverra velit orci. Sed vestibulum mi nec est imperdiet sed ullamcorper augue molestie. Donec ultrices facilisis erat at porttitor.</p>
+        </div>
+      </li>
+      <li>
+        <img src="++theme++ploneorg.theme/img/examples/images/slide3.gif" width="800" height="400" alt="" />
+        <div class="slider-bg"></div>
+        <div class="slider-info">
+          <strong>Est Imper</strong>
+          <p class="slider-text">Phasellus sed lectus nisl, eget cursus eros. Suspendisse posuere orci eu lorem luctus et porta nunc posuere. Cras sed lectus vitae leo accumsan adipiscing.</p>
+        </div>
+      </li>
+    </ul>
 
+<div class="homepage">
+  <div class="row">
+    <div class="col-md-12">
+      <p class="large-paragraph"><strong>300</strong> solution providers in <strong>57</strong> countries developing <strong>40</strong> languages</p>
+      <div class="boxed boxed-stripes">Get Plone <strong>4.2.1</strong>New Collections, Diazo Theming, HTML5 Support <a class="btn" href="#">Download now</a></div>
+    </div>
+  </div>
 
-  </metal:content-core>
+  <div class="row">
+    <div class="col-md-12">
+      <h2>The Plone community</h2>
+      <p class="large-paragraph">The plone community protect and promote Plone. <strong>We can't do it without you!</strong></p>
+      <div class="row">
+        <div class="col-md-2">
+          <div class="boxed boxed-pill boxed-primary">
+            <h3>Today's downloads</h3>
+            <p class="large-paragraph"><strong>102</strong></p>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="boxed boxed-pill boxed-primary">
+            <h3>New tickets today</h3>
+            <p class="large-paragraph"><strong>82</strong></p>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="boxed boxed-pill boxed-primary">
+            <h3>Commits last week</h3>
+            <p class="large-paragraph"><strong>12</strong></p>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="boxed boxed-pill boxed-primary">
+            <h3>Release blockers</h3>
+            <p class="large-paragraph"><strong>7</strong></p>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="boxed boxed-pill boxed-primary">
+            <h3>Open pull requests</h3>
+            <p class="large-paragraph"><strong>86</strong></p>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="boxed boxed-pill boxed-primary">
+            <h3>Patches needing reviews</h3>
+            <p class="large-paragraph"><strong>3</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="boxed">
+            <h3>Plone Fundation</h3>
+            <a class="large-link link-arrow">Protect and <br>promote Plone</a>
+            <p>Our goal is to ensure that Plone remains the premier open soure content management system</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="boxed">
+            <h3>Documentation</h3>
+            <a class="large-link link-arrow">New to Plone? <br>Start here!</a>
+            <ul class="list-arrows">
+              <li>Installing plone</li>
+              <li>Installing plone</li>
+              <li>Installing plone</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="boxed boxed-primary">
+            <h3>Work with us</h3>
+            <a class="large-link link-arrow">Arnhem 2012</a>
+            <p>Our goal is to ensure that Plone remains the premier open soure content management system</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <h3>Latest News</h3>
+          <ul class="list-unstyled">
+            <li><a class="medium-link link-arrow">Plone Framework Team accepts new members</a><time>Nov 08, 2012</time></li>
+            <li><a class="medium-link link-arrow">Security vulnerability: 20121106 Multiple vectors</a><time>Nov 08, 2012</time></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h3>Upcoming Events</h3>
+          <ul class="list-unstyled">
+            <li tal:repeat="event view/get_events">
+              <a class="medium-link link-arrow"
+                 tal:attributes="href event/getURL"
+                 tal:content="event/Title">
+                63rd Plone Tune-up day
+              </a>
+              <time tal:content="python:context.toLocalizedTime(event.start)">Nov 08, 2012</time></li>
+            <!-- <li><a class="medium-link link-arrow">63rd Plone Tune-up day</a><time>Nov 08, 2012</time></li> -->
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h3>Work Teams</h3>
+          <a>Join and participate in the activities of our teams</a>
+          <h3>Mailing Lists</h3>
+          <a>Ask questions, discuss Plone, and get useful tips</a>
+          <h3>Chat Room</h3>
+          <a>You can chat with other Plone people and developers</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</metal:content-core>
 
 </body>
 </html>
