@@ -1,8 +1,9 @@
-from plone import api
+# -*- coding: utf-8 -*-
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from datetime import datetime
+from plone import api
 
 
 class HomePage(BrowserView):
@@ -17,7 +18,7 @@ class HomePage(BrowserView):
                                   end={'query': datetime.now(), 'range': 'min'},
                                   sort_on='start',
                                   review_state='published')
-        import ipdb;ipdb.set_trace()
+
         return result[:4]
 
     def get_news(self):

@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
-
-from cStringIO import StringIO
 from AccessControl import Unauthorized
 from OFS.Image import Image
-from PIL import Image as PILImage
-
-from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.utils import _checkPermission
-from Products.CMFCore.permissions import ManageUsers
-
 from PIL import ImageOps
+from Products.CMFCore.permissions import ManageUsers
+from Products.CMFCore.utils import _checkPermission
+from Products.CMFCore.utils import getToolByName
+from cStringIO import StringIO
 
 import PIL
 
@@ -60,7 +56,12 @@ def convertSquareImage(image_file):
     format = image.format
     mimetype = 'image/%s' % format.lower()
 
-    result = ImageOps.fit(image, CONVERT_SIZE, method=PIL.Image.ANTIALIAS, centering=(0, 0))
+    result = ImageOps.fit(
+        image,
+        CONVERT_SIZE,
+        method=PIL.Image.ANTIALIAS,
+        centering=(0, 0)
+    )
     new_file = StringIO()
     result.save(new_file, format, quality=88)
     new_file.seek(0)
@@ -74,7 +75,12 @@ def adjust_large_image(large_image):
     format = image.format
     mimetype = 'image/%s' % format.lower()
 
-    result = ImageOps.fit(image, CONVERT_SIZE, method=PIL.Image.ANTIALIAS, centering=(0, 0))
+    result = ImageOps.fit(
+        image,
+        CONVERT_SIZE,
+        method=PIL.Image.ANTIALIAS,
+        centering=(0, 0)
+    )
     new_file = StringIO()
     result.save(new_file, format, quality=88)
     new_file.seek(0)

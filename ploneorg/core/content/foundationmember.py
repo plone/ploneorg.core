@@ -1,22 +1,13 @@
 # -*- coding: utf-8 -*-
-from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from plone.app.dexterity import PloneMessageFactory as _PMF
 from plone.app.textfield import RichText
+from plone.dexterity.content import Item
 from plone.directives import form
-
-from plone.formwidget.multifile import MultiFileFieldWidget
-from plone.indexer import indexer
-from plone.namedfile.field import NamedFile
-from plone.supermodel import model
-
+from ploneorg.core import _
 from zope import schema
+from zope.interface import implements
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
-from zope.interface import implements
-
-from plone.dexterity.content import Item
-
-from ploneorg.core import _
 
 import pycountry
 import unicodedata
@@ -25,11 +16,16 @@ import unicodedata
 def country_vocabulary_maker(l):
     vocab_list = []
     for row in l:
-        entry = SimpleTerm(value=unicodedata.normalize('NFKD', row).encode('ascii', errors='ignore').decode('ascii'), title=_(row))
+        value = unicodedata.normalize('NFKD', row)
+        value = value.encode('ascii', errors='ignore')
+        value = value.decode('ascii')
+        entry = SimpleTerm(value=value, title=_(row))
         vocab_list.append(entry)
     return SimpleVocabulary(vocab_list)
 
-countries = country_vocabulary_maker([country.name for country in pycountry.countries])
+countries = country_vocabulary_maker(
+    [country.name for country in pycountry.countries]
+)
 
 
 class IFoundationMember(form.Schema):
@@ -126,9 +122,15 @@ class FoundationMember(Item):
     def toXML(self, schematas=['contact', 'survey']):
         """To XML for Paul ;) """
 
-        out = ""
-        out += """<foundationmember id="%s">""" % self.getId()
-        for f in [f for f in self.Schema().fields() if (f.schemata in schematas) and f.getName() != 'id']:
-            out += "<%s>%s</%s>" % (f.getName(), getattr(self, f.accessor)(), f.getName())
-        out += "</foundationmember>"
+        out = ''
+        out += '<foundationmember id="%s">' % self.getId()
+        fields = [f for f in self.Schema().fields()
+                  if (f.schemata in schematas) and f.getName() != 'id']
+        for f in fields:
+            out += '<%s>%s</%s>' % (
+                f.getName(),
+                getattr(self, f.accessor)(),
+                f.getName()
+            )
+        out += '</foundationmember>'
         return out

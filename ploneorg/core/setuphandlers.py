@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
+from Products.CMFCore.utils import getToolByName
 from plone import api
 from plone.dexterity.utils import createContentInContainer
 
-from Products.CMFCore.utils import getToolByName
-
 import logging
 import transaction
+
 
 PROFILE_ID = 'profile-ploneorg.core:default'
 # Specify the indexes you want, with ('index_name', 'index_type')
@@ -73,9 +73,13 @@ def setupVarious(context):
     # Create homepage if not present
     homepage = getattr(portal, 'homepage', False)
     if not homepage:
-        homepage = createContentInContainer(portal, 'homepage', title=u"homepage", checkConstraints=False)
+        homepage = createContentInContainer(
+            portal,
+            'homepage',
+            title=u'homepage',
+            checkConstraints=False)
         homepage.exclude_from_nav = True
-        logger.info("Default homepage site setup successfully.")
+        logger.info('Default homepage site setup successfully.')
 
     portal.setDefaultPage('homepage')
 

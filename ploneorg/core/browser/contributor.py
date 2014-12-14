@@ -1,22 +1,18 @@
 # -*- coding: utf-8 -*-
+from OFS.Image import Image
+from Products.CMFCore.utils import getToolByName
+from Products.Five import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from plone import api
+from plone.memoize.view import memoize_contextless
+from zope.interface import implements
+from zope.publisher.interfaces import IPublishTraverse
+from zope.publisher.interfaces import NotFound
 
 import datetime
 import json
 import re
 
-from OFS.Image import Image
-
-from plone import api
-from plone.memoize.view import memoize_contextless
-
-from Products.Five import BrowserView
-from Products.CMFCore.utils import getToolByName
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from zope.component.hooks import getSite
-from zope.interface import implements
-from zope.publisher.interfaces import IPublishTraverse
-from zope.publisher.interfaces import NotFound
 
 BADGE_TEAMS = ['foundation.members',
                'board.members',
@@ -126,8 +122,8 @@ class JsonApiView(BrowserView):
         self.request.response.setHeader('Content-type', 'application/json')
 
         # set the status
-        lock = (status != 200)  # prevent later status modification if
-                                # we return an error
+        # prevent later status modification if we return an error
+        lock = (status != 200)
         self.request.response.setStatus(status, reason=reason, lock=lock)
 
         json_data = {'status': status,

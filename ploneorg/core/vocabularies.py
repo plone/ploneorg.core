@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-
-import pycountry
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
+
+import pycountry
 
 
 countries = [SimpleTerm(value=country.alpha3,
