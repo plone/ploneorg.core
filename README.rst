@@ -1,7 +1,7 @@
 Introduction
 ============
 
-This is the core policy package of the 2014 reboot of plone.org site project.
+This is the core policy package of the 2015 reboot of plone.org site project.
 
 Other related packages:
 
