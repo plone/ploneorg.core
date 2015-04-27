@@ -22,7 +22,7 @@ Having this in mind, we will initially not make use of products or technologies
 that will eventually need a migration or make use of non-core features. For
 example, we decided not to use any of the existing page composition products out
 there to ensure that point. Once plone.org will sport a fully stable Plone 5
-there would be easy to add those kind of features easily.
+there would be easy to add those kind of features.
 
 So we will try to match the technologies used in plonetheme.barceloneta (mockup,
 p.a.widgets) in ploneorg.theme as far as possible and other approaches as well.
