@@ -7,8 +7,6 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="ploneorg.core">
 
-  <five:registerPackage package="." initialize=".initialize" />
-
   <include package=".browser" />
 
   <include file="permissions.zcml" />
