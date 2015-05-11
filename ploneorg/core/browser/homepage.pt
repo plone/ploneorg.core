@@ -11,6 +11,15 @@
         <script type="text/javascript"
             tal:attributes="src string:${context/absolute_url}/++theme++ploneorg.theme/components/zaccordion/js/jquery.zaccordion.min.js">
         </script>
+        <script>
+          $("#slider").zAccordion({
+            width: 1140,
+            speed: 600,
+            slideClass: "slider",
+            slideWidth: 800,
+            height: 400
+          });
+        </script>
     </metal:javascript>
 </head>
 
