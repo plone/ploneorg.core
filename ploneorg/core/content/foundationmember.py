@@ -4,28 +4,9 @@ from plone.app.textfield import RichText
 from plone.dexterity.content import Item
 from plone.directives import form
 from ploneorg.core import _
+from ploneorg.core.vocabularies import country_vocabulary
 from zope import schema
 from zope.interface import implements
-from zope.schema.vocabulary import SimpleTerm
-from zope.schema.vocabulary import SimpleVocabulary
-
-import pycountry
-import unicodedata
-
-
-def country_vocabulary_maker(l):
-    vocab_list = []
-    for row in l:
-        value = unicodedata.normalize('NFKD', row)
-        value = value.encode('ascii', errors='ignore')
-        value = value.decode('ascii')
-        entry = SimpleTerm(value=value, title=_(row))
-        vocab_list.append(entry)
-    return SimpleVocabulary(vocab_list)
-
-countries = country_vocabulary_maker(
-    [country.name for country in pycountry.countries]
-)
 
 
 class IFoundationMember(form.Schema):
@@ -79,7 +60,7 @@ class IFoundationMember(form.Schema):
 
     country = schema.Choice(
         title=_PMF(u'label_title', default=u'Last name'),
-        vocabulary=countries,
+        vocabulary=country_vocabulary,
         required=True
     )
 
