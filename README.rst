@@ -1,3 +1,6 @@
+.. image:: https://badge.waffle.io/plone/ploneorg.core.png?label=ready&title=Ready 
+ :target: https://waffle.io/plone/ploneorg.core
+ :alt: 'Stories in Ready'
 Introduction
 ============
 
