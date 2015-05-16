@@ -39,7 +39,7 @@ setup(name='ploneorg.core',
           'pycountry',
           'plone.formwidget.multifile',
           'Py-StackExchange',
-          'plone.app.vulnerabilities'
+          'plone.app.vulnerabilities',
       ],
       entry_points="""
       # -*- Entry points: -*-
