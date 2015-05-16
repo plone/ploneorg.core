@@ -4,6 +4,7 @@ from plone.app.testing import setRoles
 from plone.dexterity.interfaces import IDexterityFTI
 from ploneorg.core.content.foundationmember import IFoundationMember
 from ploneorg.core.content.homepage import IHomePage
+from ploneorg.core.content.sprint import ISprint
 from ploneorg.core.testing import PLONEORG_CORE_INTEGRATION_TESTING
 from zope.component import createObject
 from zope.component import queryUtility
@@ -60,3 +61,22 @@ class ContentTypesTest(unittest.TestCase):
         fti.global_allow = True
         self.portal.invokeFactory('homepage', 'home')
         self.assertTrue(IHomePage.providedBy(self.portal.home))
+
+    def test_schema_sprint(self):
+        fti = queryUtility(IDexterityFTI, name='sprint')
+        schema = fti.lookupSchema()
+        self.assertEqual(ISprint, schema)
+
+    def test_fti_sprint(self):
+        fti = queryUtility(IDexterityFTI, name='sprint')
+        self.assertTrue(fti)
+
+    def test_factory_sprint(self):
+        fti = queryUtility(IDexterityFTI, name='sprint')
+        factory = fti.factory
+        homepage = createObject(factory)
+        self.assertTrue(ISprint.providedBy(homepage))
+
+    def test_adding_sprint(self):
+        self.portal.invokeFactory('sprint', 'sprint')
+        self.assertTrue(ISprint.providedBy(self.portal.sprint))
