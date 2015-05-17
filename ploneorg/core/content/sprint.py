@@ -5,6 +5,8 @@ from plone.supermodel.directives import fieldset
 from ploneorg.core import _
 from zope import schema
 from zope.interface import Interface
+from zope.interface import Invalid
+from zope.interface import invariant
 
 
 class ISprint(Interface):
@@ -72,6 +74,15 @@ class ISprint(Interface):
         ),
         required=False,
     )
+
+    @invariant
+    def end_after_start(data):
+        if data.start_date and \
+                data.end_date and \
+                data.start_date > data.end_date:
+            raise Invalid(
+                _(u'The sprint dates are wrong, it ends before beginning!')
+            )
 
     fieldset(
         'travel',
