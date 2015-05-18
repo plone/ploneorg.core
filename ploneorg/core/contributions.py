@@ -99,14 +99,16 @@ def write_data(config, json_string):
     logger.info('Wrote data to %s' % filename)
 
 
-def fetch(config):
+def fetch(config, args):
     data = {'github': {},
             'stackoverflow': None}
 
     try:
-        data['github']['plone'] = fetch_github(config, 'plone')
-        data['github']['collective'] = fetch_github(config, 'collective')
-        data['stackoverflow'] = fetch_stackoverflow(config)
+        if set(args.fetch_specific) & set(['issues', 'contributions']):
+            data['github']['plone'] = fetch_github(config, 'plone', args)
+            data['github']['collective'] = fetch_github(config, 'collective')
+        if 'stackoverflow' in args.fetch_specific:
+            data['stackoverflow'] = fetch_stackoverflow(config)
     except IOError:
         logger.exception('An IOError happend, probably a read timeout')
         exit(1)
@@ -115,46 +117,69 @@ def fetch(config):
     return json_string
 
 
-def fetch_github(config, organization):
-    """fetches data about an organization from github
-    """
+def _fetch_github_contributor_info(repo, data):
+    try:
+        logger.debug('... get contributors for %s' % repo.name)
+        contributors = repo.get_contributors()
+        for contributor in contributors:
+            login = contributor.login
+            user = data['contributions'].setdefault(login, User(login))
+            user.add_contributions(repo.name, contributor.contributions)
+    except (UnknownObjectException, TypeError):
+        # empty repository
+        logger.debug('... repository "%s" seems to be empty' % repo.name)
+        data['unknown'].append(repo.name)
 
+
+def _fetch_github_issue_related_info(repo, data):
+    import ipdb; ipdb.set_trace()
+
+
+def fetch_github(
+    config,
+    organization,
+    newissue_delta=1,
+    commits_delta=7,
+):
+    """fetches data about an organization from github
+
+    - Contributions by user
+    - New issues since ``newticket_delta``
+    - Commits since ``commits_delta``
+    - Release blockers (total, needs a label to check for)
+    - Open pull requests (total)
+    - Patches needing reviews (total, no comments so far)
+    """
     logger.info('Fetch data from github for "%s"...' % organization)
     token = config.get('github', 'token')
-    g = Github(token)
+    gh = Github(token)
 
     logger.debug('... get organization data')
-    organization = g.get_organization(organization)
+    organization = gh.get_organization(organization)
 
-    start_limit = current_limit = g.rate_limiting[0]
+    start_limit = current_limit = gh.rate_limiting[0]
 
-    contributions = {}
     data = {
         'rate_limits': {
             'doc': 'Track github api request rate limits. Just in case',
             'start': start_limit,
             'expense': {},
             'end': None},
-        'contributions': contributions,
+        'contributions': {},
+        'new_issues': 0,
+        'commits': 0,
+        'blockers': 0,
+        'pull_requests': 0,
+        'needs_review': 0,
         'unknown': []}
 
     repos = check_debug_limit(organization.get_repos(), 'repos')
 
     for repo in repos:
-        try:
-            logger.debug('... get contributors for %s' % repo.name)
-            contributors = repo.get_contributors()
-            for contributor in contributors:
-                login = contributor.login
-                user = contributions.setdefault(login, User(login))
-                user.add_contributions(repo.name, contributor.contributions)
-        except (UnknownObjectException, TypeError):
-            # empty repository
-            logger.debug('... repository "%s" seems to be empty' % repo.name)
-            data['unknown'].append(repo.name)
-
+        _fetch_github_contributor_info(repo, data)
+        _fetch_github_issue_related_info(repo, data)
         # Track # of requests used for the repo
-        new_limit = g.rate_limiting[0]
+        new_limit = gh.rate_limiting[0]
         data['rate_limits']['expense'][repo.name] = current_limit - new_limit
         current_limit = new_limit
 
@@ -212,6 +237,8 @@ def _so_activity_for_user(stackoverflow, userid, member_id):
 
 
 def upload(config, json_string):
+    """Upload data to Plone
+    """
     url = config.get('general', 'plone_url') + '/@@update-contributor-data'
     logger.info('Upload data to "%s"...' % url)
     headers = {'Content-type': 'application/json',
@@ -266,6 +293,12 @@ def update_contributions():
         help='Only collect the data. Do not upload it to plone',
         action='store_true')
     argparser.add_argument(
+        '--fetch-specific',
+        nargs='+',
+        choices=['contributions', 'issues', 'stackoverflow'],
+        default=['contributions', 'issues', 'stackoverflow'],
+        help='Collect only given specific parts. Do not upload it to plone',)
+    argparser.add_argument(
         '--debug', action='store_true', help='Print debug output')
     argparser.add_argument(
         '--debug-limit', type=int,
@@ -278,8 +311,10 @@ def update_contributions():
     if args.debug_limit:
         global debug_limit
         debug_limit = args.debug_limit
-        logger.info('Limit the number of fetched object per task to %s' %
-                    debug_limit)
+        logger.info(
+            'Limit the number of fetched object per task to %s' %
+            debug_limit
+        )
 
     # upload the data from the given file
     if args.upload:
@@ -288,7 +323,7 @@ def update_contributions():
         exit(0)
 
     # fetch and upload or fetch-only
-    json_data = fetch(config)
+    json_data = fetch(config, args)
     if not args.fetch_only:
         upload(config, json_data)
 
