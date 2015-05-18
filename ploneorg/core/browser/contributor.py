@@ -5,7 +5,7 @@ from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone import api
 from plone.memoize.view import memoize_contextless
-from zope.interface import implements
+from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
 from zope.publisher.interfaces import NotFound
 
@@ -24,9 +24,9 @@ STACKOVERFLOW_RE = re.compile(
     r'http[s]*://stackoverflow\.com/users/([0-9]+).*')
 
 
+@implementer(IPublishTraverse)
 class contributorProfile(BrowserView):
     """ Return an user profile ../profile/{username} """
-    implements(IPublishTraverse)
 
     def __init__(self, context, request):
         super(contributorProfile, self).__init__(context, request)

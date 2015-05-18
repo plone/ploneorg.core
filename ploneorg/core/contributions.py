@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from ConfigParser import SafeConfigParser
 from datetime import datetime
 from github import Github
@@ -117,6 +116,8 @@ def fetch(config):
 
 
 def fetch_github(config, organization):
+    """fetches data about an organization from github
+    """
 
     logger.info('Fetch data from github for "%s"...' % organization)
     token = config.get('github', 'token')

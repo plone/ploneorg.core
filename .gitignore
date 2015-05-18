@@ -27,6 +27,7 @@ docs/_build
 contributor_data/
 include/
 lib/
+local/
 build
 cache
 .codeintel

@@ -126,14 +126,14 @@
         <div class="col-md-4">
           <div class="boxed">
             <h3>Plone Fundation</h3>
-            <a class="large-link link-arrow">Protect and <br>promote Plone</a>
+            <a class="large-link link-arrow">Protect and <br />promote Plone</a>
             <p>Our goal is to ensure that Plone remains the premier open soure content management system</p>
           </div>
         </div>
         <div class="col-md-4">
           <div class="boxed">
             <h3>Documentation</h3>
-            <a class="large-link link-arrow">New to Plone? <br>Start here!</a>
+            <a class="large-link link-arrow">New to Plone? <br />Start here!</a>
             <ul class="list-arrows">
               <li>Installing plone</li>
               <li>Installing plone</li>
