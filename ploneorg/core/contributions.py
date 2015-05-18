@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from ConfigParser import SafeConfigParser
-from datetime import datetime
 from github import Github
 from github import UnknownObjectException
 
 import argparse
+import datetime
 import json
 import logging
 import os
@@ -16,6 +16,11 @@ logging.basicConfig()
 logger = logging.getLogger('contributions')
 
 debug_limit = None
+
+_GITHUB_FETCHES_BASE = ['issues', 'contributions', 'commits']
+OTHER_FETCHES = ['stackoverflow']
+ALL_FETCHES = _GITHUB_FETCHES_BASE + OTHER_FETCHES
+GITHUB_FETCHES = set(_GITHUB_FETCHES_BASE)
 
 
 class User(object):
@@ -41,7 +46,7 @@ class User(object):
 class JSONEncoder(json.JSONEncoder):
 
     def default(self, obj):
-        if isinstance(obj, datetime):
+        if isinstance(obj, datetime.datetime):
             return obj.isoformat()
 
         if isinstance(obj, User):
@@ -91,7 +96,7 @@ def get_auth(config):
 def write_data(config, json_string):
     '''Write the data do a json file.'''
     data_dir = find_data_dir(config)
-    isodate = datetime.now().isoformat()
+    isodate = datetime.datetime.now().isoformat()
     filename = 'contributions.%s.json' % isodate
     path = os.path.join(data_dir, filename)
     with open(path, 'w') as f:
@@ -104,9 +109,14 @@ def fetch(config, args):
             'stackoverflow': None}
 
     try:
-        if set(args.fetch_specific) & set(['issues', 'contributions']):
+
+        if set(args.fetch_specific) & GITHUB_FETCHES:
             data['github']['plone'] = fetch_github(config, 'plone', args)
-            data['github']['collective'] = fetch_github(config, 'collective')
+            data['github']['collective'] = fetch_github(
+                config,
+                'collective',
+                args
+            )
         if 'stackoverflow' in args.fetch_specific:
             data['stackoverflow'] = fetch_stackoverflow(config)
     except IOError:
@@ -117,29 +127,48 @@ def fetch(config, args):
     return json_string
 
 
-def _fetch_github_contributor_info(repo, data):
-    try:
-        logger.debug('... get contributors for %s' % repo.name)
-        contributors = repo.get_contributors()
-        for contributor in contributors:
-            login = contributor.login
-            user = data['contributions'].setdefault(login, User(login))
-            user.add_contributions(repo.name, contributor.contributions)
-    except (UnknownObjectException, TypeError):
-        # empty repository
-        logger.debug('... repository "%s" seems to be empty' % repo.name)
-        data['unknown'].append(repo.name)
+def _fetch_github_contributor_info(gh, organization, data, current_limit):
+    repos = check_debug_limit(organization.get_repos(), 'repos')
+    for repo in repos:
+        try:
+            logger.debug('... get contributors for %s' % repo.name)
+            contributors = repo.get_contributors()
+            for contributor in contributors:
+                login = contributor.login
+                user = data['contributions'].setdefault(login, User(login))
+                user.add_contributions(repo.name, contributor.contributions)
+        except (UnknownObjectException, TypeError):
+            # empty repository
+            logger.debug('... repository "%s" seems to be empty' % repo.name)
+            data['unknown'].append(repo.name)
+
+        # Track # of requests used for the repo
+        new_limit = gh.rate_limiting[0]
+        data['rate_limits']['expense'][repo.name] = current_limit - new_limit
+        current_limit = new_limit
 
 
-def _fetch_github_issue_related_info(repo, data):
-    import ipdb; ipdb.set_trace()
+def _fetch_github_issue_info(gh, organization, data, current_limit, since):
+    issues = check_debug_limit(organization.get_issues(), 'issues')
+    for issue in issues:
+        if issue.pull_request:
+            data['pull_requests'] += 1
+            if issue.comments <= 1:
+                data['needs_review'] += 1
+        if issue.created_at > since:
+            data['new_issues'] += 1
+
+        # Track # of requests used for the repo
+        new_limit = gh.rate_limiting[0]
+        data['rate_limits']['expense'][issue.title] = current_limit - new_limit
+        current_limit = new_limit
+    logger.debug(issues)
 
 
 def fetch_github(
     config,
     organization,
-    newissue_delta=1,
-    commits_delta=7,
+    args,
 ):
     """fetches data about an organization from github
 
@@ -173,15 +202,13 @@ def fetch_github(
         'needs_review': 0,
         'unknown': []}
 
-    repos = check_debug_limit(organization.get_repos(), 'repos')
+    if 'contributions' in args.fetch_specific:
+        _fetch_github_contributor_info(gh, organization, data, current_limit)
 
-    for repo in repos:
-        _fetch_github_contributor_info(repo, data)
-        _fetch_github_issue_related_info(repo, data)
-        # Track # of requests used for the repo
-        new_limit = gh.rate_limiting[0]
-        data['rate_limits']['expense'][repo.name] = current_limit - new_limit
-        current_limit = new_limit
+    if 'issues' in args.fetch_specific:
+        ni_delta = int(config.get('github', 'newissues_delta'))
+        since = datetime.datetime.now() - datetime.timedelta(ni_delta)
+        _fetch_github_issue_info(gh, organization, data, current_limit, since)
 
     data['rate_limits']['end_limit'] = current_limit
     logger.info('Done.')
@@ -295,8 +322,8 @@ def update_contributions():
     argparser.add_argument(
         '--fetch-specific',
         nargs='+',
-        choices=['contributions', 'issues', 'stackoverflow'],
-        default=['contributions', 'issues', 'stackoverflow'],
+        choices=ALL_FETCHES,
+        default=ALL_FETCHES,
         help='Collect only given specific parts. Do not upload it to plone',)
     argparser.add_argument(
         '--debug', action='store_true', help='Print debug output')
