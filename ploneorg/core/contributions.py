@@ -148,7 +148,8 @@ def _fetch_github_contributor_info(gh, organization, data, current_limit):
         current_limit = new_limit
 
 
-def _fetch_github_issue_info(gh, organization, data, current_limit, since):
+def _fetch_github_issue_info(gh, organization, data, current_limit, since,
+                             blocker_label):
     issues = check_debug_limit(organization.get_issues(), 'issues')
     for issue in issues:
         if issue.pull_request:
@@ -157,6 +158,8 @@ def _fetch_github_issue_info(gh, organization, data, current_limit, since):
                 data['needs_review'] += 1
         if issue.created_at > since:
             data['new_issues'] += 1
+        # labels = issue.labels
+        # import ipdb; ipdb.set_trace()
 
         # Track # of requests used for the repo
         new_limit = gh.rate_limiting[0]
@@ -206,9 +209,17 @@ def fetch_github(
         _fetch_github_contributor_info(gh, organization, data, current_limit)
 
     if 'issues' in args.fetch_specific:
+        blocker_label = int(config.get('github', 'blocker_label'))
         ni_delta = int(config.get('github', 'newissues_delta'))
         since = datetime.datetime.now() - datetime.timedelta(ni_delta)
-        _fetch_github_issue_info(gh, organization, data, current_limit, since)
+        _fetch_github_issue_info(
+            gh,
+            organization,
+            data,
+            current_limit,
+            since,
+            blocker_label,
+        )
 
     data['rate_limits']['end_limit'] = current_limit
     logger.info('Done.')
