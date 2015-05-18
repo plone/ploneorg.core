@@ -148,7 +148,7 @@ def fetch_github(config, organization):
                 login = contributor.login
                 user = contributions.setdefault(login, User(login))
                 user.add_contributions(repo.name, contributor.contributions)
-        except UnknownObjectException:
+        except (UnknownObjectException, TypeError):
             # empty repository
             logger.debug('... repository "%s" seems to be empty' % repo.name)
             data['unknown'].append(repo.name)
