@@ -6,7 +6,7 @@ from plone.directives import form
 from ploneorg.core import _
 from ploneorg.core.vocabularies import country_vocabulary
 from zope import schema
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class IFoundationMember(form.Schema):
@@ -90,8 +90,8 @@ class IFoundationMember(form.Schema):
     )
 
 
+@implementer(IFoundationMember)
 class FoundationMember(Item):
-    implements(IFoundationMember)
 
     def get_full_name(self):
         names = [
