@@ -1,16 +1,11 @@
 # -*- coding: utf-8 -*-
 from Products.Five import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from datetime import datetime
 from plone import api
 
 
 class HomePage(BrowserView):
-    index = ViewPageTemplateFile('homepage.pt')
-
-    def __call__(self):
-        return self.index()
 
     def get_events(self):
         pc = api.portal.get_tool('portal_catalog')

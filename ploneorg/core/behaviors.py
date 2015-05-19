@@ -35,51 +35,83 @@ class NameFromFullName(object):
 
 
 @provider(IFormFieldProvider)
-class IGithubStatistics(model.Schema):
+class IPloneStatistics(model.Schema):
     """Behavior for github statistics data
     """
 
     model.fieldset(
         'github',
-        label=_(u"Github Statistics"),
+        label=_(u'Plone Statistics'),
         fields=[
-            'gh_new_issues',
-            'gh_commits',
-            'gh_blockers',
-            'gh_pr_last_week',
-            'gh_needs_review',
+            'stats_provider',
+            'stats_countries',
+            'stats_languages',
+            'stats_downloads',
+            'stats_new_issues',
+            'stats_commits',
+            'stats_blockers',
+            'stats_pr_last_week',
+            'stats_needs_review',
         ]
     )
 
-    gh_new_issues = schema.Int(
+    stats_provider = schema.Int(
+        title=_(u'provider', default=u'Solution Provider'),
+        description=u'Number of solution providers',
+        default=0,
+        required=False,
+    )
+
+    stats_countries = schema.Int(
+        title=_(u'countries', default=u'Countries'),
+        description=u'Number of countries',
+        default=0,
+        required=False,
+    )
+
+    stats_languages = schema.Int(
+        title=_(u'languages', default=u'Languages'),
+        description=u'Number of languages',
+        default=0,
+        required=False,
+    )
+
+    stats_downloads = schema.Int(
+        title=_(u'downloads', default=u'Downloads'),
+        description=u'Todays downloads',
+        default=0,
+        required=False,
+    )
+
+    stats_new_issues = schema.Int(
         title=_(u'new_issues', default=u'New issues'),
         description=u'New issues in last 24h',
         default=0,
         required=False,
     )
 
-    gh_commits = schema.Int(
+    stats_commits = schema.Int(
         title=_(u'commits', default=u'Commits'),
         description=u'Commits this calender week',
         default=0,
         required=False,
     )
 
-    gh_blockers = schema.Int(
+    stats_blockers = schema.Int(
         title=_(u'blockers', default=u'Blockers'),
         description=u'Issues blocking release',
         default=0,
         required=False,
     )
 
-    gh_pr_last_week = schema.Int(
+    stats_pr_last_week = schema.Int(
         title=_(u'pr_last_week', default=u'New PR last week'),
         description=u'PR created last week',
         default=0,
         required=False,
     )
 
-    gh_needs_review = schema.Int(
+    stats_needs_review = schema.Int(
         title=_(u'needs_review', default=u'Needs review'),
         description=u'PR needing review',
         default=0,

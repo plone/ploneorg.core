@@ -30,6 +30,7 @@
       name="view"
       for="ploneorg.core.content.homepage.IHomePage"
       class=".homepage.HomePage"
+      template="homepage.pt"
       permission="zope2.View"
       />
 

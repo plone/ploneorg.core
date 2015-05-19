@@ -36,10 +36,10 @@
   />
 
   <plone:behavior
-      description="Stores the Github Statistics Data"
+      description="Stores the Plone Statistics Data"
       for="ploneorg.core.content.homepage.IHomePage"
-      provides=".behaviors.IGithubStatistics"
-      title="Github Stats"
+      provides=".behaviors.IPloneStatistics"
+      title="Plone Stats"
   />
 
   <include package="collective.monkeypatcher" />

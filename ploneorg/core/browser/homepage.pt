@@ -70,7 +70,13 @@
 <div class="homepage">
   <div class="row">
     <div class="col-md-12">
-      <p class="large-paragraph"><strong>300</strong> solution providers in <strong>57</strong> countries developing <strong>40</strong> languages</p>
+      <p class="large-paragraph">
+            <strong tal:content="context/stats_provider">300</strong>
+            solution providers in
+            <strong  tal:content="context/stats_countries">57</strong>
+            countries developing
+            <strong tal:content="context/stats_languages">40</strong>
+            languages</p>
       <div class="boxed boxed-stripes">Get Plone <strong>4.2.1</strong>New Collections, Diazo Theming, HTML5 Support <a class="btn" href="#">Download now</a></div>
     </div>
   </div>
@@ -83,37 +89,37 @@
         <div class="col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>Today's downloads</h3>
-            <p class="large-paragraph"><strong>102</strong></p>
+            <p class="large-paragraph"><strong tal:content="context/stats_downloads">102</strong></p>
           </div>
         </div>
         <div class="col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>New tickets today</h3>
-            <p class="large-paragraph"><strong tal:content="context/gh_new_issues">82</strong></p>
+            <p class="large-paragraph"><strong tal:content="context/stats_new_issues">82</strong></p>
           </div>
         </div>
         <div class="col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>Commits last week</h3>
-            <p class="large-paragraph"><strong tal:content="context/gh_commits">12</strong></p>
+            <p class="large-paragraph"><strong tal:content="context/stats_commits">12</strong></p>
           </div>
         </div>
         <div class="col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>Release blockers</h3>
-            <p class="large-paragraph"><strong tal:content="context/gh_blockers">7</strong></p>
+            <p class="large-paragraph"><strong tal:content="context/stats_blockers">7</strong></p>
           </div>
         </div>
         <div class="col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>Open pull requests</h3>
-            <p class="large-paragraph"><strong tal:content="context/gh_pr_last_week">86</strong></p>
+            <p class="large-paragraph"><strong tal:content="context/stats_pr_last_week">86</strong></p>
           </div>
         </div>
         <div class="col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>Patches needing reviews</h3>
-            <p class="large-paragraph"><strong tal:content="context/gh_needs_review">3</strong></p>
+            <p class="large-paragraph"><strong tal:content="context/stats_needs_review">3</strong></p>
           </div>
         </div>
       </div>
