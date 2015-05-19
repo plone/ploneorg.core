@@ -20,7 +20,7 @@ debug_limit = None
 GITHUB_TIMEFORMAT = '%Y-%m-%dT%H:%M:%S%z'
 
 _GITHUB_FETCHES_BASE = ['issues', 'contributions', 'commits']
-OTHER_FETCHES = ['stackoverflow']
+OTHER_FETCHES = ['stackoverflow', 'pypi']
 ALL_FETCHES = _GITHUB_FETCHES_BASE + OTHER_FETCHES
 GITHUB_FETCHES = set(_GITHUB_FETCHES_BASE)
 
@@ -115,7 +115,8 @@ def write_data(config, base_dir, json_string):
 def fetch(config, args):
     data = {
         'github': {},
-        'stackoverflow': None
+        'stackoverflow': None,
+        'pypi': None,
     }
     try:
 
@@ -128,6 +129,8 @@ def fetch(config, args):
             )
         if 'stackoverflow' in args.fetch_specific:
             data['stackoverflow'] = fetch_stackoverflow(config)
+        if 'pypi' in args.fetch_specific:
+            data['pypi'] = fetch_pypi(config)
     except IOError:
         logger.exception('An IOError happend, probably a read timeout')
         exit(1)
@@ -345,6 +348,18 @@ def fetch_stackoverflow(config):
 
     logger.info('Done.')
     return stackoverflow_users
+
+
+def fetch_pypi(config):
+    logger.info('Fetch data from pypi...')
+    package = config.get('general', 'plone_package')
+    url = 'http://pypi.python.org/pypi/{0}/json'.format(package)
+    rq = requests.get(url)
+    if rq.status_code != 200:
+        logger.warn('Can not fetch url {0}'.format(url))
+        return
+    result = rq.json()
+    return result['info']['downloads']
 
 
 def _so_activity_for_user(stackoverflow, userid, member_id):
