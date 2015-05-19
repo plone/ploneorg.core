@@ -10,6 +10,7 @@ import logging
 import os
 import requests
 import stackexchange
+import time
 
 logging.basicConfig()
 logger = logging.getLogger('contributions')
@@ -137,60 +138,76 @@ def fetch(config, args):
 
 
 def _fetch_github_contributor_info(
-    gh,
-    organization,
+    repo,
     data,
-    current_limit,
 ):
-    repos = check_debug_limit(organization.get_repos(), 'repos')
-    for repo in repos:
-        try:
-            logger.debug('... get contributors for %s' % repo.name)
-            contributors = repo.get_contributors()
-            for contributor in contributors:
-                login = contributor.login
-                user = data['contributions'].setdefault(login, User(login))
-                user.add_contributions(repo.name, contributor.contributions)
-        except (UnknownObjectException, TypeError):
-            # empty repository
-            logger.debug('... repository "%s" seems to be empty' % repo.name)
-            data['unknown'].append(repo.name)
+    try:
+        logger.debug('... get contributors for %s' % repo.name)
+        contributors = repo.get_contributors()
+        for contributor in contributors:
+            login = contributor.login
+            user = data['contributions'].setdefault(login, User(login))
+            user.add_contributions(repo.name, contributor.contributions)
+    except (UnknownObjectException, TypeError):
+        # empty repository
+        logger.debug('... repository "%s" seems to be empty' % repo.name)
+        data['unknown'].append(repo.name)
 
-        # Track # of requests used for the repo
-        new_limit = gh.rate_limiting[0]
-        data['rate_limits']['expense'][repo.name] = current_limit - new_limit
-        current_limit = new_limit
+
+def _fetch_github_commits_info(
+    repo,
+    data,
+    delta_weeks,
+):
+    logger.debug('... fetch commits for repo {0} started'.format(repo.name))
+    participation = repo.get_stats_participation()
+    if participation is None:
+        # no stats available, give github some time to calculate and try agains
+        logger.debug('... no stats available, retry in 2s!')
+        time.sleep(2)
+        participation = repo.get_stats_participation()
+        if participation is None:
+            logger.debug('... give up, no stats available')
+            return
+    current_delta = delta_weeks
+    if len(participation.all) < delta_weeks:
+        current_delta = len(participation.all)
+    data['commits'] += sum(participation.all[-current_delta])
 
 
 def _fetch_github_issue_info(
     gh,
-    organization,
+    organization_name,
     data,
-    current_limit,
     since,
     blocker_labels,
 ):
-    logger.debug('... fetch issues for {0} started'.format(organization))
+    logger.debug('... fetch issues for {0} started'.format(organization_name))
 
     # todo: error handling if gh does not like us anymore
+
+    # FETCH ALL OPEN PRS
     prs_all_open = gh.search_issues(
         'user:{0:s} is:open is:pr'.format(
-            organization
+            organization_name
         )
     )
     data['pull_requests'] = prs_all_open.totalCount
     logger.debug('... {0} open PRs'.format(data['pull_requests']))
 
+    # FETCH NEEDS REVIEW
     prs_need_review = gh.search_issues(
         'user:{0:s} is:open is:pr comments:0'.format(
-            organization
+            organization_name
         )
     )
     data['needs_review'] = prs_need_review.totalCount
     logger.debug('... {0} need review'.format(data['needs_review']))
 
+    # FETCH NEW ISSUES
     issues_created_since = gh.search_issues(
-        'user:plone is:open is:issue created:>{0}'.format(
+        'user:{0:s} is:open is:issue created:>{1}'.format(
+            organization_name,
             since.strftime(GITHUB_TIMEFORMAT)
         )
     )
@@ -202,7 +219,9 @@ def _fetch_github_issue_info(
         )
     )
 
+    # FETCH BLOCKERS
     for blocker_label in blocker_labels:
+        # loop needed because afaik theres no OR search at Github
         issues_blockers = gh.search_issues(
             'user:plone is:open label:{0}'.format(
                 blocker_label
@@ -249,15 +268,8 @@ def fetch_github(
         'blockers': 0,
         'pull_requests': 0,
         'needs_review': 0,
-        'unknown': []}
-
-    if 'contributions' in args.fetch_specific:
-        _fetch_github_contributor_info(
-            gh,
-            organization,
-            data,
-            current_limit
-        )
+        'unknown': []
+    }
 
     if 'issues' in args.fetch_specific:
         blocker_labels = config.get('github', 'blocker_labels').split()
@@ -268,10 +280,32 @@ def fetch_github(
             gh,
             organization_name,
             data,
-            current_limit,
             since,
             blocker_labels,
         )
+
+    # REPOSITORY RELATED COLLECTING
+    repos = check_debug_limit(organization.get_repos(), 'repos')
+    ci_delta = int(config.get('github', 'commits_delta'))
+
+    for repo in repos:
+        if 'commits' in args.fetch_specific:
+            _fetch_github_commits_info(
+                repo,
+                data,
+                ci_delta,
+            )
+
+        if 'contributions' in args.fetch_specific:
+            _fetch_github_contributor_info(
+                repo,
+                data
+            )
+        # Track # of requests used for the repo
+        new_limit = gh.rate_limiting[0]
+        logger.debug('... rate limit at {0}'.format(new_limit))
+        data['rate_limits']['expense'][repo.name] = current_limit - new_limit
+        current_limit = new_limit
 
     data['rate_limits']['end_limit'] = current_limit
     logger.info('Done.')
