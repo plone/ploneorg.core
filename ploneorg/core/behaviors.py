@@ -50,7 +50,7 @@ class IPloneStatistics(model.Schema):
             'stats_new_issues',
             'stats_commits',
             'stats_blockers',
-            'stats_pr_last_week',
+            'stats_pull_requests',
             'stats_needs_review',
         ]
     )
@@ -104,9 +104,9 @@ class IPloneStatistics(model.Schema):
         required=False,
     )
 
-    stats_pr_last_week = schema.Int(
-        title=_(u'pr_last_week', default=u'New PR last week'),
-        description=u'PR created last week',
+    stats_pull_requests = schema.Int(
+        title=_(u'pull_requests', default=u'New PR last week'),
+        description=u'Pull requests created last week',
         default=0,
         required=False,
     )

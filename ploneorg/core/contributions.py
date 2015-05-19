@@ -175,7 +175,9 @@ def _fetch_github_commits_info(
     current_delta = delta_weeks
     if len(participation.all) < delta_weeks:
         current_delta = len(participation.all)
-    data['commits'] += sum(participation.all[-current_delta])
+    if data['commits'] < 0:
+        data['commits'] = 0
+    data['commits'] += sum(participation.all[-current_delta:])
 
 
 def _fetch_github_issue_info(
@@ -223,6 +225,7 @@ def _fetch_github_issue_info(
     )
 
     # FETCH BLOCKERS
+    data['blockers'] = 0
     for blocker_label in blocker_labels:
         # loop needed because afaik theres no OR search at Github
         issues_blockers = gh.search_issues(
@@ -266,11 +269,11 @@ def fetch_github(
             'expense': {},
             'end': None},
         'contributions': {},
-        'new_issues': 0,
-        'commits': 0,
-        'blockers': 0,
-        'pull_requests': 0,
-        'needs_review': 0,
+        'new_issues': -1,
+        'commits': -1,
+        'blockers': -1,
+        'pull_requests': -1,
+        'needs_review': -1,
         'unknown': []
     }
 
