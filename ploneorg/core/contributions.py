@@ -11,11 +11,12 @@ import os
 import requests
 import stackexchange
 
-
 logging.basicConfig()
 logger = logging.getLogger('contributions')
 
 debug_limit = None
+
+GITHUB_TIMEFORMAT = '%Y-%m-%dT%H:%M:%S%z'
 
 _GITHUB_FETCHES_BASE = ['issues', 'contributions', 'commits']
 OTHER_FETCHES = ['stackoverflow']
@@ -55,10 +56,10 @@ class JSONEncoder(json.JSONEncoder):
         return super(JSONEncoder, self).default(obj)
 
 
-def find_base():
+def find_base(config_filename):
     path = os.getcwd()
     while path:
-        if os.path.exists(os.path.join(path, 'contributions.cfg')):
+        if os.path.exists(os.path.join(path, config_filename)):
             break
         old_path = path
         path = os.path.dirname(path)
@@ -66,22 +67,27 @@ def find_base():
             path = None
             break
     if path is None:
-        raise IOError('contributions.cfg not found')
+        raise IOError('File {0} not found'.format(config_filename))
     return path
 
 
 def check_debug_limit(iterable, type_):
     if debug_limit:
         logger.info('Debug limit for %s: %s' % (type_, debug_limit))
-        return iterable[:debug_limit]
-    return iterable
+    # after slicing problems with github.PaginatedList turn into
+    # generator
+    for idx, item in enumerate(iterable):
+        if debug_limit and idx > debug_limit:
+            break
+        yield item
 
 
-def find_data_dir(config):
+def find_data_dir(config, base_dir):
     '''Calculate the data dir and make sure it exists'''
-    base = find_base()
-    data_dir = os.path.abspath(
-        os.path.join(base, config.get('general', 'datadir')))
+    data_dir = config.get('general', 'datadir')
+    if not data_dir.startswith(os.path.sep):
+        # path not absolute, make relative to dir of config file
+        data_dir = os.path.abspath(os.path.join(base_dir, data_dir))
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
     return data_dir
@@ -93,21 +99,23 @@ def get_auth(config):
     return requests.auth.HTTPBasicAuth(admin_user, admin_password)
 
 
-def write_data(config, json_string):
-    '''Write the data do a json file.'''
-    data_dir = find_data_dir(config)
+def write_data(config, base_dir, json_string):
+    """Write the data do a json file.
+    """
+    data_dir = find_data_dir(config, base_dir)
     isodate = datetime.datetime.now().isoformat()
-    filename = 'contributions.%s.json' % isodate
+    filename = 'contributions.{0:s}.json'.format(isodate)
     path = os.path.join(data_dir, filename)
     with open(path, 'w') as f:
         f.write(json_string)
-    logger.info('Wrote data to %s' % filename)
+    logger.info('Wrote data to {0}'.format(path))
 
 
 def fetch(config, args):
-    data = {'github': {},
-            'stackoverflow': None}
-
+    data = {
+        'github': {},
+        'stackoverflow': None
+    }
     try:
 
         if set(args.fetch_specific) & GITHUB_FETCHES:
@@ -123,11 +131,17 @@ def fetch(config, args):
         logger.exception('An IOError happend, probably a read timeout')
         exit(1)
     json_string = json.dumps(data, cls=JSONEncoder, sort_keys=True, indent=4)
-    write_data(config, json_string)
+    base_dir = find_base(args.config)
+    write_data(config, base_dir, json_string)
     return json_string
 
 
-def _fetch_github_contributor_info(gh, organization, data, current_limit):
+def _fetch_github_contributor_info(
+    gh,
+    organization,
+    data,
+    current_limit,
+):
     repos = check_debug_limit(organization.get_repos(), 'repos')
     for repo in repos:
         try:
@@ -148,29 +162,61 @@ def _fetch_github_contributor_info(gh, organization, data, current_limit):
         current_limit = new_limit
 
 
-def _fetch_github_issue_info(gh, organization, data, current_limit, since,
-                             blocker_label):
-    issues = check_debug_limit(organization.get_issues(), 'issues')
-    for issue in issues:
-        if issue.pull_request:
-            data['pull_requests'] += 1
-            if issue.comments <= 1:
-                data['needs_review'] += 1
-        if issue.created_at > since:
-            data['new_issues'] += 1
-        # labels = issue.labels
-        # import ipdb; ipdb.set_trace()
+def _fetch_github_issue_info(
+    gh,
+    organization,
+    data,
+    current_limit,
+    since,
+    blocker_labels,
+):
+    logger.debug('... fetch issues for {0} started'.format(organization))
 
-        # Track # of requests used for the repo
-        new_limit = gh.rate_limiting[0]
-        data['rate_limits']['expense'][issue.title] = current_limit - new_limit
-        current_limit = new_limit
-    logger.debug(issues)
+    # todo: error handling if gh does not like us anymore
+    prs_all_open = gh.search_issues(
+        'user:{0:s} is:open is:pr'.format(
+            organization
+        )
+    )
+    data['pull_requests'] = prs_all_open.totalCount
+    logger.debug('... {0} open PRs'.format(data['pull_requests']))
+
+    prs_need_review = gh.search_issues(
+        'user:{0:s} is:open is:pr comments:0'.format(
+            organization
+        )
+    )
+    data['needs_review'] = prs_need_review.totalCount
+    logger.debug('... {0} need review'.format(data['needs_review']))
+
+    issues_created_since = gh.search_issues(
+        'user:plone is:open is:issue created:>{0}'.format(
+            since.strftime(GITHUB_TIMEFORMAT)
+        )
+    )
+    data['new_issues'] = issues_created_since.totalCount
+    logger.debug(
+        '... {0} new issues since {1}'.format(
+            data['new_issues'],
+            since.isoformat(),
+        )
+    )
+
+    for blocker_label in blocker_labels:
+        issues_blockers = gh.search_issues(
+            'user:plone is:open label:{0}'.format(
+                blocker_label
+            )
+        )
+        data['blockers'] += issues_blockers.totalCount
+    logger.debug('... {0} blockers'.format(data['blockers']))
+
+    logger.debug('... issues finished')
 
 
 def fetch_github(
     config,
-    organization,
+    organization_name,
     args,
 ):
     """fetches data about an organization from github
@@ -182,12 +228,12 @@ def fetch_github(
     - Open pull requests (total)
     - Patches needing reviews (total, no comments so far)
     """
-    logger.info('Fetch data from github for "%s"...' % organization)
+    logger.info('Fetch data from github for "%s"...' % organization_name)
     token = config.get('github', 'token')
     gh = Github(token)
 
     logger.debug('... get organization data')
-    organization = gh.get_organization(organization)
+    organization = gh.get_organization(organization_name)
 
     start_limit = current_limit = gh.rate_limiting[0]
 
@@ -206,19 +252,25 @@ def fetch_github(
         'unknown': []}
 
     if 'contributions' in args.fetch_specific:
-        _fetch_github_contributor_info(gh, organization, data, current_limit)
+        _fetch_github_contributor_info(
+            gh,
+            organization,
+            data,
+            current_limit
+        )
 
     if 'issues' in args.fetch_specific:
-        blocker_label = int(config.get('github', 'blocker_label'))
+        blocker_labels = config.get('github', 'blocker_labels').split()
+        blocker_labels = [lbl.strip() for lbl in blocker_labels]
         ni_delta = int(config.get('github', 'newissues_delta'))
         since = datetime.datetime.now() - datetime.timedelta(ni_delta)
         _fetch_github_issue_info(
             gh,
-            organization,
+            organization_name,
             data,
             current_limit,
             since,
-            blocker_label,
+            blocker_labels,
         )
 
     data['rate_limits']['end_limit'] = current_limit
@@ -315,14 +367,15 @@ def is_valid_data_file(parser, path):
 
 
 def update_contributions():
-    # Parse the config and the command line arguments
-    base_dir = find_base()
-    config = SafeConfigParser()
-    config.read(os.path.join(base_dir, 'contributions.cfg'))
-
+    # Parse the command line arguments
     argparser = argparse.ArgumentParser()
     argparser.add_argument(
-        '--upload', metavar='path/to/contributions.xxx.json',
+        '--config',
+        default='contributions.cfg',
+        help='Configuration file',)
+    argparser.add_argument(
+        '--upload',
+        metavar='path/to/contributions.xxx.json',
         help=('Only upload the data from the specified file. (Even if '
               'you give further command line arguments!)'),
         type=lambda path: is_valid_data_file(argparser, path))
@@ -337,11 +390,20 @@ def update_contributions():
         default=ALL_FETCHES,
         help='Collect only given specific parts. Do not upload it to plone',)
     argparser.add_argument(
-        '--debug', action='store_true', help='Print debug output')
+        '--debug',
+        action='store_true',
+        help='Print debug output')
     argparser.add_argument(
-        '--debug-limit', type=int,
+        '--debug-limit',
+        type=int,
         help='Limit the number of users/obj fetched for debugging')
+
     args = argparser.parse_args()
+
+    # Parse the config file
+    base_dir = find_base(args.config)
+    config = SafeConfigParser()
+    config.read(os.path.join(base_dir, args.config))
 
     if args.debug:
         logger.setLevel(logging.DEBUG)
