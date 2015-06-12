@@ -60,3 +60,60 @@ amazing docs.plone.org.
 The PSC and products and addons information will be deprecated too in favor of a
 more lightweight and usable catalog, probably hosted on paragon.plone.org.
 
+Migration process
+=================
+
+The process works using a collective.transmogrifier pipeline on the import
+side. The code is in:
+
+https://github.com/collective/ploneorg.migration
+
+The export part is performed via collective.jsonify-like views but due to it's
+aimed to work on very old versions of Plone we didn't wanted to deal with all
+the upstream process we decided to forked it and customize it for plone.org. You
+can find it here:
+
+https://github.com/collective/ploneorg.jsonify
+
+Requirements
+------------
+
+We need a working buildout of the current Plone.org instance with a copy of
+the production site:
+
+https://github.com/plone/Products.PloneOrg
+
+and we should add the ploneorg.jsonify egg to the list of required eggs and
+mr.developer auto-checkout list. Then it will be ready for exporting content.
+
+On the import side, we need a new plone.org buildout working and a brand
+new instance. There are a view to trigger the migration:
+
+@@ploneorg_migration_main
+
+and the configuration of the pipeline lives in:
+/src/ploneorg.migration/src/ploneorg/migration/browser/ploneorg.cfg
+
+So basicaly you have to configure the [catalogsource] section accordingly by
+informing the location of the source instance and the sections to be migrated,
+for example:
+
+[catalogsource]
+blueprint = ploneorg.migration.catalogsource
+remote-url = http://localhost:8081
+remote-username = admin
+remote-password = admin
+remote-root = /plone.org
+catalog-path = /plone.org/portal_catalog
+catalog-query =
+    {'path': {'query': '/plone.org/foundation'}}
+remote-skip-paths =
+    /foundation/members
+
+The migration should go smoothly, for the content in
+
+/foundation
+/news
+/events
+
+that are already tested.
