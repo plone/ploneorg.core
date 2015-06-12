@@ -98,17 +98,17 @@ So basicaly you have to configure the [catalogsource] section accordingly by
 informing the location of the source instance and the sections to be migrated,
 for example:
 
-[catalogsource]
-blueprint = ploneorg.migration.catalogsource
-remote-url = http://localhost:8081
-remote-username = admin
-remote-password = admin
-remote-root = /plone.org
-catalog-path = /plone.org/portal_catalog
-catalog-query =
-    {'path': {'query': '/plone.org/foundation'}}
-remote-skip-paths =
-    /foundation/members
+    [catalogsource]
+    blueprint = ploneorg.migration.catalogsource
+    remote-url = http://localhost:8081
+    remote-username = admin
+    remote-password = admin
+    remote-root = /plone.org
+    catalog-path = /plone.org/portal_catalog
+    catalog-query =
+        {'path': {'query': '/plone.org/foundation'}}
+    remote-skip-paths =
+        /foundation/members
 
 The migration should go smoothly, for the content in
 
