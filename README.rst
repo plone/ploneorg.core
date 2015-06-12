@@ -96,7 +96,7 @@ and the configuration of the pipeline lives in:
 
 So basicaly you have to configure the [catalogsource] section accordingly by
 informing the location of the source instance and the sections to be migrated,
-for example:
+for example::
 
     [catalogsource]
     blueprint = ploneorg.migration.catalogsource
@@ -105,15 +105,13 @@ for example:
     remote-password = admin
     remote-root = /plone.org
     catalog-path = /plone.org/portal_catalog
-    catalog-query =
-        {'path': {'query': '/plone.org/foundation'}}
-    remote-skip-paths =
-        /foundation/members
+    catalog-query = {'path': {'query': '/plone.org/foundation'}}
+    remote-skip-paths = /foundation/members
 
-The migration should go smoothly, for the content in
+The migration should go smoothly, for the content in::
 
-/foundation
-/news
-/events
+    /foundation
+    /news
+    /events
 
 that are already tested.
