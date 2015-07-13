@@ -2,6 +2,7 @@
 from Products.CMFCore.utils import getToolByName
 from plone import api
 from plone.dexterity.utils import createContentInContainer
+from ploneorg.core import HOMEPAGE_ID
 
 import logging
 import transaction
@@ -71,16 +72,16 @@ def setupVarious(context):
     pproperties.icon_visibility = 'disabled'
 
     # Create homepage if not present
-    homepage = getattr(portal, 'homepage', False)
+    homepage = getattr(portal, HOMEPAGE_ID, False)
     if not homepage:
         homepage = createContentInContainer(
             portal,
-            'homepage',
-            title=u'homepage',
+            HOMEPAGE_ID,
+            title=unicode(HOMEPAGE_ID.capitalize()),
             checkConstraints=False)
         homepage.exclude_from_nav = True
         logger.info('Default homepage site setup successfully.')
 
-    portal.setDefaultPage('homepage')
+    portal.setDefaultPage(HOMEPAGE_ID)
 
     transaction.commit()

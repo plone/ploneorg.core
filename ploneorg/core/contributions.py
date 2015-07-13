@@ -1,21 +1,28 @@
 # -*- coding: utf-8 -*-
 from ConfigParser import SafeConfigParser
-from datetime import datetime
 from github import Github
 from github import UnknownObjectException
 
 import argparse
+import datetime
 import json
 import logging
 import os
 import requests
 import stackexchange
-
+import time
 
 logging.basicConfig()
 logger = logging.getLogger('contributions')
 
 debug_limit = None
+
+GITHUB_TIMEFORMAT = '%Y-%m-%dT%H:%M:%S%z'
+
+_GITHUB_FETCHES_BASE = ['issues', 'contributions', 'commits']
+OTHER_FETCHES = ['stackoverflow', 'pypi']
+ALL_FETCHES = _GITHUB_FETCHES_BASE + OTHER_FETCHES
+GITHUB_FETCHES = set(_GITHUB_FETCHES_BASE)
 
 
 class User(object):
@@ -41,7 +48,7 @@ class User(object):
 class JSONEncoder(json.JSONEncoder):
 
     def default(self, obj):
-        if isinstance(obj, datetime):
+        if isinstance(obj, datetime.datetime):
             return obj.isoformat()
 
         if isinstance(obj, User):
@@ -50,10 +57,10 @@ class JSONEncoder(json.JSONEncoder):
         return super(JSONEncoder, self).default(obj)
 
 
-def find_base():
+def find_base(config_filename):
     path = os.getcwd()
     while path:
-        if os.path.exists(os.path.join(path, 'contributions.cfg')):
+        if os.path.exists(os.path.join(path, config_filename)):
             break
         old_path = path
         path = os.path.dirname(path)
@@ -61,22 +68,27 @@ def find_base():
             path = None
             break
     if path is None:
-        raise IOError('contributions.cfg not found')
+        raise IOError('File {0} not found'.format(config_filename))
     return path
 
 
 def check_debug_limit(iterable, type_):
     if debug_limit:
         logger.info('Debug limit for %s: %s' % (type_, debug_limit))
-        return iterable[:debug_limit]
-    return iterable
+    # after slicing problems with github.PaginatedList turn into
+    # generator
+    for idx, item in enumerate(iterable):
+        if debug_limit and idx > debug_limit:
+            break
+        yield item
 
 
-def find_data_dir(config):
+def find_data_dir(config, base_dir):
     '''Calculate the data dir and make sure it exists'''
-    base = find_base()
-    data_dir = os.path.abspath(
-        os.path.join(base, config.get('general', 'datadir')))
+    data_dir = config.get('general', 'datadir')
+    if not data_dir.startswith(os.path.sep):
+        # path not absolute, make relative to dir of config file
+        data_dir = os.path.abspath(os.path.join(base_dir, data_dir))
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
     return data_dir
@@ -88,73 +100,216 @@ def get_auth(config):
     return requests.auth.HTTPBasicAuth(admin_user, admin_password)
 
 
-def write_data(config, json_string):
-    '''Write the data do a json file.'''
-    data_dir = find_data_dir(config)
-    isodate = datetime.now().isoformat()
-    filename = 'contributions.%s.json' % isodate
+def write_data(config, base_dir, json_string):
+    """Write the data do a json file.
+    """
+    data_dir = find_data_dir(config, base_dir)
+    isodate = datetime.datetime.now().isoformat()
+    filename = 'contributions.{0:s}.json'.format(isodate)
     path = os.path.join(data_dir, filename)
     with open(path, 'w') as f:
         f.write(json_string)
-    logger.info('Wrote data to %s' % filename)
+    logger.info('Wrote data to {0}'.format(path))
 
 
-def fetch(config):
-    data = {'github': {},
-            'stackoverflow': None}
-
+def fetch(config, args):
+    data = {
+        'github': {},
+        'stackoverflow': None,
+        'pypi': None,
+    }
     try:
-        data['github']['plone'] = fetch_github(config, 'plone')
-        data['github']['collective'] = fetch_github(config, 'collective')
-        data['stackoverflow'] = fetch_stackoverflow(config)
+
+        if set(args.fetch_specific) & GITHUB_FETCHES:
+            data['github']['plone'] = fetch_github(config, 'plone', args)
+            data['github']['collective'] = fetch_github(
+                config,
+                'collective',
+                args
+            )
+        if 'stackoverflow' in args.fetch_specific:
+            data['stackoverflow'] = fetch_stackoverflow(config)
+        if 'pypi' in args.fetch_specific:
+            data['pypi'] = fetch_pypi(config)
     except IOError:
         logger.exception('An IOError happend, probably a read timeout')
         exit(1)
     json_string = json.dumps(data, cls=JSONEncoder, sort_keys=True, indent=4)
-    write_data(config, json_string)
+    base_dir = find_base(args.config)
+    write_data(config, base_dir, json_string)
     return json_string
 
 
-def fetch_github(config, organization):
-    """fetches data about an organization from github
-    """
+def _fetch_github_contributor_info(
+    repo,
+    data,
+):
+    try:
+        logger.debug('... get contributors for %s' % repo.name)
+        contributors = repo.get_contributors()
+        for contributor in contributors:
+            login = contributor.login
+            user = data['contributions'].setdefault(login, User(login))
+            user.add_contributions(repo.name, contributor.contributions)
+    except (UnknownObjectException, TypeError):
+        # empty repository
+        logger.debug('... repository "%s" seems to be empty' % repo.name)
+        data['unknown'].append(repo.name)
 
-    logger.info('Fetch data from github for "%s"...' % organization)
+
+def _fetch_github_commits_info(
+    repo,
+    data,
+    delta_weeks,
+):
+    logger.debug('... fetch commits for repo {0} started'.format(repo.name))
+    participation = repo.get_stats_participation()
+    if participation is None:
+        # no stats available, give github some time to calculate and try agains
+        logger.debug('... no stats available, retry in 2s!')
+        time.sleep(2)
+        participation = repo.get_stats_participation()
+        if participation is None:
+            logger.debug('... give up, no stats available')
+            return
+    current_delta = delta_weeks
+    if len(participation.all) < delta_weeks:
+        current_delta = len(participation.all)
+    if data['commits'] < 0:
+        data['commits'] = 0
+    data['commits'] += sum(participation.all[-current_delta:])
+
+
+def _fetch_github_issue_info(
+    gh,
+    organization_name,
+    data,
+    since,
+    blocker_labels,
+):
+    logger.debug('... fetch issues for {0} started'.format(organization_name))
+
+    # todo: error handling if gh does not like us anymore
+
+    # FETCH ALL OPEN PRS
+    prs_all_open = gh.search_issues(
+        'user:{0:s} is:open is:pr'.format(
+            organization_name
+        )
+    )
+    data['pull_requests'] = prs_all_open.totalCount
+    logger.debug('... {0} open PRs'.format(data['pull_requests']))
+
+    # FETCH NEEDS REVIEW
+    prs_need_review = gh.search_issues(
+        'user:{0:s} is:open is:pr comments:0'.format(
+            organization_name
+        )
+    )
+    data['needs_review'] = prs_need_review.totalCount
+    logger.debug('... {0} need review'.format(data['needs_review']))
+
+    # FETCH NEW ISSUES
+    issues_created_since = gh.search_issues(
+        'user:{0:s} is:open is:issue created:>{1}'.format(
+            organization_name,
+            since.strftime(GITHUB_TIMEFORMAT)
+        )
+    )
+    data['new_issues'] = issues_created_since.totalCount
+    logger.debug(
+        '... {0} new issues since {1}'.format(
+            data['new_issues'],
+            since.isoformat(),
+        )
+    )
+
+    # FETCH BLOCKERS
+    data['blockers'] = 0
+    for blocker_label in blocker_labels:
+        # loop needed because afaik theres no OR search at Github
+        issues_blockers = gh.search_issues(
+            'user:plone is:open label:{0}'.format(
+                blocker_label
+            )
+        )
+        data['blockers'] += issues_blockers.totalCount
+    logger.debug('... {0} blockers'.format(data['blockers']))
+
+    logger.debug('... issues finished')
+
+
+def fetch_github(
+    config,
+    organization_name,
+    args,
+):
+    """fetches data about an organization from github
+
+    - Contributions by user
+    - New issues since ``newticket_delta``
+    - Commits since ``commits_delta``
+    - Release blockers (total, needs a label to check for)
+    - Open pull requests (total)
+    - Patches needing reviews (total, no comments so far)
+    """
+    logger.info('Fetch data from github for "%s"...' % organization_name)
     token = config.get('github', 'token')
-    g = Github(token)
+    gh = Github(token)
 
     logger.debug('... get organization data')
-    organization = g.get_organization(organization)
+    organization = gh.get_organization(organization_name)
 
-    start_limit = current_limit = g.rate_limiting[0]
+    start_limit = current_limit = gh.rate_limiting[0]
 
-    contributions = {}
     data = {
         'rate_limits': {
             'doc': 'Track github api request rate limits. Just in case',
             'start': start_limit,
             'expense': {},
             'end': None},
-        'contributions': contributions,
-        'unknown': []}
+        'contributions': {},
+        'new_issues': -1,
+        'commits': -1,
+        'blockers': -1,
+        'pull_requests': -1,
+        'needs_review': -1,
+        'unknown': []
+    }
 
+    if 'issues' in args.fetch_specific:
+        blocker_labels = config.get('github', 'blocker_labels').split()
+        blocker_labels = [lbl.strip() for lbl in blocker_labels]
+        ni_delta = int(config.get('github', 'newissues_delta'))
+        since = datetime.datetime.now() - datetime.timedelta(ni_delta)
+        _fetch_github_issue_info(
+            gh,
+            organization_name,
+            data,
+            since,
+            blocker_labels,
+        )
+
+    # REPOSITORY RELATED COLLECTING
     repos = check_debug_limit(organization.get_repos(), 'repos')
+    ci_delta = int(config.get('github', 'commits_delta'))
 
     for repo in repos:
-        try:
-            logger.debug('... get contributors for %s' % repo.name)
-            contributors = repo.get_contributors()
-            for contributor in contributors:
-                login = contributor.login
-                user = contributions.setdefault(login, User(login))
-                user.add_contributions(repo.name, contributor.contributions)
-        except (UnknownObjectException, TypeError):
-            # empty repository
-            logger.debug('... repository "%s" seems to be empty' % repo.name)
-            data['unknown'].append(repo.name)
+        if 'commits' in args.fetch_specific:
+            _fetch_github_commits_info(
+                repo,
+                data,
+                ci_delta,
+            )
 
+        if 'contributions' in args.fetch_specific:
+            _fetch_github_contributor_info(
+                repo,
+                data
+            )
         # Track # of requests used for the repo
-        new_limit = g.rate_limiting[0]
+        new_limit = gh.rate_limiting[0]
+        logger.debug('... rate limit at {0}'.format(new_limit))
         data['rate_limits']['expense'][repo.name] = current_limit - new_limit
         current_limit = new_limit
 
@@ -198,6 +353,18 @@ def fetch_stackoverflow(config):
     return stackoverflow_users
 
 
+def fetch_pypi(config):
+    logger.info('Fetch data from pypi...')
+    package = config.get('general', 'plone_package')
+    url = 'http://pypi.python.org/pypi/{0}/json'.format(package)
+    rq = requests.get(url)
+    if rq.status_code != 200:
+        logger.warn('Can not fetch url {0}'.format(url))
+        return
+    result = rq.json()
+    return result['info']['downloads']
+
+
 def _so_activity_for_user(stackoverflow, userid, member_id):
     # FIXME: something better is needed here.
     # FIXME: ask for top answerers last month also?
@@ -212,6 +379,8 @@ def _so_activity_for_user(stackoverflow, userid, member_id):
 
 
 def upload(config, json_string):
+    """Upload data to Plone
+    """
     url = config.get('general', 'plone_url') + '/@@update-contributor-data'
     logger.info('Upload data to "%s"...' % url)
     headers = {'Content-type': 'application/json',
@@ -250,14 +419,15 @@ def is_valid_data_file(parser, path):
 
 
 def update_contributions():
-    # Parse the config and the command line arguments
-    base_dir = find_base()
-    config = SafeConfigParser()
-    config.read(os.path.join(base_dir, 'contributions.cfg'))
-
+    # Parse the command line arguments
     argparser = argparse.ArgumentParser()
     argparser.add_argument(
-        '--upload', metavar='path/to/contributions.xxx.json',
+        '--config',
+        default='contributions.cfg',
+        help='Configuration file',)
+    argparser.add_argument(
+        '--upload',
+        metavar='path/to/contributions.xxx.json',
         help=('Only upload the data from the specified file. (Even if '
               'you give further command line arguments!)'),
         type=lambda path: is_valid_data_file(argparser, path))
@@ -266,11 +436,26 @@ def update_contributions():
         help='Only collect the data. Do not upload it to plone',
         action='store_true')
     argparser.add_argument(
-        '--debug', action='store_true', help='Print debug output')
+        '--fetch-specific',
+        nargs='+',
+        choices=ALL_FETCHES,
+        default=ALL_FETCHES,
+        help='Collect only given specific parts. Do not upload it to plone',)
     argparser.add_argument(
-        '--debug-limit', type=int,
+        '--debug',
+        action='store_true',
+        help='Print debug output')
+    argparser.add_argument(
+        '--debug-limit',
+        type=int,
         help='Limit the number of users/obj fetched for debugging')
+
     args = argparser.parse_args()
+
+    # Parse the config file
+    base_dir = find_base(args.config)
+    config = SafeConfigParser()
+    config.read(os.path.join(base_dir, args.config))
 
     if args.debug:
         logger.setLevel(logging.DEBUG)
@@ -278,8 +463,10 @@ def update_contributions():
     if args.debug_limit:
         global debug_limit
         debug_limit = args.debug_limit
-        logger.info('Limit the number of fetched object per task to %s' %
-                    debug_limit)
+        logger.info(
+            'Limit the number of fetched object per task to %s' %
+            debug_limit
+        )
 
     # upload the data from the given file
     if args.upload:
@@ -288,7 +475,7 @@ def update_contributions():
         exit(0)
 
     # fetch and upload or fetch-only
-    json_data = fetch(config)
+    json_data = fetch(config, args)
     if not args.fetch_only:
         upload(config, json_data)
 

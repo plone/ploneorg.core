@@ -2,3 +2,5 @@
 from zope.i18nmessageid import MessageFactory
 
 _ = MessageFactory('ploneorg')
+
+HOMEPAGE_ID = 'homepage'

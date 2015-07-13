@@ -1,16 +1,14 @@
 <configure
+    i18n_domain="ploneorg.core"
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
-    xmlns:i18n="http://namespaces.zope.org/i18n"
-    xmlns:plone="http://namespaces.plone.org/plone"
-    xmlns:monkey="http://namespaces.plone.org/monkey"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-    i18n_domain="ploneorg.core">
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:monkey="http://namespaces.plone.org/monkey"
+    xmlns:plone="http://namespaces.plone.org/plone">
 
   <include package=".browser" />
-
   <include file="permissions.zcml" />
-
   <include package="plone.app.dexterity" />
   <include package="plone.app.contenttypes" />
   <include package="jarn.jsi18n" />
@@ -18,51 +16,61 @@
   <include package="ploneorg.theme" />
 
   <adapter
-    factory=".userschemaextender.UserDataPanelExtender"
-    provides="plone.z3cform.fieldsets.interfaces.IFormExtender" />
+      factory=".userschemaextender.UserDataPanelExtender"
+      provides="plone.z3cform.fieldsets.interfaces.IFormExtender"
+  />
 
   <adapter
-    provides=".userschemaextender.IEnhancedUserDataSchema"
-    for="plone.app.layout.navigation.interfaces.INavigationRoot"
-    factory=".userschemaextender.EnhancedUserDataSchemaAdapter"
-    />
+      factory=".userschemaextender.EnhancedUserDataSchemaAdapter"
+      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      provides=".userschemaextender.IEnhancedUserDataSchema"
+  />
+
 
   <plone:behavior
-    title="Name from full name for foundation members"
-    description="Use the full name as name (basis for the id)"
-    provides=".behaviors.INameFromFullName"
-    factory=".behaviors.NameFromFullName"
-    for="ploneorg.core.content.foundationmember.IFoundationMember"
-    />
+      description="Use the full name as name (basis for the id)"
+      factory=".behaviors.NameFromFullName"
+      for="ploneorg.core.content.foundationmember.IFoundationMember"
+      provides=".behaviors.INameFromFullName"
+      title="Name from full name for foundation members"
+  />
+
+  <plone:behavior
+      description="Stores the Plone Statistics Data"
+      for="ploneorg.core.content.homepage.IHomePage"
+      provides=".behaviors.IPloneStatistics"
+      title="Plone Stats"
+  />
 
   <include package="collective.monkeypatcher" />
 
   <monkey:patch
-      description="Patch to change the fixed default resize dimensions of the member portrait"
       class="Products.PlonePAS.tools.membership.MembershipTool"
+      description="Patch to change the fixed default resize dimensions of the member portrait"
       original="changeMemberPortrait"
       replacement=".portrait.changeMemberPortrait"
-      />
+  />
 
   <monkey:patch
-      description="Patch to fix the converter when rendering ++widget++form.widgets.portrait/@@download in new p.a.users zc3.form portrait widgets"
       class="z3c.form.converter.TextLinesConverter"
+      description="Patch to fix the converter when rendering ++widget++form.widgets.portrait/@@download in new p.a.users zc3.form portrait widgets"
       original="toWidgetValue"
       replacement=".userschemaextender.toWidgetValueTextLinesFix"
-      />
+  />
 
   <genericsetup:importStep
-    name="ploneorg.core.setupstep"
-    title="ploneorg.core special import handlers"
-    description=""
-    handler="ploneorg.core.setuphandlers.setupVarious" />
+      description=""
+      handler="ploneorg.core.setuphandlers.setupVarious"
+      name="ploneorg.core.setupstep"
+      title="ploneorg.core special import handlers"
+  />
 
   <genericsetup:registerProfile
-      name="default"
-      title="ploneorg.core"
-      directory="profiles/default"
       description="Installs the ploneorg.core package"
+      directory="profiles/default"
+      name="default"
       provides="Products.GenericSetup.interfaces.EXTENSION"
-      />
+      title="ploneorg.core"
+  />
 
 </configure>

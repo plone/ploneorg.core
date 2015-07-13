@@ -5,6 +5,7 @@ from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone import api
 from plone.memoize.view import memoize_contextless
+from ploneorg.core import HOMEPAGE_ID
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
 from zope.publisher.interfaces import NotFound
@@ -140,17 +141,18 @@ class JsonApiView(BrowserView):
 
 class UpdateContributorData(JsonApiView):
 
-    def add_github_data(self, members, data, response_data):
-        github = 'github'
-        if github not in data:
-            response_data[github] = 'No data for github available.'
+    def add_github_member_related_data(self, members, data, response_data):
+        if 'github' not in data:
+            response_data['error'] = 'No data for github available.'
             return
+        ghdata = data['github']
         for org in ['plone', 'collective']:
             if org not in data:
-                response_data[github][org] = (
-                    'No data for org "%s" available.' % github)
+                response_data[org] = (
+                    'No github data for org "%s" available.' % org
+                )
                 continue
-            commits_by_user = data[github][org]['contributions']
+            commits_by_user = ghdata[org]['contributions']
             updated_members = {}  # map member to github username
             unknown_github_users = commits_by_user.keys()
             # create the key that should be defined in
@@ -169,31 +171,82 @@ class UpdateContributorData(JsonApiView):
                     updated_members[member_name] = github_username
                     unknown_github_users.remove(github_username)
 
-            response_data[github][org] = {
+            response_data[org] = {
                 'updatedMembers': updated_members,
                 'unknownGithubUsers': unknown_github_users}
 
     def add_stackoverflow_data(self, members, data, response_data):
         stackoverflow = 'stackoverflow'
         if stackoverflow not in data:
-            response_data[stackoverflow] = (
+            response_data['error'] = (
                 'No data for stackoverflow available.')
             return
         answers_by_member = data[stackoverflow]
         for member in members:
             member_name = member.getUserName()
             answers = answers_by_member.get(member_name, 0)
-            response_data[stackoverflow][member_name] = answers
+            response_data[member_name] = answers
             member.setMemberProperties(
                 mapping={'stackoverflow_answers': answers})
 
+    @property
+    def _homepage(self):
+        portal = api.portal.get()
+        return portal.get(HOMEPAGE_ID, None)
+
+    def add_github_overall_stats(self, data, response_data):
+        hp = self._homepage
+        if hp is None:
+            response_data['error'] = 'no homepage to store'
+            return
+        if 'github' not in data:
+            response_data['error'] = 'No data for github available.'
+        ghdata = data['github']['plone']
+        if ghdata['new_issues'] >= 0:
+            hp.stats_new_issues = ghdata['new_issues']
+        if ghdata['commits'] >= 0:
+            hp.stats_commits = ghdata['commits']
+        if ghdata['blockers'] >= 0:
+            hp.stats_blockers = ghdata['blockers']
+        if ghdata['pull_requests'] >= 0:
+            hp.stats_pull_requests = ghdata['pull_requests']
+        if ghdata['needs_review'] >= 0:
+            hp.stats_needs_review = ghdata['needs_review']
+        response_data['done'] = True
+
+    def add_pypi_stats(self, data, response_data):
+        hp = self._homepage
+        if hp is None:
+            response_data['error'] = 'no homepage to store'
+            return
+        if 'pypi' not in data:
+            response_data['errors'] = 'No data for pypi available.'
+        pypidata = data['pypi']
+        if pypidata['last_day'] >= 0:
+            hp.stats_downloads = pypidata['last_day']
+        response_data['done'] = True
+
     def __call__(self):
         data = self.read_json()
-        response_data = {'github': {},
-                         'stackoverflow': {}}
+        response_data = {
+            'github_members': {},
+            'github_stats': {},
+            'stackoverflow': {},
+            'pypi': {},
+        }
         members = api.user.get_users()
-        self.add_github_data(members, data, response_data)
-        self.add_stackoverflow_data(members, data, response_data)
+        self.add_github_member_related_data(
+            members,
+            data,
+            response_data['github_members']
+        )
+        self.add_stackoverflow_data(
+            members,
+            data,
+            response_data['stackoverflow']
+        )
+        self.add_github_overall_stats(data, response_data['github_stats'])
+        self.add_pypi_stats(data, response_data['pypi'])
         return self.json_success(response_data)
 
 

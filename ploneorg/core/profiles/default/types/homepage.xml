@@ -28,6 +28,7 @@
   <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
   <element value="plone.app.contenttypes.behaviors.richtext.IRichText"/>
   <element value="plone.app.versioningbehavior.behaviors.IVersionable" />
+  <element value="ploneorg.core.behaviors.IPloneStatistics" />
  </property>
  <property name="schema">ploneorg.core.content.homepage.IHomePage</property>
  <property name="model_source"></property>
