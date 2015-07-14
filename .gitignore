@@ -31,3 +31,4 @@ local/
 build
 cache
 .codeintel
+contributions.cfg
