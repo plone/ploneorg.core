@@ -113,7 +113,7 @@
         <div class="col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>Open pull requests</h3>
-            <p class="large-paragraph"><strong tal:content="context/stats_pr_last_week">86</strong></p>
+            <p class="large-paragraph"><strong tal:content="context/stats_pull_requests">86</strong></p>
           </div>
         </div>
         <div class="col-md-2">
