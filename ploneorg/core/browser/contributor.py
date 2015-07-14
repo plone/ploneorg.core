@@ -147,7 +147,7 @@ class UpdateContributorData(JsonApiView):
             return
         ghdata = data['github']
         for org in ['plone', 'collective']:
-            if org not in data:
+            if org not in ghdata:
                 response_data[org] = (
                     'No github data for org "%s" available.' % org
                 )
