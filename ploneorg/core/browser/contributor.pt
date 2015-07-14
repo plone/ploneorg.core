@@ -73,7 +73,7 @@
         <article>
           <h5>Summary</h5>
           <div class="fact-data fact-data-info">
-            <h1>85</h1>
+            <h1 tal:content="python:int(contributor['plone_commits'])+int(contributor['collective_commits'])">85</h1>
             <h2>Plone Contributions</h2>
           </div>
           <div class="fact-data fact-data-info">
