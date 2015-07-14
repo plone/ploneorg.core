@@ -1,0 +1,18 @@
+[general]
+plone_url = http://localhost:8080/ploneorg/
+datadir = ./var/contributor_data
+admin_user = admin
+admin_password = admin
+plone_package = Products.CMFPlone
+
+[github]
+token =
+
+# days
+newissues_delta = 1
+
+# weeks
+commits_delta = 1
+
+# space spearated list of labels to be considered as blockers
+blocker_labels = blocker critical
