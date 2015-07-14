@@ -15,7 +15,6 @@ class HomePage(BrowserView):
             sort_on='start',
             review_state='published'
         )
-
         return result[:4]
 
     def get_news(self):

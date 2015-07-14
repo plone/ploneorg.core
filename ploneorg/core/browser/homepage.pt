@@ -156,25 +156,34 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4"
+             tal:define="news view/get_news">
           <h3>Latest News</h3>
-          <ul class="list-unstyled">
-            <li><a class="medium-link link-arrow">Plone Framework Team accepts new members</a><time>Nov 08, 2012</time></li>
-            <li><a class="medium-link link-arrow">Security vulnerability: 20121106 Multiple vectors</a><time>Nov 08, 2012</time></li>
+          <ul class="list-unstyled"
+              tal:condition="news">
+            <li tal:repeat="news_item news">
+              <a class="medium-link link-arrow"
+                 tal:attributes="href news_item/getURL"
+                 tal:content="news_item/Title">
+                Plone Framework Team accepts new members
+              </a>
+              <time tal:content="python:context.toLocalizedTime(news_item.Date)">Jul 14, 2015</time></li>
           </ul>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4"
+             tal:define="events view/get_events">
           <h3>Upcoming Events</h3>
-          <ul class="list-unstyled">
-            <li tal:repeat="event view/get_events">
+          <ul class="list-unstyled"
+              tal:condition="events">
+            <li tal:repeat="event events">
               <a class="medium-link link-arrow"
                  tal:attributes="href event/getURL"
                  tal:content="event/Title">
                 63rd Plone Tune-up day
               </a>
               <time tal:content="python:context.toLocalizedTime(event.start)">Nov 08, 2012</time></li>
-            <!-- <li><a class="medium-link link-arrow">63rd Plone Tune-up day</a><time>Nov 08, 2012</time></li> -->
           </ul>
+          <p tal:condition="not:events">No upcoming events</p>
         </div>
         <div class="col-md-4">
           <h3>Work Teams</h3>

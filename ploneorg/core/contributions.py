@@ -456,7 +456,7 @@ def update_contributions():
     base_dir = find_base(args.config)
     config = SafeConfigParser()
     config.read(os.path.join(base_dir, args.config))
-
+    import ipdb;ipdb.set_trace()
     if args.debug:
         logger.setLevel(logging.DEBUG)
 
