@@ -16,76 +16,89 @@ class IFoundationMember(form.Schema):
     form.fieldset(
         'Contact',
         label=u'Contact',
-        fields=['fname', 'lname']
+        fields=['fname', 'lname', 'email', 'address', 'city', 'state',
+                'postalCode', 'country', 'organization']
+    )
+
+    form.fieldset(
+        'Merit',
+        label=u'Merit',
+        fields=['merit']
+    )
+
+    form.fieldset(
+        'Survey',
+        label=u'Survey',
+        fields=['orgsize', 'ploneuse']
     )
 
     fname = schema.TextLine(
-        title=_PMF(u'label_title', default=u'First name'),
+        title=_PMF(u'First name', default=u'First name'),
         required=True
     )
 
     lname = schema.TextLine(
-        title=_PMF(u'label_title', default=u'Last name'),
+        title=_PMF(u'Last name', default=u'Last name'),
         required=True
     )
 
     form.read_permission(email='ploneorg.core.foundationmember.view')
     email = schema.TextLine(
-        title=_PMF(u'label_title', default=u'Last name'),
+        title=_PMF(u'Email', default=u'Email'),
         required=True
     )
 
     form.read_permission(address='ploneorg.core.foundationmember.view')
     address = schema.TextLine(
-        title=_PMF(u'label_title', default=u'Last name'),
+        title=_PMF(u'Address', default=u'Address'),
         required=True
     )
 
     city = schema.TextLine(
-        title=_PMF(u'label_title', default=u'Last name'),
+        title=_PMF(u'City', default=u'City'),
         required=True
     )
 
     form.read_permission(state='ploneorg.core.foundationmember.view')
     state = schema.TextLine(
-        title=_PMF(u'label_title', default=u'Last name'),
+        title=_PMF(u'State', default=u'State'),
         required=True
     )
 
     form.read_permission(postalCode='ploneorg.core.foundationmember.view')
     postalCode = schema.TextLine(
-        title=_PMF(u'label_title', default=u'Last name'),
+        title=_PMF(u'Postal code', default=u'Postal code'),
         required=True
     )
 
     country = schema.Choice(
-        title=_PMF(u'label_title', default=u'Last name'),
+        title=_PMF(u'Country', default=u'Country'),
         vocabulary=country_vocabulary,
         required=True
     )
 
     organization = schema.TextLine(
-        title=_PMF(u'label_title', default=u'Last name'),
+        title=_PMF(u'Organization', default=u'Organization'),
         required=True
     )
 
     form.read_permission(merit='ploneorg.core.foundationmember.view')
     merit = RichText(
-        title=_(u'Short summary'),
-        description=_(u'The summary of the features of the product.'),
+        title=_(u'Contributions'),
+        description=_(u'Describe your contributions to the project.'),
         required=True
     )
 
     form.read_permission(orgsize='ploneorg.core.foundationmember.view')
     orgsize = schema.Int(
-        title=_(u'Short summary'),
-        description=_(u'The summary of the features of the product.'),
+        title=_(u'Organization size'),
+        description=_(u'Number of people in your organization. It\'s fine to estimate.'),
     )
 
     form.read_permission(ploneuse='ploneorg.core.foundationmember.view')
     ploneuse = RichText(
-        title=_(u'Short summary'),
-        description=_(u'The summary of the features of the product.'),
+        title=_(u'Plone use'),
+        description=_(u'How is Plone used by your organization?'),
         required=True
     )
 

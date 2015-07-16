@@ -26,15 +26,6 @@
       provides=".userschemaextender.IEnhancedUserDataSchema"
   />
 
-
-  <plone:behavior
-      description="Use the full name as name (basis for the id)"
-      factory=".behaviors.NameFromFullName"
-      for="ploneorg.core.content.foundationmember.IFoundationMember"
-      provides=".behaviors.INameFromFullName"
-      title="Name from full name for foundation members"
-  />
-
   <plone:behavior
       description="Stores the Plone Statistics Data"
       for="ploneorg.core.content.homepage.IHomePage"

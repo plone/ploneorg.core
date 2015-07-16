@@ -1,37 +1,9 @@
 # -*- coding: utf-8 -*-
-from plone.app.content.interfaces import INameFromTitle
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.supermodel import model
 from ploneorg.core import _
-from ploneorg.core.content.foundationmember import IFoundationMember
 from zope import schema
-from zope.component import adapter
-from zope.interface import implementer
 from zope.interface import provider
-
-
-class INameFromFullName(INameFromTitle):
-    """Get the name from the full name.
-
-    This is really just a marker interface, automatically set by
-    enabling the corresponding behavior.
-
-    Note that when you want this behavior, then you MUST NOT enable
-    the IDublinCore, IBasic, INameFromTitle or INameFromFile behaviors
-    on your type.
-    """
-
-
-@implementer(INameFromFullName)
-@adapter(IFoundationMember)
-class NameFromFullName(object):
-
-    def __init__(self, context):
-        self.context = context
-
-    @property
-    def title(self):
-        return self.context.get_full_name()
 
 
 @provider(IFormFieldProvider)

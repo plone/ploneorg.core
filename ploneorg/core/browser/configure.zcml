@@ -34,4 +34,12 @@
       permission="zope2.View"
       />
 
+    <browser:page
+      name="view"
+      for="ploneorg.core.content.foundationmember.IFoundationMember"
+      class=".foundationmember.FoundationMemberView"
+      template="foundationmember.pt"
+      permission="zope2.View"
+      />
+
 </configure>
