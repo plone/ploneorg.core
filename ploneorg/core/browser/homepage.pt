@@ -76,47 +76,68 @@
             <strong  tal:content="context/stats_countries">57</strong>
             countries developing
             <strong tal:content="context/stats_languages">40</strong>
-            languages</p>
-      <div class="boxed boxed-stripes">Get Plone <strong>4.2.1</strong>New Collections, Diazo Theming, HTML5 Support <a class="btn" href="#">Download now</a></div>
+            languages
+      </p>
+      <div class="boxed boxed-stripes">
+        <div class="getplone">Get Plone</div>
+        <div class="currentversion"><strong>5.0</strong></div>
+        <div class="features hidden-xs">
+          <ul>
+            <li>New responsive theming story</li>
+            <li>Default dexterity content types</li>
+            <li>and lots more exciting features!</li>
+          </ul>
+        </div>
+        <div class="info hidden-xs">
+          <ul>
+            <li><a href="">New features</a></li>
+            <li><a href="">Roadmap</a></li>
+            <li><a href="">Older releases</a></li>
+          </ul>
+        </div>
+        <div class="download">
+          <a class="btn btn-warning btn-lg" href="/download">Download now</a>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      <h2>The Plone community</h2>
+      <h2 class="the_community">The Plone community</h2>
       <p class="large-paragraph">The plone community protects and promotes Plone. <strong>We can't do it without you!</strong></p>
       <div class="row">
-        <div class="col-md-2">
+        <div class="col-xs-6 col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>Today's downloads</h3>
             <p class="large-paragraph"><strong tal:content="context/stats_downloads">102</strong></p>
           </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-xs-6 col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>New tickets today</h3>
             <p class="large-paragraph"><strong tal:content="context/stats_new_issues">82</strong></p>
           </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-xs-6 col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>Commits last week</h3>
             <p class="large-paragraph"><strong tal:content="context/stats_commits">12</strong></p>
           </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-xs-6 col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>Release blockers</h3>
             <p class="large-paragraph"><strong tal:content="context/stats_blockers">7</strong></p>
           </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-xs-6 col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>Open pull requests</h3>
             <p class="large-paragraph"><strong tal:content="context/stats_pull_requests">86</strong></p>
           </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-xs-6 col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>Patches needing reviews</h3>
             <p class="large-paragraph"><strong tal:content="context/stats_needs_review">3</strong></p>
@@ -132,26 +153,34 @@
         <div class="col-md-4">
           <div class="boxed">
             <h3>Plone Fundation</h3>
-            <a class="large-link link-arrow">Protect and <br />promote Plone</a>
+            <a class="large-link link-arrow" href="/foundation">
+               Protecting and <br />promoting Plone</a>
             <p>Our goal is to ensure that Plone remains the premier open soure content management system</p>
           </div>
         </div>
         <div class="col-md-4">
           <div class="boxed">
             <h3>Documentation</h3>
-            <a class="large-link link-arrow">New to Plone? <br />Start here!</a>
+            <a class="large-link link-arrow" href="http://docs.plone.org">
+              New to Plone? <br />Start here!</a>
             <ul class="list-arrows">
-              <li>Installing plone</li>
-              <li>Installing plone</li>
-              <li>Installing plone</li>
+              <li><a href="http://docs.plone.org/quickstart/index.html">QuickStart</li>
+              <li><a href="http://docs.plone.org/develop/index.html">Developing for Plone</li>
+              <li><a href="http://docs.plone.org/manage/index.html">Installing Plone</li>
+              <li><a href="http://docs.plone.org/adapt-and-extend/index.html">Adapt and extend Plone</li>
+              <li><a href="http://docs.plone.org/working-with-content/index.html">Working with Content</li>
             </ul>
           </div>
         </div>
         <div class="col-md-4">
           <div class="boxed boxed-primary">
-            <h3>Work with us</h3>
-            <a class="large-link link-arrow">Arnhem 2012</a>
-            <p>Our goal is to ensure that Plone remains the premier open soure content management system</p>
+            <h3>Plone Conference</h3>
+            <a class="large-link link-arrow" href="https://2015.ploneconf.org/">
+              Bucharest 2015
+            </a>
+            <p>Come to the major Plone event of the year and experience in first hand the Plone community</p>
+            <br />
+            <p>Join us on 12-18 October 2015</p>
           </div>
         </div>
       </div>
