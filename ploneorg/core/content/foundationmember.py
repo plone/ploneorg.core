@@ -92,7 +92,8 @@ class IFoundationMember(form.Schema):
     form.read_permission(orgsize='ploneorg.core.foundationmember.view')
     orgsize = schema.Int(
         title=_(u'Organization size'),
-        description=_(u'Number of people in your organization. It\'s fine to estimate.'),
+        description=_(
+            u'Number of people in your organization. It\'s fine to estimate.'),
     )
 
     form.read_permission(ploneuse='ploneorg.core.foundationmember.view')

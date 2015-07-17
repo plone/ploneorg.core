@@ -5,8 +5,8 @@ from Products.PlonePAS.tools.membership import default_portrait
 from plone import api
 from plone.app.users.browser.account import AccountPanelSchemaAdapter
 from plone.app.users.browser.userdatapanel import UserDataPanel
-from plone.autoform import directives as form
-from plone.namedfile.field import NamedBlobImage
+# from plone.autoform import directives as form
+# from plone.namedfile.field import NamedBlobImage
 from plone.namedfile.file import NamedBlobImage as NamedBlobImageFile
 from plone.supermodel import model
 from plone.z3cform.fieldsets import extensible
@@ -27,7 +27,7 @@ class IEnhancedUserDataSchema(model.Schema):
     #     title=_(u'label_large_portrait', default=u'Large Portrait'),
     #     description=_(
     #         u'help_large_portrait',
-    #         default=u'You can set a large hero portrait image for display on '
+    #         default=u'You can set a large hero portrait image for display on'
     #                 u'your community profile. Recommended '
     #                 u'image size is X pixels wide by Y pixels tall.'
     #     ),

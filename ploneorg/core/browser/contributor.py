@@ -107,8 +107,8 @@ class contributorProfile(BrowserView):
     def has_social(self):
         user = self.get_member_data()
         return user.getProperty('home_page', False) or \
-               user.getProperty('twitter_username', False) or \
-               user.getProperty('github', False)
+            user.getProperty('twitter_username', False) or \
+            user.getProperty('github', False)
 
 
 class JSONEncoder(json.JSONEncoder):
