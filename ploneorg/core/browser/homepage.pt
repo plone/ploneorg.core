@@ -198,6 +198,9 @@
               </a>
               <time tal:content="python:context.toLocalizedTime(news_item.Date)">Jul 14, 2015</time></li>
           </ul>
+          <p class="pull-right">
+            <a tal:attributes="href string:${context/absolute_url}/news">Show all news</a>
+          </p>
         </div>
         <div class="col-md-4"
              tal:define="events view/get_events">
@@ -213,14 +216,17 @@
               <time tal:content="python:context.toLocalizedTime(event.start)">Nov 08, 2012</time></li>
           </ul>
           <p tal:condition="not:events">No upcoming events</p>
+          <p class="pull-right">
+            <a tal:attributes="href string:${context/absolute_url}/events">Show all events</a>
+          </p>
         </div>
         <div class="col-md-4">
-          <h3>Work Teams</h3>
-          <a>Join and participate in the activities of our teams</a>
+          <h3>Work with the Plone Teams</h3>
+          <a tal:attributes="href string:${context/absolute_url}/teams">Join and participate in the activities of our teams</a>
           <h3>Mailing Lists</h3>
-          <a>Ask questions, discuss Plone, and get useful tips</a>
+          <a tal:attributes="href string:${context/absolute_url}/support/ask">Ask questions, discuss Plone, and get useful tips</a>
           <h3>Chat Room</h3>
-          <a>You can chat with other Plone people and developers</a>
+          <a tal:attributes="href string:${context/absolute_url}/support/chat">You can chat with other Plone people and developers</a>
         </div>
       </div>
     </div>
