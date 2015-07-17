@@ -22,16 +22,17 @@ from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 class IEnhancedUserDataSchema(model.Schema):
 
-    large_portrait = NamedBlobImage(
-        title=_(u'label_large_portrait', default=u'Large Portrait'),
-        description=_(
-            u'help_large_portrait',
-            default=u'You can set a large hero portrait image for display on '
-                    u'your community profile. Recommended '
-                    u'image size is X pixels wide by Y pixels tall.'
-        ),
-        required=False)
-    form.widget(large_portrait='plone.app.users.schema.PortraitFieldWidget')
+    # Put this into fridge by now
+    # large_portrait = NamedBlobImage(
+    #     title=_(u'label_large_portrait', default=u'Large Portrait'),
+    #     description=_(
+    #         u'help_large_portrait',
+    #         default=u'You can set a large hero portrait image for display on '
+    #                 u'your community profile. Recommended '
+    #                 u'image size is X pixels wide by Y pixels tall.'
+    #     ),
+    #     required=False)
+    # form.widget(large_portrait='plone.app.users.schema.PortraitFieldWidget')
 
     country = schema.Choice(
         title=_(u'Country'),
@@ -73,6 +74,13 @@ class IEnhancedUserDataSchema(model.Schema):
         required=False,
         missing_value=[],
         default=[])
+
+    contributing_since = schema.TextLine(
+        title=_(u'Contributing since'),
+        description=_(
+            u'State the year since you are contributing to Plone.'),
+        required=False,
+        )
 
 
 class EnhancedUserDataSchemaAdapter(AccountPanelSchemaAdapter):

@@ -7,4 +7,5 @@
   <property name="stackoverflow_answers" type="int">0</property>
   <property name="additional_emails" type="lines"></property>
   <property name="twitter_username" type="string"></property>
+  <property name="contributing_since" type="string"></property>
 </object>

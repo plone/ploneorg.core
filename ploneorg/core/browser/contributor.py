@@ -54,6 +54,7 @@ class contributorProfile(BrowserView):
 
         return {'fullname': member_data.getProperty('fullname'),
                 'name': member_data.getUserName(),
+                'bio': member_data.getProperty('description'),
                 'github': member_data.getProperty('github_username'),
                 'plone_commits': member_data.getProperty('plone_commits'),
                 'collective_commits': member_data.getProperty(
@@ -63,7 +64,9 @@ class contributorProfile(BrowserView):
                 'stackoverflow_username': member_data.getProperty(
                     'stackoverflow_username'),
                 'stackoverflow_answers': member_data.getProperty(
-                    'stackoverflow_answers')}
+                    'stackoverflow_answers'),
+                'contributing_since': member_data.getProperty(
+                    'contributing_since')}
 
     @memoize_contextless
     def portal(self):
@@ -100,6 +103,12 @@ class contributorProfile(BrowserView):
     def get_user_badges(self):
         # import ipdb;ipdb.set_trace()
         pass
+
+    def has_social(self):
+        user = self.get_member_data()
+        return user.getProperty('home_page', False) or \
+               user.getProperty('twitter_username', False) or \
+               user.getProperty('github', False)
 
 
 class JSONEncoder(json.JSONEncoder):

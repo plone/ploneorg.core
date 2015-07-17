@@ -16,89 +16,106 @@
   <metal:content-core fill-slot="main"
                       tal:define="contributor view/contributor">
 
-  <div class="heroimage">
-    <div class="contributor-image-headline">
-      <img alt="" tal:attributes="src view/get_member_large_image" style="width: 100%;"><!--imatge de base de 1200x400px-->
-      <blockquote class="put-left">
-        <p>I like knowing that every day
-          when I wake up I could change
-          someone's life for the better</p>
-      </blockquote>
-    <!-- pots fer bq a esquerra i dreta només has de canviar left per right-->
-    </div>
-  </div>
-<!--     <div class="jumbotron">
-      <p class="pull-right"><a class="btn btn-primary btn-lg" role="button">Edit profile</a></p>
+
+    <div class="jumbotron">
       <div class="row">
         <div class="col-md-4">
           <img class="img-circle"
                tal:attributes="src view/get_member_image" />
         </div>
-        <div class="col-md-4">
-          <ul class="member-info">
-            <li tal:condition="contributor/twitter">
-              <i class="fa fa-twitter"></i>
-              <a tal:attributes="href string:https://twitter.com/${contributor/twitter}">
-                <span tal:replace="contributor/twitter">Twitter username</span>
-              </a>
-            </li>
-            <li tal:condition="contributor/home_page">
-              <i class="fa fa-globe"></i>
-              <a tal:attributes="href string:${contributor/home_page}">
-                <span tal:replace="contributor/home_page">Homepage</span>
-              </a>
-            </li>
-            <li tal:condition="contributor/github">
-              <i class="fa fa-github"></i>
-              <a tal:attributes="href string:https://github.com/${contributor/github}">
-                <span tal:replace="contributor/github">GitHub</span>
-              </a>
-            </li>
-          </ul>
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col-md-12">
+              <h1 tal:content="contributor/fullname" />
+              <h4 tal:condition="contributor/contributing_since">Contributing since: <span tal:content="contributor/contributing_since">2006</span></h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"
+                 tal:define="badges view/get_user_badges">
+              <img src="/++theme++ploneorg.theme/img/badges_fake.png" />
+            </div>
+          </div>
         </div>
-        <div class="col-md-4"
-             tal:define="badges view/get_user_badges">
-          <img src="/++theme++ploneorg.theme/img/badges_fake.png" />
-        </div>
+        <p class="pull-right">
+          <a class="btn btn-primary btn-lg" role="button"
+             tal:attributes="href string:${view/portal_url}/@@personal-information">Edit profile</a>
+        </p>
       </div>
-    </div> -->
+    </div>
 
-    <h5>Plone contributor</h5>
-    <h1 tal:content="contributor/fullname" />
-    <h4>Contributing since: 2006</h4>
+    <div class="row">
+      <div class="col-md-8">
+        <section class="well clearfix">
+            <h2>Activity</h2>
+            <h4>First commit: 09.26.2011</h4>
+            <article>
+              <h5>Summary</h5>
+              <div class="fact-data fact-data-info">
+                <h1 tal:content="python:int(contributor['plone_commits'])+int(contributor['collective_commits'])">85</h1>
+                <h2>Plone Contributions</h2>
+              </div>
+              <div class="fact-data fact-data-info">
+                <h1 tal:content="contributor/plone_commits">35</h1>
+                <h2>Plone Commits</h2>
+              </div>
+              <div class="fact-data fact-data-info">
+                <h1 tal:content="contributor/collective_commits">450</h1>
+                <h2>Collective Commits</h2>
+              </div>
+              <div class="fact-data fact-data-info">
+                <h1>20</h1>
+                <h2>Mails on list</h2>
+              </div>
+              <div class="fact-data fact-data-info">
+                <h1 tal:content="contributor/stackoverflow_answers">9</h1>
+                <h2>StackOverflow</h2>
+              </div>
+              <div class="fact-data fact-data-info">
+                <h1>20</h1>
+                <h2>Tweets about Plone</h2>
+              </div>
+            </article>
+        </section>
+      </div>
+      <div class="col-md-4">
+        <section class="contributor-info">
+          <div condition="contributor/bio">
+            <h3>Personal description</h3>
+            <p class=""
+               tal:content="contributor/bio">
+               Biography
+            </p>
+          </div>
 
-    <section class="well clearfix">
-        <h2>Activity</h2>
-        <h4>First commit: 09.26.2011</h4>
-        <article>
-          <h5>Summary</h5>
-          <div class="fact-data fact-data-info">
-            <h1 tal:content="python:int(contributor['plone_commits'])+int(contributor['collective_commits'])">85</h1>
-            <h2>Plone Contributions</h2>
+          <div condition="view/has_social">
+            <h3>More about him</h3>
+              <ul class="member-info">
+                <li tal:condition="contributor/home_page">
+                  <i class="fontello-icon-globe"></i>
+                  <a tal:attributes="href string:${contributor/home_page}">
+                    <span tal:replace="contributor/home_page">Homepage</span>
+                  </a>
+                </li>
+                <li tal:condition="contributor/twitter">
+                  <i class="fontello-icon-twitter"></i>
+                  <a tal:attributes="href string:https://twitter.com/${contributor/twitter}">
+                    <span tal:replace="contributor/twitter">Twitter username</span>
+                  </a>
+                </li>
+                <li tal:condition="contributor/github">
+                  <i class="fontello-icon-github-circled"></i>
+                  <a tal:attributes="href string:https://github.com/${contributor/github}">
+                    <span tal:replace="contributor/github">GitHub</span>
+                  </a>
+                </li>
+              </ul>
           </div>
-          <div class="fact-data fact-data-info">
-            <h1 tal:content="contributor/plone_commits">35</h1>
-            <h2>Plone Commits</h2>
-          </div>
-          <div class="fact-data fact-data-info">
-            <h1 tal:content="contributor/collective_commits">450</h1>
-            <h2>Collective Commits</h2>
-          </div>
-          <div class="fact-data fact-data-info">
-            <h1>20</h1>
-            <h2>Mails on list</h2>
-          </div>
-          <div class="fact-data fact-data-info">
-            <h1 tal:content="contributor/stackoverflow_answers">9</h1>
-            <h2>StackOverflow</h2>
-          </div>
-          <div class="fact-data fact-data-info">
-            <h1>20</h1>
-            <h2>Tweets about Plone</h2>
-          </div>
-        </article>
-    </section>
+          <!-- Here we have to put languages/events attended and other -->
 
+        </section>
+      </div>
+    </div>
   </metal:content-core>
 
 </body>
