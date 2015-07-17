@@ -110,37 +110,55 @@
         <div class="col-xs-6 col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>Today's downloads</h3>
-            <p class="large-paragraph"><strong tal:content="context/stats_downloads">102</strong></p>
+            <p class="large-paragraph">
+              <strong tal:content="context/stats_downloads">102</strong>
+              <i class="fontello-icon-download"></i>
+            </p>
           </div>
         </div>
         <div class="col-xs-6 col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>New tickets today</h3>
-            <p class="large-paragraph"><strong tal:content="context/stats_new_issues">82</strong></p>
+            <p class="large-paragraph">
+              <strong tal:content="context/stats_new_issues">82</strong>
+              <i class="fontello-icon-ticket"></i>
+            </p>
           </div>
         </div>
         <div class="col-xs-6 col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>Commits last week</h3>
-            <p class="large-paragraph"><strong tal:content="context/stats_commits">12</strong></p>
+            <p class="large-paragraph">
+              <strong tal:content="context/stats_commits">12</strong>
+              <i class="fontello-icon-back-in-time"></i>
+            </p>
           </div>
         </div>
         <div class="col-xs-6 col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>Release blockers</h3>
-            <p class="large-paragraph"><strong tal:content="context/stats_blockers">7</strong></p>
+            <p class="large-paragraph">
+              <strong tal:content="context/stats_blockers">7</strong>
+              <i class="fontello-icon-block"></i>
+            </p>
           </div>
         </div>
         <div class="col-xs-6 col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>Open pull requests</h3>
-            <p class="large-paragraph"><strong tal:content="context/stats_pull_requests">86</strong></p>
+            <p class="large-paragraph">
+              <strong tal:content="context/stats_pull_requests">86</strong>
+              <i class="fontello-icon-addon"></i>
+            </p>
           </div>
         </div>
         <div class="col-xs-6 col-md-2">
           <div class="boxed boxed-pill boxed-primary">
             <h3>Patches needing reviews</h3>
-            <p class="large-paragraph"><strong tal:content="context/stats_needs_review">3</strong></p>
+            <p class="large-paragraph">
+              <strong tal:content="context/stats_needs_review">3</strong>
+              <i class="fontello-icon-eye"></i>
+            </p>
           </div>
         </div>
       </div>
