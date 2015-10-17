@@ -69,7 +69,9 @@ class contributorProfile(BrowserView):
                 'stackoverflow_answers': member_data.getProperty(
                     'stackoverflow_answers'),
                 'contributing_since': member_data.getProperty(
-                    'contributing_since')}
+                    'contributing_since'),
+                'tweets': member_data.getProperty('tweets'),
+                }
 
     @memoize_contextless
     def portal(self):
@@ -206,6 +208,25 @@ class UpdateContributorData(JsonApiView):
             member.setMemberProperties(
                 mapping={'stackoverflow_answers': answers})
 
+    def add_twitter_data(self, members, data, response_data):
+        twitter = 'twitter'
+        if twitter not in data:
+            response_data['error'] = (
+                'No data for twitter available.')
+            return
+        tweets = data[twitter]
+
+        if tweets is None:
+            response_data['done'] = 'No data'
+            return
+
+        for member in members:
+            member_name = member.getUserName()
+            member_tweets = tweets.get(member_name, 0)
+            response_data[member_name] = member_tweets
+            member.setMemberProperties(
+                mapping={'tweets': member_tweets})
+
     @property
     def _homepage(self):
         portal = api.portal.get()
@@ -257,6 +278,7 @@ class UpdateContributorData(JsonApiView):
             'github_stats': {},
             'stackoverflow': {},
             'pypi': {},
+            'twitter': {},
         }
         members = api.user.get_users()
         self.add_github_member_related_data(
@@ -268,6 +290,11 @@ class UpdateContributorData(JsonApiView):
             members,
             data,
             response_data['stackoverflow']
+        )
+        self.add_twitter_data(
+            members,
+            data,
+            response_data['twitter']
         )
         self.add_github_overall_stats(data, response_data['github_stats'])
         self.add_pypi_stats(data, response_data['pypi'])
