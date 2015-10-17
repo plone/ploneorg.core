@@ -14,18 +14,7 @@ The project
 Vision
 ------
 
-We initially planned the first release of the plone.org reboot should target
-Plone 4.3.x, and we should ensure that the eventually migration to Plone 5 will
-be as easy as possible.
-
-Having this in mind, we will initially not make use of products or technologies
-that will eventually need a migration or make use of non-core features. For
-example, we decided not to use any of the existing page composition products out
-there to ensure that point. Once plone.org will sport a fully stable Plone 5
-there would be easy to add those kind of features.
-
-So we will try to match the technologies used in plonetheme.barceloneta (mockup,
-p.a.widgets) in ploneorg.theme as far as possible and other approaches as well.
+Based on Plone 5.
 
 The new plone.org theme are Bootstrap 3.x based, using LESS as a CSS
 preprocessor. We are using bower to track any library/dependency in the theme.
@@ -49,7 +38,7 @@ Other content
 -------------
 
 It will have the information of the Foundation Members. The Plone related news
-and events too.
+and events.
 
 Content not to be migrated
 --------------------------
@@ -57,8 +46,8 @@ Content not to be migrated
 The old documentation will be left in the legacy site, as it lives now in the
 amazing docs.plone.org.
 
-The PSC and products and addons information will be deprecated too in favor of a
-more lightweight and usable catalog, probably hosted on paragon.plone.org.
+The Plone Software Center, products and addons information will be deprecated.
+Look at paragon.plone.org for add-ons.
 
 Migration process
 =================
@@ -94,7 +83,7 @@ new instance. There are a view to trigger the migration:
 and the configuration of the pipeline lives in:
 /src/ploneorg.migration/src/ploneorg/migration/browser/ploneorg.cfg
 
-So basicaly you have to configure the [catalogsource] section accordingly by
+So basically you have to configure the [catalogsource] section accordingly by
 informing the location of the source instance and the sections to be migrated,
 for example::
 
@@ -126,7 +115,7 @@ There is a helper script that lives in the *bin* folder called
     usage: update_contributions [-h] [--config CONFIG]
                                 [--upload path/to/contributions.xxx.json]
                                 [--fetch-only]
-                                [--fetch-specific {issues,contributions,commits,stackoverflow,pypi} [{issues,contributions,commits,stackoverflow,pypi} ...]]
+                                [--fetch-specific {issues,contributions,commits,stackoverflow,pypi,twitter} [{issues,contributions,commits,stackoverflow,pypi,twitter} ...]]
                                 [--debug] [--debug-limit DEBUG_LIMIT]
 
     optional arguments:
@@ -136,7 +125,7 @@ There is a helper script that lives in the *bin* folder called
                             Only upload the data from the specified file. (Even if
                             you give further command line arguments!)
       --fetch-only          Only collect the data. Do not upload it to plone
-      --fetch-specific {issues,contributions,commits,stackoverflow,pypi} [{issues,contributions,commits,stackoverflow,pypi} ...]
+      --fetch-specific {issues,contributions,commits,stackoverflow,pypi,twitter} [{issues,contributions,commits,stackoverflow,pypi,twitter} ...]
                             Collect only given specific parts. Do not upload it to
                             plone
       --debug               Print debug output
@@ -179,9 +168,9 @@ Make sure that all the values matches de ones in your site.
 
 note::
 
-    At the moment only the Github and the Pypi stats are available.
+    At the moment only the Github, Pypi, Stackoverflow and Twitter stats are available.
 
-Ststs receiver view
+Stats receiver view
 -------------------
 
 The site has a view **update-contributor-data** that has the job of update all
