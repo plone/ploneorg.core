@@ -313,6 +313,15 @@ def fetch_github(
         data['rate_limits']['expense'][repo.name] = current_limit - new_limit
         current_limit = new_limit
 
+        # If we are about to hit the limit, sleep until the limit is resetted
+        if new_limit < 20:
+            reset_time = int(gh.rate_limiting_resettime)
+            reset_datetime = datetime.datetime.fromtimestamp(reset_time)
+            now = datetime.datetime.now()
+            delta = reset_datetime - now
+            print('Sleeping until {0}'.format(reset_datetime))
+            time.sleep(delta.total_seconds())
+
     data['rate_limits']['end_limit'] = current_limit
     logger.info('Done.')
     return data
