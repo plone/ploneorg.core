@@ -39,17 +39,14 @@ setup(
         'collective.workspace',
         'plone.api',
         'plone.app.contenttypes',
-        'plone.app.event[dexterity]',
         'plone.app.referenceablebehavior',
         'plone.app.vulnerabilities',
-        'plone.app.widgets[dexterity]',
         'plone.directives.form',
         'plone.formwidget.multifile',
         'ploneorg.theme',
         'pycountry',
         'requests',
         'setuptools',
-        'wildcard.foldercontents',
     ],
     entry_points="""
     # -*- Entry points: -*-
