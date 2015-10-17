@@ -24,6 +24,9 @@ BADGE_TEAMS = ['foundation.members',
 STACKOVERFLOW_RE = re.compile(
     r'http[s]*://stackoverflow\.com/users/([0-9]+).*')
 
+TWITTER_RE = re.compile(
+    r'http[s]*://twitter\.com/(.*)/*')
+
 
 @implementer(IPublishTraverse)
 class contributorProfile(BrowserView):
@@ -66,7 +69,9 @@ class contributorProfile(BrowserView):
                 'stackoverflow_answers': member_data.getProperty(
                     'stackoverflow_answers'),
                 'contributing_since': member_data.getProperty(
-                    'contributing_since')}
+                    'contributing_since'),
+                'tweets': member_data.getProperty('tweets'),
+                }
 
     @memoize_contextless
     def portal(self):
@@ -191,12 +196,36 @@ class UpdateContributorData(JsonApiView):
                 'No data for stackoverflow available.')
             return
         answers_by_member = data[stackoverflow]
+
+        if answers_by_member is None:
+            response_data['done'] = 'No data'
+            return
+
         for member in members:
             member_name = member.getUserName()
             answers = answers_by_member.get(member_name, 0)
             response_data[member_name] = answers
             member.setMemberProperties(
                 mapping={'stackoverflow_answers': answers})
+
+    def add_twitter_data(self, members, data, response_data):
+        twitter = 'twitter'
+        if twitter not in data:
+            response_data['error'] = (
+                'No data for twitter available.')
+            return
+        tweets = data[twitter]
+
+        if tweets is None:
+            response_data['done'] = 'No data'
+            return
+
+        for member in members:
+            member_name = member.getUserName()
+            member_tweets = tweets.get(member_name, 0)
+            response_data[member_name] = member_tweets
+            member.setMemberProperties(
+                mapping={'tweets': member_tweets})
 
     @property
     def _homepage(self):
@@ -210,6 +239,9 @@ class UpdateContributorData(JsonApiView):
             return
         if 'github' not in data:
             response_data['error'] = 'No data for github available.'
+        if 'plone' not in data['github']:
+            response_data['done'] = 'No data'
+            return
         ghdata = data['github']['plone']
         if ghdata['new_issues'] >= 0:
             hp.stats_new_issues = ghdata['new_issues']
@@ -231,6 +263,10 @@ class UpdateContributorData(JsonApiView):
         if 'pypi' not in data:
             response_data['errors'] = 'No data for pypi available.'
         pypidata = data['pypi']
+
+        if pypidata is None:
+            response_data['done'] = 'No data'
+            return
         if pypidata['last_day'] >= 0:
             hp.stats_downloads = pypidata['last_day']
         response_data['done'] = True
@@ -242,6 +278,7 @@ class UpdateContributorData(JsonApiView):
             'github_stats': {},
             'stackoverflow': {},
             'pypi': {},
+            'twitter': {},
         }
         members = api.user.get_users()
         self.add_github_member_related_data(
@@ -253,6 +290,11 @@ class UpdateContributorData(JsonApiView):
             members,
             data,
             response_data['stackoverflow']
+        )
+        self.add_twitter_data(
+            members,
+            data,
+            response_data['twitter']
         )
         self.add_github_overall_stats(data, response_data['github_stats'])
         self.add_pypi_stats(data, response_data['pypi'])
@@ -267,6 +309,20 @@ class StackOverflowIds(JsonApiView):
             so_url = member.getProperty('stackoverflow_username')
             if so_url:
                 match = STACKOVERFLOW_RE.match(so_url)
+                if match:
+                    so_uid = match.groups()[0]
+                    response_data[member.getUserName()] = so_uid
+        return self.json_success(response_data)
+
+
+class TwitterIds(JsonApiView):
+
+    def __call__(self):
+        response_data = {}
+        for member in api.user.get_users():
+            so_url = member.getProperty('twitter_username')
+            if so_url:
+                match = TWITTER_RE.match(so_url)
                 if match:
                     so_uid = match.groups()[0]
                     response_data[member.getUserName()] = so_uid

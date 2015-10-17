@@ -11,6 +11,9 @@ import os
 import requests
 import stackexchange
 import time
+from twitter import Twitter
+from twitter import OAuth
+
 
 logging.basicConfig()
 logger = logging.getLogger('contributions')
@@ -20,7 +23,7 @@ debug_limit = None
 GITHUB_TIMEFORMAT = '%Y-%m-%dT%H:%M:%S%z'
 
 _GITHUB_FETCHES_BASE = ['issues', 'contributions', 'commits']
-OTHER_FETCHES = ['stackoverflow', 'pypi']
+OTHER_FETCHES = ['stackoverflow', 'pypi', 'twitter', ]
 ALL_FETCHES = _GITHUB_FETCHES_BASE + OTHER_FETCHES
 GITHUB_FETCHES = set(_GITHUB_FETCHES_BASE)
 
@@ -117,6 +120,7 @@ def fetch(config, args):
         'github': {},
         'stackoverflow': None,
         'pypi': None,
+        'twitter': None,
     }
     try:
 
@@ -131,6 +135,8 @@ def fetch(config, args):
             data['stackoverflow'] = fetch_stackoverflow(config)
         if 'pypi' in args.fetch_specific:
             data['pypi'] = fetch_pypi(config)
+        if 'twitter' in args.fetch_specific:
+            data['twitter'] = fetch_twitter(config)
     except IOError:
         logger.exception('An IOError happend, probably a read timeout')
         exit(1)
@@ -291,6 +297,8 @@ def fetch_github(
         )
 
     # REPOSITORY RELATED COLLECTING
+    # get 100 repositories per page
+    organization._requester.per_page = 100
     repos = check_debug_limit(organization.get_repos(), 'repos')
     ci_delta = int(config.get('github', 'commits_delta'))
 
@@ -312,6 +320,15 @@ def fetch_github(
         logger.debug('... rate limit at {0}'.format(new_limit))
         data['rate_limits']['expense'][repo.name] = current_limit - new_limit
         current_limit = new_limit
+
+        # If we are about to hit the limit, sleep until the limit is resetted
+        if new_limit < 20:
+            reset_time = int(gh.rate_limiting_resettime)
+            reset_datetime = datetime.datetime.fromtimestamp(reset_time)
+            now = datetime.datetime.now()
+            delta = reset_datetime - now
+            print('Sleeping until {0}'.format(reset_datetime))
+            time.sleep(delta.total_seconds())
 
     data['rate_limits']['end_limit'] = current_limit
     logger.info('Done.')
@@ -363,6 +380,63 @@ def fetch_pypi(config):
         return
     result = rq.json()
     return result['info']['downloads']
+
+
+def fetch_twitter(config):
+    # get all twitter ids form member profiles
+    logger.info('Fetch data from twitter...')
+    logger.info('...Get twitter ids from Plone.')
+    url = (config.get('general', 'plone_url') +
+           '/@@contributor-twitter-ids')
+    r = requests.get(
+        url, auth=get_auth(config),
+        allow_redirects=False)  # don't redirect to the login form for unauth
+
+    if r.status_code != 200:
+        msg = ("Can't fetch stackoverflow user ids from plone."
+               'status: %s.') % r.status_code
+        if r.status_code == 302:
+            msg += 'This might be and authentication error.'
+        logger.error(msg)
+        logger.error('Cannot fetch stackoverflow data. Exit.')
+        exit(1)
+
+    twitter_users = r.json()['data']
+
+    logger.info('...Start getting data from twitter.')
+    plone_member_ids = check_debug_limit(twitter_users.keys(),
+                                         'stackoverflow users')
+
+    token = config.get('twitter', 'token')
+    token_secret = config.get('twitter', 'token_secret')
+    consumer_key = config.get('twitter', 'consumer_key')
+    consumer_secret = config.get('twitter', 'consumer_secret')
+
+    if token is None or \
+            token_secret is None or \
+            consumer_key is None or \
+            consumer_secret is None:
+        return 'Please add "token", "token_secret", "consumer_key" and ' \
+               '"consumer_secret" on the configuration file on a [twitter] ' \
+               'section.'
+
+    twitter_app = Twitter(
+        auth=OAuth(
+            token,
+            token_secret,
+            consumer_key,
+            consumer_secret
+        )
+    )
+    for member_id in plone_member_ids:
+        twitter_id = twitter_users[member_id]
+        data = twitter_app.search.tweets(
+            q='#plone from:{0}'.format(twitter_id)
+        )
+        twitter_users[member_id] = data['search_metadata']['count']
+
+    logger.info('Done.')
+    return twitter_users
 
 
 def _so_activity_for_user(stackoverflow, userid, member_id):
