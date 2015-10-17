@@ -16,3 +16,12 @@ commits_delta = 1
 
 # space spearated list of labels to be considered as blockers
 blocker_labels = blocker critical
+
+[twitter]
+# you need a Twitter app to have these values, either create one on your own
+# account or ask Christina or Paul for these values (or anyone else who has
+# access to the plone twitter account.
+token =
+token_secret =
+consumer_key =
+consumer_secret =

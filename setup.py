@@ -50,6 +50,7 @@ setup(
         'requests',
         'setuptools',
         'wildcard.foldercontents',
+        'twitter',
     ],
     entry_points="""
     # -*- Entry points: -*-
