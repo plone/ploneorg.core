@@ -24,6 +24,9 @@ BADGE_TEAMS = ['foundation.members',
 STACKOVERFLOW_RE = re.compile(
     r'http[s]*://stackoverflow\.com/users/([0-9]+).*')
 
+TWITTER_RE = re.compile(
+    r'http[s]*://twitter\.com/(.*)/*')
+
 
 @implementer(IPublishTraverse)
 class contributorProfile(BrowserView):
@@ -279,6 +282,20 @@ class StackOverflowIds(JsonApiView):
             so_url = member.getProperty('stackoverflow_username')
             if so_url:
                 match = STACKOVERFLOW_RE.match(so_url)
+                if match:
+                    so_uid = match.groups()[0]
+                    response_data[member.getUserName()] = so_uid
+        return self.json_success(response_data)
+
+
+class TwitterIds(JsonApiView):
+
+    def __call__(self):
+        response_data = {}
+        for member in api.user.get_users():
+            so_url = member.getProperty('twitter_username')
+            if so_url:
+                match = TWITTER_RE.match(so_url)
                 if match:
                     so_uid = match.groups()[0]
                     response_data[member.getUserName()] = so_uid
