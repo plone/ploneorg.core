@@ -191,6 +191,11 @@ class UpdateContributorData(JsonApiView):
                 'No data for stackoverflow available.')
             return
         answers_by_member = data[stackoverflow]
+
+        if answers_by_member is None:
+            response_data['done'] = 'No data'
+            return
+
         for member in members:
             member_name = member.getUserName()
             answers = answers_by_member.get(member_name, 0)
@@ -210,6 +215,9 @@ class UpdateContributorData(JsonApiView):
             return
         if 'github' not in data:
             response_data['error'] = 'No data for github available.'
+        if 'plone' not in data['github']:
+            response_data['done'] = 'No data'
+            return
         ghdata = data['github']['plone']
         if ghdata['new_issues'] >= 0:
             hp.stats_new_issues = ghdata['new_issues']
@@ -231,6 +239,10 @@ class UpdateContributorData(JsonApiView):
         if 'pypi' not in data:
             response_data['errors'] = 'No data for pypi available.'
         pypidata = data['pypi']
+
+        if pypidata is None:
+            response_data['done'] = 'No data'
+            return
         if pypidata['last_day'] >= 0:
             hp.stats_downloads = pypidata['last_day']
         response_data['done'] = True
