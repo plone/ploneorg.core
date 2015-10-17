@@ -291,6 +291,8 @@ def fetch_github(
         )
 
     # REPOSITORY RELATED COLLECTING
+    # get 100 repositories per page
+    organization._requester.per_page = 100
     repos = check_debug_limit(organization.get_repos(), 'repos')
     ci_delta = int(config.get('github', 'commits_delta'))
 
