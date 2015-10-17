@@ -42,13 +42,6 @@
       replacement=".portrait.changeMemberPortrait"
   />
 
-  <monkey:patch
-      class="z3c.form.converter.TextLinesConverter"
-      description="Patch to fix the converter when rendering ++widget++form.widgets.portrait/@@download in new p.a.users zc3.form portrait widgets"
-      original="toWidgetValue"
-      replacement=".userschemaextender.toWidgetValueTextLinesFix"
-  />
-
   <genericsetup:importStep
       description=""
       handler="ploneorg.core.setuphandlers.setupVarious"

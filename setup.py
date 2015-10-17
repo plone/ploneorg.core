@@ -35,21 +35,15 @@ setup(
         'Py-StackExchange',
         'PyGithub',
         'collective.monkeypatcher',
-        'collective.roster',
-        'collective.workspace',
+        # 'collective.roster', needed for the badges
+        # 'collective.workspace', needed for the badges
         'plone.api',
-        'plone.app.contenttypes',
-        'plone.app.event[dexterity]',
-        'plone.app.referenceablebehavior',
         'plone.app.vulnerabilities',
-        'plone.app.widgets[dexterity]',
         'plone.directives.form',
-        'plone.formwidget.multifile',
         'ploneorg.theme',
         'pycountry',
         'requests',
         'setuptools',
-        'wildcard.foldercontents',
         'twitter',
     ],
     entry_points="""
