@@ -13,7 +13,6 @@
 
   <plone:behavior
       description="Stores the Plone Statistics Data"
-      for="ploneorg.core.content.homepage.IHomePage"
       provides=".behaviors.IPloneStatistics"
       title="Plone Stats"
   />
