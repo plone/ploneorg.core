@@ -1,0 +1,109 @@
+<model xmlns:users="http://namespaces.plone.org/supermodel/users"
+       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+       xmlns="http://namespaces.plone.org/supermodel/schema"
+       i18n:domain="plone">
+  <schema name="member-fields">
+    <field
+        name="country"
+        type="zope.schema.TextLine"
+        users:forms="In User Profile">
+      <description i18n:translate="help_country">
+        Country where you live.
+      </description>
+      <required>False</required>
+      <title i18n:translate="label_country">Country</title>
+    </field>
+    <field
+        name="github_url"
+        type="zope.schema.URI"
+        users:forms="In User Profile">
+      <description i18n:translate="help_github_url">
+        [Contributor] The GitHub profile URL for personal stats retrieval.
+      </description>
+      <required>False</required>
+      <title i18n:translate="label_github_url">GitHub profile URL</title>
+    </field>
+    <field name="stackoverflow_url"
+        type="zope.schema.URI"
+        users:forms="In User Profile">
+      <description i18n:translate="help_stackoverflow_url">
+        [Contributor] The StackOverflow profile URL for personal stats
+        retrieval.
+      </description>
+      <required>False</required>
+      <title i18n:translate="label_stackoverflow_url">Stackoverflow profile URL</title>
+    </field>
+    <field name="twitter_url"
+        type="zope.schema.URI"
+        users:forms="In User Profile">
+      <description i18n:translate="help_twitter_url">
+        [Contributor] The Twitter URL for personal stats retrieval.
+      </description>
+      <required>False</required>
+      <title i18n:translate="label_twitter_url">Twitter URL</title>
+    </field>
+    <field name="additional_emails"
+        type="zope.schema.Text"
+        users:forms="In User Profile">
+      <description i18n:translate="help_additional_emails">
+        Contributions are usually keyed on email, but often people use work and
+        home addresses for email, or move jobs and gain new addresses. Enter
+        all email addresses that represent you in the Plone community here, so
+        we can include these contributions.
+      </description>
+      <required>False</required>
+      <title i18n:translate="label_additional_emails">Additional emails</title>
+    </field>
+    <field
+        name="contributing_since"
+        type="zope.schema.TextLine"
+        users:forms="In User Profile">
+      <description i18n:translate="help_contributing_since">
+        State the year since you are contributing to Plone.
+      </description>
+      <required>False</required>
+      <title i18n:translate="label_contributing_since">Contributing since</title>
+    </field>
+    <!--
+    Note that the fields below do not have a "users:forms" property.
+    That indicates that it is not going to be seen by the user on the
+    registration form nor on the edit member profile.
+    -->
+    <field
+        name="plone_commits"
+        type="zope.schema.Int">
+      <description i18n:translate="help_plone_commits">
+        Commits made in Plone GitHub organization.
+      </description>
+      <required>False</required>
+      <title i18n:translate="label_plone_commits">Plone commits</title>
+    </field>
+    <field
+        name="collective_commits"
+        type="zope.schema.Int">
+      <description i18n:translate="help_collective_commits">
+        Commits made in Collective GitHub organization.
+      </description>
+      <required>False</required>
+      <title i18n:translate="label_collective_commits">collective commits</title>
+    </field>
+    <field
+        name="stackoverflow_questions"
+        type="zope.schema.Int">
+      <description i18n:translate="help_stackoverflow_questions">
+        Questions made on Stack Overflow related to Plone.
+      </description>
+      <required>False</required>
+      <title i18n:translate="label_stackoverflow_questions">Stack Overflow questions</title>
+    </field>
+    <field
+        name="tweets"
+        type="zope.schema.Int">
+      <description i18n:translate="help_tweets">
+        Tweets written that contain a #plone hashtag on them.
+      </description>
+      <required>False</required>
+      <title i18n:translate="label_tweets">Tweets</title>
+    </field>
+  </schema>
+</model>
