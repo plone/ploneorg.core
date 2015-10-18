@@ -68,7 +68,7 @@
                 <h2>Mails on list</h2>
               </div>
               <div class="fact-data fact-data-info">
-                <h1 tal:content="contributor/stackoverflow_answers">9</h1>
+                <h1 tal:content="contributor/stackoverflow_questions">9</h1>
                 <h2>StackOverflow</h2>
               </div>
               <div class="fact-data fact-data-info">

@@ -58,16 +58,16 @@ class contributorProfile(BrowserView):
         return {'fullname': member_data.getProperty('fullname'),
                 'name': member_data.getUserName(),
                 'bio': member_data.getProperty('description'),
-                'github': member_data.getProperty('github_username'),
+                'github': member_data.getProperty('github_url'),
                 'plone_commits': member_data.getProperty('plone_commits'),
                 'collective_commits': member_data.getProperty(
                     'collective_commits'),
                 'home_page': member_data.getProperty('home_page'),
-                'twitter': member_data.getProperty('twitter_username'),
-                'stackoverflow_username': member_data.getProperty(
-                    'stackoverflow_username'),
-                'stackoverflow_answers': member_data.getProperty(
-                    'stackoverflow_answers'),
+                'twitter': member_data.getProperty('twitter_url'),
+                'stackoverflow_url': member_data.getProperty(
+                    'stackoverflow_url'),
+                'stackoverflow_questions': member_data.getProperty(
+                    'stackoverflow_questions'),
                 'contributing_since': member_data.getProperty(
                     'contributing_since'),
                 'tweets': member_data.getProperty('tweets'),
@@ -112,7 +112,7 @@ class contributorProfile(BrowserView):
     def has_social(self):
         user = self.get_member_data()
         return user.getProperty('home_page', False) or \
-            user.getProperty('twitter_username', False) or \
+            user.getProperty('twitter_url', False) or \
             user.getProperty('github', False)
 
 
@@ -173,17 +173,16 @@ class UpdateContributorData(JsonApiView):
             # memberdata_properties.xml
             properties_key = '%s_commits' % org
             for member in members:
-                # use the github_username if added to the profile. otherwise
+                # use the github_url if added to the profile. otherwise
                 # we fall back to the plone username.
                 member_name = member.getUserName()
-                github_username = (member.getProperty('github_username') or
-                                   member_name)
-                if github_username in commits_by_user:
-                    commits = int(commits_by_user[github_username])
+                github_url = (member.getProperty('github_url') or member_name)
+                if github_url in commits_by_user:
+                    commits = int(commits_by_user[github_url])
                     member.setMemberProperties(
                         mapping={properties_key: commits})
-                    updated_members[member_name] = github_username
-                    unknown_github_users.remove(github_username)
+                    updated_members[member_name] = github_url
+                    unknown_github_users.remove(github_url)
 
             response_data[org] = {
                 'updatedMembers': updated_members,
@@ -206,7 +205,7 @@ class UpdateContributorData(JsonApiView):
             answers = answers_by_member.get(member_name, 0)
             response_data[member_name] = answers
             member.setMemberProperties(
-                mapping={'stackoverflow_answers': answers})
+                mapping={'stackoverflow_questions': answers})
 
     def add_twitter_data(self, members, data, response_data):
         twitter = 'twitter'
@@ -306,7 +305,7 @@ class StackOverflowIds(JsonApiView):
     def __call__(self):
         response_data = {}
         for member in api.user.get_users():
-            so_url = member.getProperty('stackoverflow_username')
+            so_url = member.getProperty('stackoverflow_url')
             if so_url:
                 match = STACKOVERFLOW_RE.match(so_url)
                 if match:
@@ -320,10 +319,10 @@ class TwitterIds(JsonApiView):
     def __call__(self):
         response_data = {}
         for member in api.user.get_users():
-            so_url = member.getProperty('twitter_username')
-            if so_url:
-                match = TWITTER_RE.match(so_url)
+            twitter_url = member.getProperty('twitter_url')
+            if twitter_url:
+                match = TWITTER_RE.match(twitter_url)
                 if match:
-                    so_uid = match.groups()[0]
-                    response_data[member.getUserName()] = so_uid
+                    twitter_id = match.groups()[0]
+                    response_data[member.getUserName()] = twitter_id
         return self.json_success(response_data)
