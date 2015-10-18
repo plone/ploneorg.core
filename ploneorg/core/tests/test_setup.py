@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from Products.CMFCore.utils import getToolByName
+from plone import api
 from ploneorg.core.testing import PLONEORG_CORE_INTEGRATION_TESTING
 
 import unittest
@@ -16,7 +16,7 @@ class TestSetup(unittest.TestCase):
         self.portal = self.layer['portal']
 
     def test_installation(self):
-        quick_installer = getToolByName(self.portal, 'portal_quickinstaller')
+        quick_installer = api.portal.get_tool('portal_quickinstaller')
         installable_products = quick_installer.listInstallableProducts(
             skipInstalled=False
         )
