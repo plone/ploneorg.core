@@ -11,17 +11,6 @@
   <include file="permissions.zcml" />
   <include package="ploneorg.theme" />
 
-  <adapter
-      factory=".userschemaextender.UserDataPanelExtender"
-      provides="plone.z3cform.fieldsets.interfaces.IFormExtender"
-  />
-
-  <adapter
-      factory=".userschemaextender.EnhancedUserDataSchemaAdapter"
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
-      provides=".userschemaextender.IEnhancedUserDataSchema"
-  />
-
   <plone:behavior
       description="Stores the Plone Statistics Data"
       for="ploneorg.core.content.homepage.IHomePage"
