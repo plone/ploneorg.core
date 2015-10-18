@@ -12,7 +12,6 @@ from plone.supermodel import model
 from plone.z3cform.fieldsets import extensible
 from ploneorg.core import _
 from ploneorg.core.vocabularies import country_vocabulary
-from z3c.form import util
 from z3c.form.field import Fields
 from zope import schema
 from zope.component import adapter
@@ -130,13 +129,3 @@ class UserDataPanelExtender(extensible.FormExtender):
             IEnhancedUserDataSchema,
             prefix='IEnhancedUserDataSchema')
         self.add(fields)
-
-
-def toWidgetValueTextLinesFix(self, value):
-    """Convert from text lines to HTML representation."""
-    # if the value is the missing value, then an empty list is produced.
-    if value is self.field.missing_value:
-        return u''
-    if not value:
-        return u''
-    return u'\n'.join(util.toUnicode(v) for v in value)
