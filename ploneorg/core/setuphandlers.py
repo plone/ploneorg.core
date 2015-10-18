@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-from plone import api
 from plone.dexterity.utils import createContentInContainer
+from plone.registry.interfaces import IRegistry
 from ploneorg.core import HOMEPAGE_ID
+from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
+from zope.component import getUtility
 
 import logging
 
@@ -20,8 +22,9 @@ def setupVarious(context):
     portal = context.getSite()
     logger = logging.getLogger(__name__)
 
-    pproperties = api.portal.get_tool('portal_properties').site_properties
-    pproperties.icon_visibility = 'disabled'
+    registry = getUtility(IRegistry)
+    settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
+    settings.icon_visibility = 'false'
 
     # Create homepage if not present
     homepage = getattr(portal, HOMEPAGE_ID, False)
