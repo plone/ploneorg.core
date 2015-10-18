@@ -1,0 +1,12 @@
+[run]
+branch = True
+
+[report]
+omit =
+    */.buildout/eggs/*
+    /usr/*
+    parts/*
+    eggs/*
+    */test*
+    */bin/*
+    src/*
