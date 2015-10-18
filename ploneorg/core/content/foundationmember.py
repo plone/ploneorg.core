@@ -1,35 +1,50 @@
 # -*- coding: utf-8 -*-
 from plone.app.dexterity import PloneMessageFactory as _PMF
 from plone.app.textfield import RichText
+from plone.autoform.directives import read_permission
 from plone.dexterity.content import Item
-from plone.directives import form
+from plone.supermodel.directives import fieldset
+from plone.supermodel.model import Schema
 from ploneorg.core import _
 from ploneorg.core.vocabularies import country_vocabulary
 from zope import schema
 from zope.interface import implementer
 
 
-class IFoundationMember(form.Schema):
-    """ A foundation member
-    """
+class IFoundationMember(Schema):
+    """A foundation member"""
 
-    form.fieldset(
+    fieldset(
         'Contact',
         label=u'Contact',
-        fields=['fname', 'lname', 'email', 'address', 'city', 'state',
-                'postalCode', 'country', 'organization']
+        fields=[
+            'fname',
+            'lname',
+            'email',
+            'address',
+            'city',
+            'state',
+            'postalCode',
+            'country',
+            'organization',
+        ]
     )
 
-    form.fieldset(
+    fieldset(
         'Merit',
         label=u'Merit',
-        fields=['merit']
+        fields=[
+            'merit',
+        ]
     )
 
-    form.fieldset(
+    fieldset(
         'Survey',
         label=u'Survey',
-        fields=['orgsize', 'ploneuse']
+        fields=[
+            'orgsize',
+            'ploneuse',
+        ]
     )
 
     fname = schema.TextLine(
@@ -42,13 +57,13 @@ class IFoundationMember(form.Schema):
         required=True
     )
 
-    form.read_permission(email='ploneorg.core.foundationmember.view')
+    read_permission(email='ploneorg.core.foundationmember.view')
     email = schema.TextLine(
         title=_PMF(u'Email', default=u'Email'),
         required=True
     )
 
-    form.read_permission(address='ploneorg.core.foundationmember.view')
+    read_permission(address='ploneorg.core.foundationmember.view')
     address = schema.TextLine(
         title=_PMF(u'Address', default=u'Address'),
         required=True
@@ -59,13 +74,13 @@ class IFoundationMember(form.Schema):
         required=True
     )
 
-    form.read_permission(state='ploneorg.core.foundationmember.view')
+    read_permission(state='ploneorg.core.foundationmember.view')
     state = schema.TextLine(
         title=_PMF(u'State', default=u'State'),
         required=True
     )
 
-    form.read_permission(postalCode='ploneorg.core.foundationmember.view')
+    read_permission(postalCode='ploneorg.core.foundationmember.view')
     postalCode = schema.TextLine(
         title=_PMF(u'Postal code', default=u'Postal code'),
         required=True
@@ -82,21 +97,21 @@ class IFoundationMember(form.Schema):
         required=True
     )
 
-    form.read_permission(merit='ploneorg.core.foundationmember.view')
+    read_permission(merit='ploneorg.core.foundationmember.view')
     merit = RichText(
         title=_(u'Contributions'),
         description=_(u'Describe your contributions to the project.'),
         required=True
     )
 
-    form.read_permission(orgsize='ploneorg.core.foundationmember.view')
+    read_permission(orgsize='ploneorg.core.foundationmember.view')
     orgsize = schema.Int(
         title=_(u'Organization size'),
         description=_(
             u'Number of people in your organization. It\'s fine to estimate.'),
     )
 
-    form.read_permission(ploneuse='ploneorg.core.foundationmember.view')
+    read_permission(ploneuse='ploneorg.core.foundationmember.view')
     ploneuse = RichText(
         title=_(u'Plone use'),
         description=_(u'How is Plone used by your organization?'),
