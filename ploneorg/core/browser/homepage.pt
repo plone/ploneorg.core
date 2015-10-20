@@ -7,20 +7,7 @@
       i18n:domain="plone">
 
 <head>
-    <metal:javascript fill-slot="javascript_head_slot" tal:omit-tag="">
-        <script type="text/javascript"
-            tal:attributes="src string:${context/absolute_url}/++theme++ploneorg.theme/components/zaccordion/js/jquery.zaccordion.min.js">
-        </script>
-        <script>
-          $("#slider").zAccordion({
-            width: 1140,
-            speed: 600,
-            slideClass: "slider",
-            slideWidth: 800,
-            height: 400
-          });
-        </script>
-    </metal:javascript>
+    <metal:javascript fill-slot="javascript_head_slot" tal:omit-tag=""></metal:javascript>
 </head>
 
 <body>
@@ -32,40 +19,47 @@
 
   <metal:content-core fill-slot="main">
 
-    <ul id="slider">
-      <li>
-        <img src="++theme++ploneorg.theme/img/examples/images/slide0.gif" width="800" height="400" alt="" />
-        <div class="slider-bg"></div>
-        <div class="slider-info">
-          <strong>Lorem ipsum</strong>
-          <p class="slider-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor lacus sollicitudin ligula sagittis a ultricies nulla ultricies. Ut odio nisi, posuere sed blandit at, bibendum non dolor.</p>
-        </div>
-      </li>
-      <li>
-        <img src="++theme++ploneorg.theme/img/examples/images/slide1.gif" width="800" height="400" alt="" />
-        <div class="slider-bg"></div>
-        <div class="slider-info">
-          <strong>Dolor Sit</strong>
-          <p class="slider-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in condimentum sem. Aenean faucibus dignissim auctor. In ut libero vitae augue laoreet iaculis at a tellus.</p>
-        </div>
-      </li>
-      <li>
-        <img src="++theme++ploneorg.theme/img/examples/images/slide2.gif" width="800" height="400" alt="" />
-        <div class="slider-bg"></div>
-        <div class="slider-info">
-          <strong>Donec Ultrices</strong>
-          <p class="slider-text">Duis viverra velit orci. Sed vestibulum mi nec est imperdiet sed ullamcorper augue molestie. Donec ultrices facilisis erat at porttitor.</p>
-        </div>
-      </li>
-      <li>
-        <img src="++theme++ploneorg.theme/img/examples/images/slide3.gif" width="800" height="400" alt="" />
-        <div class="slider-bg"></div>
-        <div class="slider-info">
-          <strong>Est Imper</strong>
-          <p class="slider-text">Phasellus sed lectus nisl, eget cursus eros. Suspendisse posuere orci eu lorem luctus et porta nunc posuere. Cras sed lectus vitae leo accumsan adipiscing.</p>
-        </div>
-      </li>
-    </ul>
+      <div class="carousel">
+        <ul id="accordion">
+          <li class="active">
+            <img src="++theme++ploneorg.theme/img/examples/images/export-00001.png">
+            <div class="carousel-info">
+              <strong>Lorem ipsum</strong>
+              <p class="carousel-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor lacus sollicitudin ligula sagittis a ultricies nulla ultricies. Ut odio nisi, posuere sed blandit at, bibendum non dolor.</p>
+            </div>
+          </li>
+          <li>
+            <img src="++theme++ploneorg.theme/img/examples/images/export-00002.png">
+            <div class="carousel-info">
+              <strong>Lorem ipsum</strong>
+              <p class="carousel-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor lacus sollicitudin ligula sagittis a ultricies nulla ultricies. Ut odio nisi, posuere sed blandit at, bibendum non dolor.</p>
+            </div>
+          </li>
+          <li>
+            <img src="++theme++ploneorg.theme/img/examples/images/export-00003.png">
+            <div class="carousel-info">
+              <strong>Lorem ipsum</strong>
+              <p class="carousel-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor lacus sollicitudin ligula sagittis a ultricies nulla ultricies. Ut odio nisi, posuere sed blandit at, bibendum non dolor.</p>
+            </div>
+          </li>
+          <li>
+            <img src="++theme++ploneorg.theme/img/examples/images/export-00004.png">
+            <div class="carousel-info">
+              <strong>Lorem ipsum</strong>
+              <p class="carousel-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor lacus sollicitudin ligula sagittis a ultricies nulla ultricies. Ut odio nisi, posuere sed blandit at, bibendum non dolor.</p>
+            </div>
+          </li>
+          
+          <a class="left carousel-control" role="button">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="right carousel-control" role="button">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </ul>
+      </div>
 
 <div class="homepage">
   <div class="row">

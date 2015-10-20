@@ -5,7 +5,7 @@ from zope.interface import implementer
 
 
 class IHomePage(IDocument):
-    """ Marker for homepage schema"""
+    """Marker for homepage schema"""
 
 
 @implementer(IHomePage)

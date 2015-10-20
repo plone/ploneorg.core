@@ -1,22 +1,18 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
-  xmlns:zcml="http://namespaces.zope.org/zcml"
   i18n_domain="plone">
 
-  <configure zcml:condition="installed AccessControl.security">
+  <permission
+    id="ploneorg.core.foundationmember.add"
+    title="Foundation Member: Add Foundation Member"
+    />
+  <permission
+    id="ploneorg.core.foundationmember.view"
+    title="Foundation Member: View Detail"
+    />
+  <permission
+    id="ploneorg.core.foundationmember.manage"
+    title="Foundation Member: Manage Members"
+    />
 
-    <permission
-      id="ploneorg.core.foundationmember.add"
-      title="Foundation Member: Add Foundation Member"
-      />
-    <permission
-      id="ploneorg.core.foundationmember.view"
-      title="Foundation Member: View Detail"
-      />
-    <permission
-      id="ploneorg.core.foundationmember.manage"
-      title="Foundation Member: Manage Members"
-      />
-
-  </configure>
 </configure>

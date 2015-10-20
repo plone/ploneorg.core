@@ -38,6 +38,7 @@ setup(
         # 'collective.roster', needed for the badges
         # 'collective.workspace', needed for the badges
         'plone.api',
+        'plone.app.referenceablebehavior',
         'plone.app.vulnerabilities',
         'plone.directives.form',
         'ploneorg.theme',

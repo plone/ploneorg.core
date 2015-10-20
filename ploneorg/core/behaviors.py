@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.supermodel import model
+from plone.supermodel.directives import fieldset
 from ploneorg.core import _
 from zope import schema
 from zope.interface import provider
@@ -8,10 +9,9 @@ from zope.interface import provider
 
 @provider(IFormFieldProvider)
 class IPloneStatistics(model.Schema):
-    """Behavior for github statistics data
-    """
+    """Behavior for github statistics data"""
 
-    model.fieldset(
+    fieldset(
         'github',
         label=_(u'Plone Statistics'),
         fields=[
