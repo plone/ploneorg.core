@@ -4,13 +4,12 @@
  <property name="title" i18n:translate="">Foundation member</property>
  <property name="description"
     i18n:translate="">A Plone Foundation member</property>
- <!-- <property name="icon_expr">string:${portal_url}/document_icon.png</property> -->
  <property name="factory">foundationmember</property>
  <property
-    name="add_view_expr">string:${folder_url}/++add++foundationmember</property>
+    name="add_view_expr">string:${folder_url}/++add++FoundationMember</property>
  <property name="link_target"></property>
  <property name="immediate_view">view</property>
- <property name="global_allow">False</property>
+ <property name="global_allow">True</property>
  <property name="filter_content_types">True</property>
  <property name="allowed_content_types"/>
  <property name="allow_discussion">False</property>
@@ -22,9 +21,6 @@
  <property name="add_permission">ploneorg.core.foundationmember.add</property>
  <property name="klass">ploneorg.core.content.foundationmember.FoundationMember</property>
  <property name="behaviors">
-  <element value="ploneorg.core.behaviors.INameFromFullName"/>
-  <element
-     value="plone.app.referenceablebehavior.referenceable.IReferenceable"/>
  </property>
  <property name="schema">ploneorg.core.content.foundationmember.IFoundationMember</property>
  <property name="model_source"></property>

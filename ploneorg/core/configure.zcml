@@ -17,6 +17,11 @@
       title="Plone Stats"
   />
 
+  <adapter for=".content.foundationmember.IFoundationMember"
+      provides=".content.foundationmember.INameFromPersonNames"
+      factory=".content.foundationmember.NameFromPersonNames"
+      />
+
   <include package="collective.monkeypatcher" />
 
   <monkey:patch

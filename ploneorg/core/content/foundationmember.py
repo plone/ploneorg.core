@@ -122,6 +122,21 @@ class IFoundationMember(Schema):
 @implementer(IFoundationMember)
 class FoundationMember(Item):
 
+    @property
+    def title(self):
+        if hasattr(self, 'fname') and hasattr(self, 'lname'):
+            if self.fname and self.lname:
+                return self.fname + ' ' + self.lname
+            elif self.fname and not self.lname:
+                return self.fname
+            elif not self.fname and self.lname:
+                return self.lname
+        else:
+            return ''
+
+    def setTitle(self, value):
+        return
+
     def get_full_name(self):
         names = [
             self.fname,
@@ -144,3 +159,23 @@ class FoundationMember(Item):
             )
         out += '</foundationmember>'
         return out
+
+
+from plone.app.content.interfaces import INameFromTitle
+from zope.interface import implements
+
+
+class INameFromPersonNames(INameFromTitle):
+    def title():
+        """Return a processed title"""
+
+
+class NameFromPersonNames(object):
+    implements(INameFromPersonNames)
+
+    def __init__(self, context):
+        self.context = context
+
+    @property
+    def title(self):
+        return self.context.fname + ' ' + self.context.lname

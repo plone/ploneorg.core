@@ -14,8 +14,7 @@
 
   <metal:block fill-slot="top_slot"
                    tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);
-                               disable_column_two python:request.set('disable_plone.rightcolumn',1);
-                               dummy python:request.set('disable_border',1)" />
+                               disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
 
   <metal:content-core fill-slot="main">
 
@@ -49,7 +48,7 @@
               <p class="carousel-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor lacus sollicitudin ligula sagittis a ultricies nulla ultricies. Ut odio nisi, posuere sed blandit at, bibendum non dolor.</p>
             </div>
           </li>
-          
+
           <a class="left carousel-control" role="button">
             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
