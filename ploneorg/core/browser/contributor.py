@@ -270,6 +270,22 @@ class UpdateContributorData(JsonApiView):
             hp.stats_downloads = pypidata['last_day']
         response_data['done'] = True
 
+    def add_community_stats(self, data, response_data):
+        hp = self._homepage
+        if hp is None:
+            response_data['error'] = 'no homepage to store'
+            return
+        if 'community' not in data:
+            response_data['errors'] = 'No data for community available.'
+        community_data = data['community']
+
+        if community_data is None:
+            response_data['done'] = 'No data'
+            return
+        if community_data >= 0:
+            hp.stats_community_posts = community_data
+        response_data['done'] = True
+
     def __call__(self):
         data = self.read_json()
         response_data = {
@@ -278,6 +294,7 @@ class UpdateContributorData(JsonApiView):
             'stackoverflow': {},
             'pypi': {},
             'twitter': {},
+            'community': {},
         }
         members = api.user.get_users()
         self.add_github_member_related_data(
@@ -297,6 +314,7 @@ class UpdateContributorData(JsonApiView):
         )
         self.add_github_overall_stats(data, response_data['github_stats'])
         self.add_pypi_stats(data, response_data['pypi'])
+        self.add_community_stats(data, response_data['community'])
         return self.json_success(response_data)
 
 

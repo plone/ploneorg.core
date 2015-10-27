@@ -23,7 +23,7 @@ debug_limit = None
 GITHUB_TIMEFORMAT = '%Y-%m-%dT%H:%M:%S%z'
 
 _GITHUB_FETCHES_BASE = ['issues', 'contributions', 'commits']
-OTHER_FETCHES = ['stackoverflow', 'pypi', 'twitter', ]
+OTHER_FETCHES = ['stackoverflow', 'pypi', 'twitter', 'community', ]
 ALL_FETCHES = _GITHUB_FETCHES_BASE + OTHER_FETCHES
 GITHUB_FETCHES = set(_GITHUB_FETCHES_BASE)
 
@@ -121,6 +121,7 @@ def fetch(config, args):
         'stackoverflow': None,
         'pypi': None,
         'twitter': None,
+        'community': None,
     }
     try:
 
@@ -137,6 +138,8 @@ def fetch(config, args):
             data['pypi'] = fetch_pypi(config)
         if 'twitter' in args.fetch_specific:
             data['twitter'] = fetch_twitter(config)
+        if 'community' in args.fetch_specific:
+            data['community'] = fetch_community(config)
     except IOError:
         logger.exception('An IOError happend, probably a read timeout')
         exit(1)
@@ -437,6 +440,17 @@ def fetch_twitter(config):
 
     logger.info('Done.')
     return twitter_users
+
+
+def fetch_community(config):
+    logger.info('Fetch data from community.plone.org ...')
+    url = 'https://community.plone.org/about.json'
+    rq = requests.get(url)
+    if rq.status_code != 200:
+        logger.warn('Can not fetch url {0}'.format(url))
+        return
+    result = rq.json()
+    return result['about']['stats']['post_count']
 
 
 def _so_activity_for_user(stackoverflow, userid, member_id):

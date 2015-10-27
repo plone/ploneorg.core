@@ -105,3 +105,10 @@ class IPloneStatistics(model.Schema):
         default=0,
         required=False,
     )
+
+    stats_community_posts = schema.Int(
+        title=_(u'forum_messages', default=u'Forum messages'),
+        description=u'Posts on community.plone.org',
+        default=0,
+        required=False,
+    )
