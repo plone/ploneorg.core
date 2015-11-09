@@ -8,6 +8,7 @@
     xmlns:plone="http://namespaces.plone.org/plone">
 
   <include package=".browser" />
+  <!--<include package=".behaviors" />-->
   <include file="permissions.zcml" />
   <include package="ploneorg.theme" />
 
@@ -45,5 +46,8 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       title="ploneorg.core"
   />
+
+  <include package=".browser" />
+
 
 </configure>
