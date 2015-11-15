@@ -35,7 +35,7 @@
                  tal:define="badges view/get_user_badges">
               <a tal:repeat="badge badges"
                  tal:attributes="href badge/absolute_url; title badge/Title">
-                <img src="/++theme++ploneorg.theme/img/badges_fake.png"
+                <img src="++theme++ploneorg.theme/img/badges_fake.png"
                      tal:attributes="src string:${badge/absolute_url}/@@images/image;
                                      alt badge/Title"/>
               </a>
