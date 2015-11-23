@@ -108,7 +108,7 @@
 
               <div class="about">
                 <h2>
-                  <a href="#">Upcoming events</a>
+                  <a tal:attributes="href context/event_page/to_path">${context/event_title}</a>
                 </h2>
                 <p class="lead">Something about sprints, userdays, conferences. Plura mihi bona sunt, inclinet, amari petere vellent. At nos hinc posthac, sitientis piros Afros.</p>
                 <p>
