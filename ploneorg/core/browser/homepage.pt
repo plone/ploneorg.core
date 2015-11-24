@@ -62,19 +62,28 @@
                 </h2>
               </div>
               <div class="row">
-                <article tal:repeat="item view/get_news">
-                  <a tal:define="obj item/getObject"
-                     tal:attributes="href obj/absolute_url">
-                    <img tal:define="images obj/@@images;
-                                     thumbnail python: images.scale('image', width=360, height=203, direction='down')"
-                         tal:condition="thumbnail"
-                         tal:attributes="src thumbnail/url;
-                             alt obj/image_caption"/>
 
-                    <h3>${obj/title}</h3>
-                    <p class="truncate">${obj/description}</p>
-                  </a>
-                </article>
+                <tal:block tal:repeat="item view/get_news">
+
+                  <article>
+                    <a tal:define="obj item/getObject"
+                       tal:attributes="href obj/absolute_url">
+                      <img tal:define="images obj/@@images;
+                                       thumbnail python: images.scale('image', width=360, height=203, direction='down')"
+                           tal:condition="thumbnail"
+                           tal:attributes="src thumbnail/url;
+                               alt obj/image_caption"/>
+
+                      <h3>${obj/title}</h3>
+                      <p class="truncate">${obj/description}</p>
+                    </a>
+                  </article>
+
+                  <!--! Break column to equalise 'rows'. -->
+                  <div tal:condition="python:repeat.item.index % 2" class="col-xs-12"></div>
+
+                </tal:block>
+
               </div>
             </section>
 
@@ -127,26 +136,35 @@
 
               <div class="events">
                 <div class="row">
-                  <div class="event" tal:repeat="item view/get_events">
-                    <a tal:attributes="href item/absolute_url">
-                    <article class="panel panel-default">
-                      <div class="panel-heading"
-                           tal:define="toLocalizedTime nocall: context/@@plone/toLocalizedTime;
-                                       date item/start;
-                                       local_date python:toLocalizedTime(date)">
-                        <time tal:attributes="date item/start">
-                          ${local_date}
-                        </time>
-                      </div>
-                      <div class="panel-body">
-                        <!--? TODO add organiser photo-->
-                        <img src="static/profile/jens-klein.jpg">
-                        <h3>${item/title}</h3>
-                        <p tal:condition="item/location">${item/location}</p>
-                      </div>
-                    </article>
-                    </a>
-                  </div>
+
+                  <tal:block tal:repeat="item view/get_events">
+                    <div class="event">
+                      <a tal:attributes="href item/absolute_url">
+                      <article class="panel panel-default">
+                        <div class="panel-heading"
+                             tal:define="toLocalizedTime nocall: context/@@plone/toLocalizedTime;
+                                         date item/start;
+                                         local_date python:toLocalizedTime(date)">
+                          <time tal:attributes="date item/start">
+                            ${local_date}
+                          </time>
+                        </div>
+                        <div class="panel-body">
+                          <!--? TODO add organiser photo-->
+                          <img src="static/profile/jens-klein.jpg">
+                          <h3>${item/title}</h3>
+                          <p tal:condition="item/location">${item/location}</p>
+                        </div>
+                      </article>
+                      </a>
+                    </div>
+
+                  <!--! Break column to equalise 'rows'. -->
+                    <div tal:condition="python:repeat.item.index % 2" class="col-md-12 visible-md visible-lg"></div>
+
+                  </tal:block>
+
+
                 </div>
               </div>
 
