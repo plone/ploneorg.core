@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
-import pytz
+from PIL import Image, ImageDraw, ImageColor
+from random import choice
+import cStringIO
 import logging
-from PIL import Image
-import StringIO
+import pytz
+import transaction
 
-from plone import namedfile
+from plone import api
 from plone.app.textfield.value import RichTextValue
 from plone.dexterity.utils import createContentInContainer
+from plone.namedfile.file import NamedBlobImage
 from plone.registry.interfaces import IRegistry
 from ploneorg.core import HOMEPAGE_ID
 from Products.CMFCore.utils import getToolByName
@@ -15,16 +18,11 @@ from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
 from z3c.relationfield.relation import RelationValue
 from zope.component import getUtility
 from zope.intid.interfaces import IIntIds
-from plone.namedfile import field as namedfile
 
-import cStringIO
-from plone.namedfile.file import NamedBlobImage
-from PIL import Image, ImageDraw, ImageColor
-import transaction
-from random import choice
+
 
 PROFILE_ID = 'profile-ploneorg.core:default'
-SPONSORS_PAGE_ID = 'sponsors'
+logger = logging.getLogger("ploneorg.core")
 
 
 def richify(string):
@@ -44,7 +42,7 @@ def create_lead_image(size=(800, 450), color="blue"):
     Creates an memory object containing an image.
     Expects a size tuple and PIL color.
 
-    :param size: tuple of ints (width, height) default (200, 200)
+    :param size: tuple of ints (width, height) default (800, 450)
     :param color: String or PIL color (r,g,b) tuple.
     :return: NamedBlobImage
     """
@@ -83,7 +81,37 @@ def create_lead_image(size=(800, 450), color="blue"):
     return nbi
 
 
-def create_events(portal, logger):
+def delete_content(portal):
+    # We will not delete 'Contact'.
+    items = ['front-page']
+    for item in items:
+        if item in portal:
+            api.content.delete(portal[item])
+            logger.info('Deleted item: %s', item)
+
+
+def create_folders(portal):
+    # We will not delete 'Contact'.
+    items = [
+        ('getting-started', 'Getting started'),
+        ('community', 'Community'),
+        ('foundation', 'Foundation'),
+        ('sponsors', 'Sponsors'),
+    ]
+    for (uid, title) in items:
+        obj = getattr(portal, uid, False)
+        if not obj:
+            obj = api.content.create(
+                container=portal,
+                type='Folder',
+                id=uid,
+                title=title,
+            )
+            portal.portal_workflow.doActionFor(obj, 'publish')
+            logger.info('Created folder: %s', title)
+
+
+def create_events(portal):
     """
     Creates events only if there are no events in the portal.
 
@@ -96,30 +124,30 @@ def create_events(portal, logger):
         logger.info("There are existing events. Skipping event creation.")
         return
 
-    now = datetime.now()
+    now = datetime.now().replace(tzinfo=pytz.UTC)
     events = [
         (
             "Yesterday all my troubles",
             "yesterday",
-            (now - timedelta(days=1)).replace(tzinfo=pytz.UTC),
+            (now - timedelta(days=1)),
             "ForgetItTown",
         ),
         (
             "Today Smashing Pumpkins",
             "today",
-            now.replace(tzinfo=pytz.UTC),
+            now,
             "TodayCity",
         ),
         (
             "Tomorrow never comes",
             "tomorrow",
-            (now + timedelta(days=1)).replace(tzinfo=pytz.UTC),
+            now + timedelta(days=1),
             "TomorrowLand"
         ),
         (
             "Sun is shining and so are you!",
             "next_month",
-            (now + timedelta(days=30)).replace(tzinfo=pytz.UTC),
+            now + timedelta(days=30),
             "NextMonthCity",
         ),
     ]
@@ -139,7 +167,7 @@ def create_events(portal, logger):
         portal.portal_workflow.doActionFor(event, 'publish')
 
 
-def create_news(portal, logger):
+def create_news(portal):
     """
     Creates news only if there are no news items in the portal.
 
@@ -263,7 +291,7 @@ def create_news(portal, logger):
     ]
 
     for title, slug, date, description, text, image in news_items:
-        event = createContentInContainer(
+        obj = createContentInContainer(
             portal.news,
             'News Item',
             id=slug,
@@ -273,40 +301,36 @@ def create_news(portal, logger):
             text=text,
             image=image
         )
-        logger.info("Created news item: {}".format(title))
-        portal.portal_workflow.doActionFor(event, 'publish')
+        logger.info("Created news item: %s", title)
+        portal.portal_workflow.doActionFor(obj, 'publish')
         transaction.commit()
 
 
-def setupVarious(context):
-    # Ordinarily, GenericSetup handlers check for the existence of XML files.
-    # Here, we are not parsing an XML file, but we use this text file as a
-    # flag to check that we actually meant for this import step to be run.
-    # The file is found in profiles/default.
+def create_sponsors_page(portal):
 
-    if context.readDataFile('ploneorg.core_various.txt') is None:
-        return
+    # TODO: Sponsors page should be the default item of a folder.
+    # Create a folder.
 
-    portal = context.getSite()
-    intids = getUtility(IIntIds)
-    logger = context.getLogger("ploneorg.core")
-
-    create_events(portal, logger)
-    create_news(portal, logger)
-
-    def get_relation(obj):
-        return RelationValue(intids.getId(obj))
-
-    sponsors_page = getattr(portal, SPONSORS_PAGE_ID, False)
+    sponsors_page_id = "sponsors"
+    sponsors_page = getattr(portal, sponsors_page_id, False)
     if not sponsors_page:
         sponsors_page = createContentInContainer(
             portal,
             "Document",
-            title=unicode(SPONSORS_PAGE_ID.capitalize()),
+            title=unicode(sponsors_page_id.capitalize()),
             checkConstraints=False
         )
-        sponsors_page.exclude_from_nav = True
-        logger.info('Default sponsors_page site setup successfully.')
+        portal.portal_workflow.doActionFor(sponsors_page, 'publish')
+        logger.info("Created page: %s", sponsors_page_id)
+
+    return sponsors_page
+
+
+def create_homepage(portal, sponsors_page):
+
+    def get_relation(obj):
+        intids = getUtility(IIntIds)
+        return RelationValue(intids.getId(obj))
 
     homepage_content = {
         'text': richify(
@@ -428,7 +452,32 @@ def setupVarious(context):
             checkConstraints=False,
             **homepage_content
         )
-        homepage.exclude_from_nav = True
+        # TODO: We can't exlude home, can we?
+        # homepage.exclude_from_nav = True
+        portal.portal_workflow.doActionFor(homepage, 'publish')
         logger.info('Default homepage site setup successfully.')
 
     portal.setDefaultPage(HOMEPAGE_ID)
+
+
+def setupVarious(context):
+    # Ordinarily, GenericSetup handlers check for the existence of XML files.
+    # Here, we are not parsing an XML file, but we use this text file as a
+    # flag to check that we actually meant for this import step to be run.
+    # The file is found in profiles/default.
+
+    if context.readDataFile('ploneorg.core_various.txt') is None:
+        return
+
+    portal = context.getSite()
+
+    logger.info('Create content...')
+
+    create_folders(portal)
+    create_events(portal)
+    create_news(portal)
+    sponsors_page = create_sponsors_page(portal)
+    create_homepage(portal, sponsors_page)
+
+    # Delete after the new homepage is created and set as default item.
+    delete_content(portal)
