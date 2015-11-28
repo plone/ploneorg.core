@@ -92,17 +92,11 @@
                   <h2>Related websites</h2>
                 </div>
                 <div class="list-group">
-                  <a href="#" class="list-group-item">
-                    <h4 class="list-group-item-heading">plone.com</h4>
-                    <p class="list-group-item-text">Overview of Plone and it's features. It is the online Plone brochure.</p>
-                  </a>
-                  <a href="#" class="list-group-item">
-                    <h4 class="list-group-item-heading">docs.plone.org</h4>
-                    <p class="list-group-item-text">Community-maintained manual for the Plone content management system.</p>
-                  </a>
-                  <a href="#" class="list-group-item">
-                    <h4 class="list-group-item-heading">community.plone.org</h4>
-                    <p class="list-group-item-text">A overview of Plone and it's features. It the online Plone brochure.</p>
+                  <a tal:repeat="item view/get_links"
+                      tal:attributes="href item/remoteUrl; title item/remoteUrl"
+                      class="list-group-item">
+                    <h4 class="list-group-item-heading">${item/title}</h4>
+                    <p class="list-group-item-text">${item/description}</p>
                   </a>
                 </div>
               </section>

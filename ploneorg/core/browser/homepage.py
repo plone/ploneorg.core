@@ -7,6 +7,14 @@ from plone import api
 
 class HomePage(BrowserView):
 
+    def get_links(self):
+        pc = api.portal.get_tool('portal_catalog')
+        links = pc.searchResults(
+            portal_type="site_link",
+            review_state='published'
+        )
+        return [i.getObject() for i in links]
+
     def get_events(self):
         pc = api.portal.get_tool('portal_catalog')
         results = pc.searchResults(
