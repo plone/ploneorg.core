@@ -19,8 +19,6 @@ from z3c.relationfield.relation import RelationValue
 from zope.component import getUtility
 from zope.intid.interfaces import IIntIds
 
-
-
 PROFILE_ID = 'profile-ploneorg.core:default'
 logger = logging.getLogger("ploneorg.core")
 
@@ -97,6 +95,7 @@ def create_folders(portal):
         ('community', 'Community'),
         ('foundation', 'Foundation'),
         ('sponsors', 'Sponsors'),
+        ('related-websites', 'Related websites'),
     ]
     for (uid, title) in items:
         obj = getattr(portal, uid, False)
@@ -109,6 +108,60 @@ def create_folders(portal):
             )
             portal.portal_workflow.doActionFor(obj, 'publish')
             logger.info('Created folder: %s', title)
+
+
+def create_links(portal):
+    """
+    :param portal: The current portal
+    :return: None
+    """
+    catalog = getToolByName(portal, 'portal_catalog')
+    if len(catalog.searchResults({'portal_type': 'site_link'})):
+        logger.info("There are existing links. Skipping link creation.")
+        return
+
+    items = [
+        (
+            "plone.com",
+            "http://plone.com",
+            """Overview of Plone and it's features.
+               It is the online Plone brochure.""",
+            True,
+        ),
+        (
+            "docs.plone.org",
+            "http://docs.plone.org",
+            """Community-maintained manual for the Plone content
+               management system.""",
+            True,
+        ),
+        (
+            "community.plone.org",
+            "http://community.plone.org",
+            """Nec dubitamus multa iter quae et nos invenerat. Etiam
+               illo tempore, ab est sed immemorabili. Tu quoque, Brute.""",
+            True,
+        ),
+        (
+            "training.plone.org",
+            "http://trainig.plone.org",
+            """Quam diu etiam furor iste tuus nos eludet? Morbi odio eros,
+               volutpat ut pharetra vitae, lobortis sed nibh.""",
+            False,
+        ),
+    ]
+
+    for title, url, description, display_in_top_bar in items:
+        obj = api.content.create(
+            container=portal['related-websites'],
+            type='site_link',
+            title=title,
+            remoteUrl=url,
+            description=description,
+            display_in_top_bar=display_in_top_bar
+        )
+        portal.portal_workflow.doActionFor(obj, 'publish')
+        logger.info('Created link: %s', title)
 
 
 def create_events(portal):
@@ -180,8 +233,6 @@ def create_news(portal):
         logger.info("There are existing news items. Skipping news creation.")
         return
 
-    import random
-
     news_items = [
         (
             u"Plone Conference Boston 2016",
@@ -205,26 +256,27 @@ def create_news(portal):
             (datetime.now() - timedelta(days=2)).replace(tzinfo=pytz.UTC),
             u"""
                 The 13th annual Plone Conference, hosted by Eau de Web in
-                Bucharest, Romania, was a smashing success! The theme was "Plone
-                5: Built with Passion" to highlight the September release of
-                Plone 5. There were close to 200 attendees, 40+ presentations, 3
-                hours of lightning talks, a sprint for the upcoming new
-                Plone.org, and a lot of sprints around Plone 5 and popular
-                add-ons.
+                Bucharest, Romania, was a smashing success! The theme was
+                "Plone 5: Built with Passion" to highlight the September
+                release of Plone 5. There were close to 200 attendees, 40+
+                presentations, 3 hours of lightning talks, a sprint for the
+                upcoming new Plone.org, and a lot of sprints around Plone 5
+                and popular add-ons.
             """,
             richify(
                 u"""
-                    <p>The 13th annual Plone Conference, hosted by Eau de Web in
-                    Bucharest, Romania, was a smashing success! The theme was
-                    "Plone 5: Built with Passion" to highlight the September
-                    release of Plone 5.</p> <p>There were close to 200
-                    attendees, 40+ presentations, 3 hours of lightning talks, a
-                    sprint for the upcoming new Plone.org, and a lot of sprints
-                    around Plone 5 and popular add-ons.</p> <p>The official
-                    Plone Conference photos are available on Google+. Videos are
-                    still being processed and will be posted next week. Sign up
-                    for the Plone Newsletter to get all of the videos, photos,
-                    and slides delivered right to you.</p>
+                    <p>The 13th annual Plone Conference, hosted by Eau de
+                    Web in Bucharest, Romania, was a smashing success! The
+                    theme was "Plone 5: Built with Passion" to highlight the
+                    September release of Plone 5.</p> <p>There were close to
+                    200 attendees, 40+ presentations, 3 hours of lightning
+                    talks, a sprint for the upcoming new Plone.org, and a
+                    lot of sprints around Plone 5 and popular add-ons.</p>
+                    <p>The official Plone Conference photos are available on
+                    Google+. Videos are still being processed and will be
+                    posted next week. Sign up for the Plone Newsletter to
+                    get all of the videos, photos, and slides delivered
+                    right to you.</p>
                 """
             ),
             create_lead_image(color="#184d72"),
@@ -234,17 +286,17 @@ def create_news(portal):
             u"plone-foundation-board-elects-officers-for-2015-2016",
             (datetime.now() - timedelta(days=3)).replace(tzinfo=pytz.UTC),
             u"""
-                Meet your new Plone Foundation officers: Paul Roeland has been
-                named President, Carol Ganz Vice-President, Chrissy Wainwright
-                Secretary and Jen Myers Treasurer. Hi omnes lingua, institutis,
-                legibus inter se differunt.
+                Meet your new Plone Foundation officers: Paul Roeland has
+                been named President, Carol Ganz Vice-President, Chrissy
+                Wainwright Secretary and Jen Myers Treasurer. Hi omnes
+                lingua, institutis, legibus inter se differunt.
             """,
             richify(
                 u"""
-                    <p>The Plone Foundation Board of Directors held their first
-                    meeting on Thursday, October 29, 2015, and selected officers
-                    for the upcoming year. The officers are elected
-                    annually.</p>
+                    <p>The Plone Foundation Board of Directors held their
+                    first meeting on Thursday, October 29, 2015, and
+                    selected officers for the upcoming year. The officers
+                    are elected annually.</p>
                 """
             ),
             create_lead_image(color="#184d72"),
@@ -273,17 +325,17 @@ def create_news(portal):
             (datetime.now() - timedelta(days=5)).replace(tzinfo=pytz.UTC),
             u"""
                 The Plone community has again raised the bar in the Content
-                Management System market with today’s release of Plone 5. Plone
-                5 is fifteen years of stability wrapped in a modern, powerful
-                user-centric package. It continues to set the pace for content
-                management systems by offering the most functionality and
-                customization out of the box.
+                Management System market with today’s release of Plone 5.
+                Plone 5 is fifteen years of stability wrapped in a modern,
+                powerful user-centric package. It continues to set the pace
+                for content management systems by offering the most
+                functionality and customization out of the box.
             """,
             richify(
                 u"""
-                    <p>Plone 5’s new default theme, Barceloneta, is responsive
-                    out the box to work with the full range of mobile devices
-                    and is written using HTML5 and CSS3.</p>
+                    <p>Plone 5’s new default theme, Barceloneta, is
+                    responsive out the box to work with the full range of
+                    mobile devices and is written using HTML5 and CSS3.</p>
                 """
             ),
             create_lead_image(color="#184d72"),
@@ -406,8 +458,9 @@ def create_homepage(portal, sponsors_page):
         'community_text': richify(
             u"""
                 <p class="lead">
-                    Text that explains where those numbers are from. Mention the
-                    period. E.g: The actvity in the past seven days.
+                    Text that explains where those numbers are from.
+                    Mention the period. E.g: The actvity in the past
+                    seven days.
                 </p>
             """
         ),
@@ -427,12 +480,20 @@ def create_homepage(portal, sponsors_page):
         'sponsor_text': richify(
             u"""
                 <p class="lead">
-                    Gallia est omnis divisa in partes tres, quarum. Morbi odio
-                    eros, volutpat ut pharetra vitae, lobortis sed nibh. Sed
-                    haec quis possit intrepidus aestimare tellus.
+                    Gallia est omnis divisa in partes tres, quarum. Morbi
+                    odio eros, volutpat ut pharetra vitae, lobortis sed
+                    nibh. Sed haec quis possit intrepidus aestimare tellus.
                 </p>
-                <p><a class="btn btn-primary" href="#"> Become a sponsor</a></p>
-                <p><a class="btn btn-primary" href="#"> All sponsors</a></p>
+                <p>
+                    <a class="btn btn-primary" href="#">
+                        Become a sponsor
+                    </a>
+                </p>
+                <p>
+                    <a class="btn btn-primary" href="#">
+                        All sponsors
+                    </a>
+                </p>
             """
         ),
         'sponsor_page': get_relation(sponsors_page),
@@ -478,6 +539,7 @@ def setupVarious(context):
     create_news(portal)
     sponsors_page = create_sponsors_page(portal)
     create_homepage(portal, sponsors_page)
+    create_links(portal)
 
     # Delete after the new homepage is created and set as default item.
     delete_content(portal)
