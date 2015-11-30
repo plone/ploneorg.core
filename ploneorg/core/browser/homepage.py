@@ -7,15 +7,23 @@ from plone import api
 
 class HomePage(BrowserView):
 
+    def get_links(self):
+        pc = api.portal.get_tool('portal_catalog')
+        links = pc.searchResults(
+            portal_type="site_link",
+            review_state='published'
+        )
+        return [i.getObject() for i in links]
+
     def get_events(self):
         pc = api.portal.get_tool('portal_catalog')
-        result = pc.searchResults(
+        results = pc.searchResults(
             portal_type='Event',
             end={'query': datetime.now(), 'range': 'min'},
             sort_on='start',
             review_state='published'
         )
-        return result[:4]
+        return [i.getObject() for i in results[:4]]
 
     def get_news(self):
         pc = api.portal.get_tool('portal_catalog')
@@ -26,3 +34,18 @@ class HomePage(BrowserView):
             review_state='published'
         )
         return result[:4]
+
+    def get_sponsors(self):
+        # pc = api.portal.get_tool('portal_catalog')
+        # # TODO: Filter on type `premium` sponsors.
+        # result = pc.searchResults(
+        #     portal_type='Sponsor',
+        #     sort_on='title',
+        #     review_state='published'
+        # )
+        # return result
+        return [
+            {'title': 'AcmeCorp'},
+            {'title': 'AcmeCorp'},
+            {'title': 'AcmeCorp'},
+        ]

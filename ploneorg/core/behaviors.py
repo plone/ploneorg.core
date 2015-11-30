@@ -15,7 +15,9 @@ class IPloneStatistics(model.Schema):
         'github',
         label=_(u'Plone Statistics'),
         fields=[
-            'stats_provider',
+            'stats_contributors',
+            'stats_addons',
+            'stats_providers',
             'stats_countries',
             'stats_languages',
             'stats_downloads',
@@ -27,8 +29,22 @@ class IPloneStatistics(model.Schema):
         ]
     )
 
-    stats_provider = schema.Int(
-        title=_(u'provider', default=u'Solution Provider'),
+    stats_contributors = schema.Int(
+        title=_(u'contributors', default=u'Contributors'),
+        description=u'Number of contributors',
+        default=0,
+        required=False,
+    )
+
+    stats_addons = schema.Int(
+        title=_(u'addons', default=u'Add-ons'),
+        description=u'Number of add-onss',
+        default=0,
+        required=False,
+    )
+
+    stats_providers = schema.Int(
+        title=_(u'providers', default=u'Solution Providers'),
         description=u'Number of solution providers',
         default=0,
         required=False,

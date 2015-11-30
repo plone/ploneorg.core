@@ -7,9 +7,9 @@
     xmlns:monkey="http://namespaces.plone.org/monkey"
     xmlns:plone="http://namespaces.plone.org/plone">
 
-  <include package=".browser" />
   <include file="permissions.zcml" />
   <include package="ploneorg.theme" />
+  <include package=".browser" />
 
   <plone:behavior
       description="Stores the Plone Statistics Data"
@@ -45,5 +45,7 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       title="ploneorg.core"
   />
+
+
 
 </configure>

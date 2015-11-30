@@ -13,236 +13,264 @@
 <body>
 
   <metal:block fill-slot="top_slot"
-                   tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);
-                               disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+      tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1); disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
 
   <metal:content-core fill-slot="main">
 
-      <div class="carousel">
-        <ul id="accordion">
-          <li class="active">
-            <img src="++theme++ploneorg.theme/img/examples/images/export-00001.png">
-            <div class="carousel-info">
-              <strong>Lorem ipsum</strong>
-              <p class="carousel-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor lacus sollicitudin ligula sagittis a ultricies nulla ultricies. Ut odio nisi, posuere sed blandit at, bibendum non dolor.</p>
-            </div>
-          </li>
-          <li>
-            <img src="++theme++ploneorg.theme/img/examples/images/export-00002.png">
-            <div class="carousel-info">
-              <strong>Lorem ipsum</strong>
-              <p class="carousel-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor lacus sollicitudin ligula sagittis a ultricies nulla ultricies. Ut odio nisi, posuere sed blandit at, bibendum non dolor.</p>
-            </div>
-          </li>
-          <li>
-            <img src="++theme++ploneorg.theme/img/examples/images/export-00003.png">
-            <div class="carousel-info">
-              <strong>Lorem ipsum</strong>
-              <p class="carousel-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor lacus sollicitudin ligula sagittis a ultricies nulla ultricies. Ut odio nisi, posuere sed blandit at, bibendum non dolor.</p>
-            </div>
-          </li>
-          <li>
-            <img src="++theme++ploneorg.theme/img/examples/images/export-00004.png">
-            <div class="carousel-info">
-              <strong>Lorem ipsum</strong>
-              <p class="carousel-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor lacus sollicitudin ligula sagittis a ultricies nulla ultricies. Ut odio nisi, posuere sed blandit at, bibendum non dolor.</p>
-            </div>
-          </li>
+        <section class="jumbotron jumbotron-home">
+          <div class="container" tal:content="structure context/text/output">
+          </div>
+        </section>
 
-          <a class="left carousel-control" role="button">
-            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="right carousel-control" role="button">
-            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
-        </ul>
-      </div>
+        <div class="sec-full-width sec-totals">
+          <div class="container">
+            <p>
+                <nobr><span>${context/stats_contributors}</span>&nbsp;Contributors</nobr>
+                <nobr><span>${context/stats_addons}</span>&nbsp;Add-ons</nobr>
+                <nobr><span>${context/stats_languages}</span>&nbsp;Languages</nobr>
+            </p>
+          </div>
+        </div>
 
-<div class="homepage">
-  <div class="row">
-    <div class="col-md-12">
-      <p class="large-paragraph">
-            <strong tal:content="context/stats_provider">300</strong>
-            solution providers in
-            <strong  tal:content="context/stats_countries">57</strong>
-            countries developing
-            <strong tal:content="context/stats_languages">40</strong>
-            languages
-      </p>
-      <div class="boxed boxed-stripes">
-        <div class="getplone">Get Plone</div>
-        <div class="currentversion"><strong>5.0</strong></div>
-        <div class="features hidden-xs">
-          <ul>
-            <li>New responsive theming story</li>
-            <li>Default dexterity content types</li>
-            <li>and lots more exciting features!</li>
-          </ul>
-        </div>
-        <div class="information hidden-xs">
-          <ul>
-            <li><a href="">New features</a></li>
-            <li><a href="">Roadmap</a></li>
-            <li><a href="">Older releases</a></li>
-          </ul>
-        </div>
-        <div class="download">
-          <a class="btn btn-warning btn-lg" href="/download">Download now</a>
-        </div>
-      </div>
-    </div>
-  </div>
+        <section class="sec-download">
+          <div class="container">
+            <div class="about">
+              <h2>${context/download_title}</h2>
+              <p tal:replace="structure context/download_text/output"></p>
+            </div>
+            <div class="links">
+              <p>
+                <a tal:attributes="href context/download_url"
+                   class="btn btn-lg btn-prime">
+                    ${ context/download_button_text}
+                </a>
+              </p>
+              <p tal:replace="structure context/download_below_button_text/output"></p>
+            </div>
+          </div>
+        </section>
 
-  <div class="row">
-    <div class="col-md-12">
-      <h2 class="the_community">The Plone community</h2>
-      <p class="large-paragraph">The plone community protects and promotes Plone. <strong>We can't do it without you!</strong></p>
-      <div class="row">
-        <div class="col-xs-6 col-md-2">
-          <div class="boxed boxed-pill boxed-primary">
-            <h3>Today's downloads</h3>
-            <p class="large-paragraph">
-              <strong tal:content="context/stats_downloads">102</strong>
-              <i class="fontello-icon-download"></i>
-            </p>
-          </div>
-        </div>
-        <div class="col-xs-6 col-md-2">
-          <div class="boxed boxed-pill boxed-primary">
-            <h3>New tickets today</h3>
-            <p class="large-paragraph">
-              <strong tal:content="context/stats_new_issues">82</strong>
-              <i class="fontello-icon-ticket"></i>
-            </p>
-          </div>
-        </div>
-        <div class="col-xs-6 col-md-2">
-          <div class="boxed boxed-pill boxed-primary">
-            <h3>Commits last week</h3>
-            <p class="large-paragraph">
-              <strong tal:content="context/stats_commits">12</strong>
-              <i class="fontello-icon-back-in-time"></i>
-            </p>
-          </div>
-        </div>
-        <div class="col-xs-6 col-md-2">
-          <div class="boxed boxed-pill boxed-primary">
-            <h3>Release blockers</h3>
-            <p class="large-paragraph">
-              <strong tal:content="context/stats_blockers">7</strong>
-              <i class="fontello-icon-block"></i>
-            </p>
-          </div>
-        </div>
-        <div class="col-xs-6 col-md-2">
-          <div class="boxed boxed-pill boxed-primary">
-            <h3>Open pull requests</h3>
-            <p class="large-paragraph">
-              <strong tal:content="context/stats_pull_requests">86</strong>
-              <i class="fontello-icon-addon"></i>
-            </p>
-          </div>
-        </div>
-        <div class="col-xs-6 col-md-2">
-          <div class="boxed boxed-pill boxed-primary">
-            <h3>Patches needing reviews</h3>
-            <p class="large-paragraph">
-              <strong tal:content="context/stats_needs_review">3</strong>
-              <i class="fontello-icon-eye"></i>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+        <div class="container">
+          <div class="row">
 
-  <div class="row">
-    <div class="col-md-12">
-      <div class="row">
-        <div class="col-md-4">
-          <div class="boxed">
-            <h3>Plone Fundation</h3>
-            <a class="large-link link-arrow" href="/foundation">
-               Protecting and <br />promoting Plone</a>
-            <p>Our goal is to ensure that Plone remains the premier open soure content management system</p>
+            <section class="sec-news">
+              <div class="page-header">
+                <h2>
+                  <a tal:attributes="href string:${context/portal_url}/news">
+                    Latest news
+                  </a>
+                </h2>
+              </div>
+              <div class="row">
+
+                <tal:block tal:repeat="item view/get_news">
+
+                  <article>
+                    <a tal:define="obj item/getObject"
+                       tal:attributes="href obj/absolute_url">
+                      <img tal:define="images obj/@@images;
+                                       thumbnail python: images.scale('image', width=360, height=203, direction='down')"
+                           tal:condition="thumbnail"
+                           tal:attributes="src thumbnail/url;
+                               alt obj/image_caption"/>
+
+                      <h3>${obj/title}</h3>
+                      <p class="truncate">${obj/description}</p>
+                    </a>
+                  </article>
+
+                  <!--! Break column to equalise 'rows'. -->
+                  <div tal:condition="python:repeat.item.index % 2" class="col-xs-12"></div>
+
+                </tal:block>
+
+              </div>
+            </section>
+
+              <section class="sec-related-websites">
+                <div class="page-header">
+                  <h2>Related websites</h2>
+                </div>
+                <div class="list-group">
+                  <a tal:repeat="item view/get_links"
+                      tal:attributes="href item/remoteUrl; title item/remoteUrl"
+                      class="list-group-item">
+                    <h4 class="list-group-item-heading">${item/title}</h4>
+                    <p class="list-group-item-text">${item/description}</p>
+                  </a>
+                </div>
+              </section>
+
+            </div>
           </div>
-        </div>
-        <div class="col-md-4">
-          <div class="boxed">
-            <h3>Documentation</h3>
-            <a class="large-link link-arrow" href="http://docs.plone.org">
-              New to Plone? <br />Start here!</a>
-            <ul class="list-arrows">
-              <li><a href="http://docs.plone.org/quickstart/index.html">QuickStart</li>
-              <li><a href="http://docs.plone.org/develop/index.html">Developing for Plone</li>
-              <li><a href="http://docs.plone.org/manage/index.html">Installing Plone</li>
-              <li><a href="http://docs.plone.org/adapt-and-extend/index.html">Adapt and extend Plone</li>
-              <li><a href="http://docs.plone.org/working-with-content/index.html">Working with Content</li>
-            </ul>
+
+        <section class="sec-full-width sec-events">
+          <div class="container">
+
+            <div class="row">
+
+              <div class="about">
+                <h2>
+                  <a tal:attributes="href context/event_page/to_path">${context/event_title}</a>
+                </h2>
+                <p class="lead">Something about sprints, userdays, conferences. Plura mihi bona sunt, inclinet, amari petere vellent. At nos hinc posthac, sitientis piros Afros.</p>
+                <p>
+                  <a href="#" class="btn btn-primary">
+                    <i class="fa fa-chevron-circle-right"></i>
+                    Add an event
+                  </a>
+                </p>
+                <p>
+                  <a href="#" class="btn btn-primary">
+                    <i class="fa fa-chevron-circle-right"></i>
+                    All events
+                  </a>
+                </p>
+              </div>
+
+              <div class="events">
+                <div class="row">
+
+                  <tal:block tal:repeat="item view/get_events">
+                    <div class="event">
+                      <a tal:attributes="href item/absolute_url">
+                      <article class="panel panel-default">
+                        <div class="panel-heading"
+                             tal:define="toLocalizedTime nocall: context/@@plone/toLocalizedTime;
+                                         date item/start;
+                                         local_date python:toLocalizedTime(date)">
+                          <time tal:attributes="date item/start">
+                            ${local_date}
+                          </time>
+                        </div>
+                        <div class="panel-body">
+                          <!--? TODO add organiser photo-->
+                          <img src="static/profile/jens-klein.jpg">
+                          <h3>${item/title}</h3>
+                          <p tal:condition="item/location">${item/location}</p>
+                        </div>
+                      </article>
+                      </a>
+                    </div>
+
+                  <!--! Break column to equalise 'rows'. -->
+                    <div tal:condition="python:repeat.item.index % 2" class="col-md-12 visible-md visible-lg"></div>
+
+                  </tal:block>
+
+
+                </div>
+              </div>
+
+            </div>
+
           </div>
-        </div>
-        <div class="col-md-4">
-          <div class="boxed boxed-primary">
-            <h3>Plone Conference</h3>
-            <a class="large-link link-arrow" href="https://2015.ploneconf.org/">
-              Bucharest 2015
-            </a>
-            <p>Come to the major Plone event of the year and experience in first hand the Plone community</p>
-            <br />
-            <p>Join us on 12-18 October 2015</p>
+        </section>
+
+
+        <section class="sec-github-totals">
+          <div class="container">
+            <div class="page-header">
+              <h2>
+                Community activity
+                <a href="https://pypi.python.org/pypi?:action=browse&show=all&c=518" class="btn btn-sm btn-default">
+                  <i class="fa fa-star"></i>
+                  PyPI
+                </a>
+                <a href="https://github.com/plone" class="btn btn-sm btn-default">
+                  <i class="fa fa-github-alt"></i>
+                  Plone
+                </a>
+                <a href="https://github.com/collective" class="btn btn-sm btn-default">
+                  <i class="fa fa-github-alt"></i>
+                  Collective
+                </a>
+              </h2>
+            </div>
+            <p tal:replace="structure context/community_text/output"></p>
+            <div class="row">
+
+              <div class="column">
+                <div class="well">
+                  <i class="fa fa-download"></i>
+                  <h3>Downloads</h3>
+                  <p>${context/stats_downloads}</p>
+                </div>
+              </div>
+
+              <div class="column">
+                <div class="well">
+                  <i class="fa fa-ticket"></i>
+                  <h3>New issues</h3>
+                  <p>${context/stats_new_issues}</p>
+                </div>
+              </div>
+
+              <div class="column">
+                <div class="well">
+                  <i class="fa fa-code"></i>
+                  <h3>Commits</h3>
+                  <p>${context/stats_commits}</p>
+                </div>
+              </div>
+
+              <div class="column">
+                <div class="well">
+                  <i class="fa fa-ban"></i>
+                  <h3>Blockers</h3>
+                  <p>${context/stats_blockers}</p>
+                </div>
+              </div>
+
+              <div class="column">
+                <div class="well">
+                  <i class="fa fa-code-fork fa-flip-vertical"></i>
+                  <h3>Pull&nbsp;requests</h3>
+                  <p>${context/stats_pull_requests}</p>
+                </div>
+              </div>
+
+              <div class="column">
+                <div class="well">
+                  <i class="fa fa-file-code-o"></i>
+                  <h3>Need&nbsp;review</h3>
+                  <p>${context/stats_needs_review}</p>
+                </div>
+              </div>
+
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4"
-             tal:define="news view/get_news">
-          <h3>Latest News</h3>
-          <ul class="list-unstyled"
-              tal:condition="news">
-            <li tal:repeat="news_item news">
-              <a class="medium-link link-arrow"
-                 tal:attributes="href news_item/getURL"
-                 tal:content="news_item/Title">
-                Plone Framework Team accepts new members
+        </section>
+
+
+        <section class="sec-full-width sec-sponsors-home">
+          <div class="container">
+
+            <div class="row">
+
+              <div class="about">
+                <h2>
+                  <a tal:attributes="href context/sponsor_page/to_path;
+                                     title context/sponsor_title">
+                    ${context/sponsor_title}
+                  </a>
+                </h2>
+                <p tal:replace="structure context/sponsor_text/output"></p>
+              </div>
+
+              <a class="logos" tal:attributes="href context/sponsor_page/to_path">
+                <div class="row" tal:repeat="item view/get_sponsors">
+                    <div class="column">
+                      <img src="static/sponsors/square.svg"
+                           tal:attributes="src item/title">
+                    </div>
+                </div>
               </a>
-              <time tal:content="python:context.toLocalizedTime(news_item.Date)">Jul 14, 2015</time></li>
-          </ul>
-          <p class="pull-right">
-            <a tal:attributes="href string:${context/absolute_url}/news">Show all news</a>
-          </p>
-        </div>
-        <div class="col-md-4"
-             tal:define="events view/get_events">
-          <h3>Upcoming Events</h3>
-          <ul class="list-unstyled"
-              tal:condition="events">
-            <li tal:repeat="event events">
-              <a class="medium-link link-arrow"
-                 tal:attributes="href event/getURL"
-                 tal:content="event/Title">
-                63rd Plone Tune-up day
-              </a>
-              <time tal:content="python:context.toLocalizedTime(event.start)">Nov 08, 2012</time></li>
-          </ul>
-          <p tal:condition="not:events">No upcoming events</p>
-          <p class="pull-right">
-            <a tal:attributes="href string:${context/absolute_url}/events">Show all events</a>
-          </p>
-        </div>
-        <div class="col-md-4">
-          <h3>Work with the Plone Teams</h3>
-          <a tal:attributes="href string:${context/absolute_url}/teams">Join and participate in the activities of our teams</a>
-          <h3>Mailing Lists</h3>
-          <a tal:attributes="href string:${context/absolute_url}/support/ask">Ask questions, discuss Plone, and get useful tips</a>
-          <h3>Chat Room</h3>
-          <a tal:attributes="href string:${context/absolute_url}/support/chat">You can chat with other Plone people and developers</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+
+            </div>
+
+          </div>
+        </section>
 
 </metal:content-core>
 

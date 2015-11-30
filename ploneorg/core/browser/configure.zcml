@@ -5,6 +5,15 @@
 
     <include package="Products.CMFCore" file="permissions.zcml" />
 
+    <!--<browser:viewlet-->
+      <!--name="links"-->
+      <!--manager="plone.app.layout.viewlets.interfaces.IAboveContent"-->
+      <!--class=".viewlets.LinkViewlet"-->
+      <!--layer="ploneorg.theme.interfaces.IThemeSpecific"-->
+      <!--template="link_viewlet.pt"-->
+      <!--permission="zope2.View"-->
+      <!--/>-->
+
     <browser:page
       name="profile"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
@@ -34,7 +43,7 @@
       />
 
     <browser:page
-      name="view"
+      name="homepage"
       for="ploneorg.core.content.homepage.IHomePage"
       class=".homepage.HomePage"
       template="homepage.pt"
