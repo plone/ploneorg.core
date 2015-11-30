@@ -1,5 +1,5 @@
 <ul id="links-select">
-  <li tal:repeat="item view/get_links">
+  <li tal:repeat="item view/get_links|nothing">
     <a tal:attributes="href item/remoteUrl; title item/remoteUrl">
       ${item/title}
     </a>
