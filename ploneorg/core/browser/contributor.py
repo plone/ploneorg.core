@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from collective.badge.api import badges_for_user
 from OFS.Image import Image
 from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
@@ -106,8 +107,7 @@ class contributorProfile(BrowserView):
         return portrait.absolute_url()
 
     def get_user_badges(self):
-        # import ipdb;ipdb.set_trace()
-        pass
+        return badges_for_user(self.username)
 
     def has_social(self):
         user = self.get_member_data()

@@ -3,5 +3,6 @@
   <version>1000</version>
   <dependencies>
     <dependency>profile-ploneorg.theme:default</dependency>
+    <dependency>profile-collective.badge:default</dependency>
 </dependencies>
 </metadata>

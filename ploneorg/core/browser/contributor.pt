@@ -30,10 +30,15 @@
               <h4 tal:condition="contributor/contributing_since">Contributing since: <span tal:content="contributor/contributing_since">2006</span></h4>
             </div>
           </div>
-          <div class="row">
+          <div class="row contributor-badges">
             <div class="col-md-4"
                  tal:define="badges view/get_user_badges">
-              <img src="/++theme++ploneorg.theme/img/badges_fake.png" />
+              <a tal:repeat="badge badges"
+                 tal:attributes="href badge/absolute_url; title badge/Title">
+                <img src="/++theme++ploneorg.theme/img/badges_fake.png"
+                     tal:attributes="src string:${badge/absolute_url}/@@images/image;
+                                     alt badge/Title"/>
+              </a>
             </div>
           </div>
         </div>

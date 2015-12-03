@@ -35,8 +35,7 @@ setup(
         'Py-StackExchange',
         'PyGithub',
         'collective.monkeypatcher',
-        # 'collective.roster', needed for the badges
-        # 'collective.workspace', needed for the badges
+        'collective.badge',
         'plone.api',
         'plone.app.referenceablebehavior',
         'plone.app.vulnerabilities',
