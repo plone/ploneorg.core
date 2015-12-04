@@ -18,7 +18,9 @@
   <metal:content-core fill-slot="main">
 
         <section class="jumbotron jumbotron-home">
-          <div class="container" tal:content="structure context/text/output">
+          <div class="container" 
+               tal:condition="context/text"
+               tal:content="structure context/text/output">
           </div>
         </section>
 
@@ -36,7 +38,9 @@
           <div class="container">
             <div class="about">
               <h2>${context/download_title}</h2>
-              <p tal:replace="structure context/download_text/output"></p>
+              <div class="lead">
+                  <p tal:replace="structure context/download_text/output"></p>
+              </div>
             </div>
             <div class="links">
               <p>
@@ -111,9 +115,12 @@
 
               <div class="about">
                 <h2>
-                  <a tal:attributes="href context/event_page/to_path">${context/event_title}</a>
+                  <a tal:omit-tag="not:context/event_page"
+                     tal:attributes="href context/event_page/to_path">${context/event_title}</a>
                 </h2>
-                <p class="lead">Something about sprints, userdays, conferences. Plura mihi bona sunt, inclinet, amari petere vellent. At nos hinc posthac, sitientis piros Afros.</p>
+                <div class="lead">
+                    <p tal:replace="structure context/event_text/output"></p>
+                </div>
                 <p>
                   <a href="#" class="btn btn-primary">
                     <i class="fa fa-chevron-circle-right"></i>
@@ -250,15 +257,28 @@
 
               <div class="about">
                 <h2>
-                  <a tal:attributes="href context/sponsor_page/to_path;
+                  <a tal:omit-tag="not:context/sponsor_page"
+                     tal:attributes="href context/sponsor_page/to_path;
                                      title context/sponsor_title">
                     ${context/sponsor_title}
                   </a>
                 </h2>
                 <p tal:replace="structure context/sponsor_text/output"></p>
+                <p>
+                  <a href="#" class="btn btn-primary">
+                    <i class="fa fa-chevron-circle-right"></i>
+                    Become a sponsor
+                  </a>
+                  <a href="#" class="btn btn-primary">
+                    <i class="fa fa-chevron-circle-right"></i>
+                    All sponsors
+                  </a>
+                </p>
               </div>
 
-              <a class="logos" tal:attributes="href context/sponsor_page/to_path">
+              <a class="logos"
+                 tal:condition="context/sponsor_page"
+                 tal:attributes="href context/sponsor_page/to_path">
                 <div class="row" tal:repeat="item view/get_sponsors">
                     <div class="column">
                       <img src="static/sponsors/square.svg"
