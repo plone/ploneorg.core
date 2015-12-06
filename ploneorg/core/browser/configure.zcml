@@ -5,14 +5,13 @@
 
     <include package="Products.CMFCore" file="permissions.zcml" />
 
-    <!--<browser:viewlet-->
-      <!--name="links"-->
-      <!--manager="plone.app.layout.viewlets.interfaces.IAboveContent"-->
-      <!--class=".viewlets.LinkViewlet"-->
-      <!--layer="ploneorg.theme.interfaces.IThemeSpecific"-->
-      <!--template="link_viewlet.pt"-->
-      <!--permission="zope2.View"-->
-      <!--/>-->
+    <browser:viewlet
+      name="links"
+      manager="plone.app.layout.viewlets.interfaces.IAboveContent"
+      class=".viewlets.LinkViewlet"
+      template="link_viewlet.pt"
+      permission="zope2.View"
+      />
 
     <browser:page
       name="profile"

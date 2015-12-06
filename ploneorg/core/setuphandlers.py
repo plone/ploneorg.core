@@ -5,7 +5,6 @@ from random import choice
 import cStringIO
 import logging
 import pytz
-import transaction
 
 from plone import api
 from plone.app.textfield.value import RichTextValue
@@ -79,35 +78,29 @@ def create_lead_image(size=(800, 450), color="blue"):
     return nbi
 
 
-def delete_content(portal):
-    # We will not delete 'Contact'.
-    items = ['front-page']
-    for item in items:
-        if item in portal:
-            api.content.delete(portal[item])
-            logger.info('Deleted item: %s', item)
+def create_folder(portal, uid, title):
+    folder = api.content.create(
+        container=portal,
+        type='Folder',
+        id=uid,
+        title=title,
+    )
+    portal.portal_workflow.doActionFor(folder, 'publish')
+    logger.info('Created folder: %s', title)
+    return folder
 
 
 def create_folders(portal):
-    # We will not delete 'Contact'.
     items = [
         ('getting-started', 'Getting started'),
         ('community', 'Community'),
         ('foundation', 'Foundation'),
-        ('sponsors', 'Sponsors'),
         ('related-websites', 'Related websites'),
     ]
     for (uid, title) in items:
         obj = getattr(portal, uid, False)
-        if not obj:
-            obj = api.content.create(
-                container=portal,
-                type='Folder',
-                id=uid,
-                title=title,
-            )
-            portal.portal_workflow.doActionFor(obj, 'publish')
-            logger.info('Created folder: %s', title)
+        if not obj:  # Only create folder if it doesn't exist.
+            create_folder(portal, uid, title)
 
 
 def create_links(portal):
@@ -115,6 +108,7 @@ def create_links(portal):
     :param portal: The current portal
     :return: None
     """
+    # Do not create links if there are links in the portal.
     catalog = getToolByName(portal, 'portal_catalog')
     if len(catalog.searchResults({'portal_type': 'site_link'})):
         logger.info("There are existing links. Skipping link creation.")
@@ -169,9 +163,10 @@ def create_events(portal):
     Creates events only if there are no events in the portal.
 
     :param portal: the Plone portal
-    :param logger: the current logger
     :return: None
     """
+
+    # Do not create events if there are events in the portal.
     catalog = getToolByName(portal, 'portal_catalog')
     if len(catalog.searchResults({'portal_type': 'Event'})):
         logger.info("There are existing events. Skipping event creation.")
@@ -225,9 +220,9 @@ def create_news(portal):
     Creates news only if there are no news items in the portal.
 
     :param portal: the Plone portal
-    :param logger: the current logger
     :return: None
     """
+    # Do not create news if there are news items in the portal.
     catalog = getToolByName(portal, 'portal_catalog')
     if len(catalog.searchResults({'portal_type': 'News Item'})):
         logger.info("There are existing news items. Skipping news creation.")
@@ -355,27 +350,27 @@ def create_news(portal):
         )
         logger.info("Created news item: %s", title)
         portal.portal_workflow.doActionFor(obj, 'publish')
-        transaction.commit()
 
 
 def create_sponsors_page(portal):
+    folder_id = "sponsors"
+    page_id = "sponsor"
 
-    # TODO: Sponsors page should be the default item of a folder.
-    # Create a folder.
+    folder = getattr(portal, folder_id, False)
+    if folder:
+        return folder
 
-    sponsors_page_id = "sponsors"
-    sponsors_page = getattr(portal, sponsors_page_id, False)
-    if not sponsors_page:
-        sponsors_page = createContentInContainer(
-            portal,
-            "Document",
-            title=unicode(sponsors_page_id.capitalize()),
-            checkConstraints=False
-        )
-        portal.portal_workflow.doActionFor(sponsors_page, 'publish')
-        logger.info("Created page: %s", sponsors_page_id)
-
-    return sponsors_page
+    create_folder(portal, folder_id, folder_id.capitalize())
+    page = createContentInContainer(
+        portal.sponsors,
+        "Document",
+        id=page_id,
+        title=unicode(page_id.capitalize())
+    )
+    portal.portal_workflow.doActionFor(page, 'publish')
+    logger.info("Created page: %s", page_id)
+    portal.sponsors.setDefaultPage(page_id)
+    return page
 
 
 def create_homepage(portal, sponsors_page):
@@ -513,12 +508,35 @@ def create_homepage(portal, sponsors_page):
             checkConstraints=False,
             **homepage_content
         )
-        # TODO: We can't exlude home, can we?
+        # TODO: We can't exclude home, can we?
         # homepage.exclude_from_nav = True
         portal.portal_workflow.doActionFor(homepage, 'publish')
         logger.info('Default homepage site setup successfully.')
 
     portal.setDefaultPage(HOMEPAGE_ID)
+
+
+def delete_content(portal):
+    items = [
+        'front-page',
+    ]
+    for item in items:
+        if item in portal:
+            api.content.delete(portal[item])
+            logger.info('Deleted item: %s', item)
+
+
+def order_content(portal):
+    items = [
+        ('getting-started', 'Getting started'),
+        ('community', 'Community'),
+        ('foundation', 'Foundation'),
+    ]
+    items.reverse()
+    for uid, title in items:
+        obj = portal[uid]
+        portal.moveObjectsToTop(obj.id)
+        logger.info('%s is now on top.', title)
 
 
 def setupVarious(context):
@@ -541,5 +559,6 @@ def setupVarious(context):
     create_homepage(portal, sponsors_page)
     create_links(portal)
 
-    # Delete after the new homepage is created and set as default item.
+    order_content(portal)
+
     delete_content(portal)
