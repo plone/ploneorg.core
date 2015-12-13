@@ -426,9 +426,6 @@ def create_homepage(portal, sponsors_page):
         'event_title': u"Upcoming events",
         'event_text': richify(
             u"""
-                <h2>
-                  <a href="#">Upcoming events</a>
-                </h2>
                 <p class="lead">
                     Something about sprints, userdays, conferences. Plura mihi
                     bona sunt, inclinet, amari petere vellent. At nos hinc
@@ -481,11 +478,13 @@ def create_homepage(portal, sponsors_page):
                 </p>
                 <p>
                     <a class="btn btn-primary" href="#">
+                        <span class="fa fa-chevron-circle-right"></span>
                         Become a sponsor
                     </a>
                 </p>
                 <p>
                     <a class="btn btn-primary" href="#">
+                        <span class="fa fa-chevron-circle-right"></span>
                         All sponsors
                     </a>
                 </p>

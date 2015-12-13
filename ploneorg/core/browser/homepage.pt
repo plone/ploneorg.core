@@ -38,9 +38,7 @@
           <div class="container">
             <div class="about">
               <h2>${context/download_title}</h2>
-              <div class="lead">
-                  <p tal:replace="structure context/download_text/output"></p>
-              </div>
+              <p tal:replace="structure context/download_text/output"></p>
             </div>
             <div class="links">
               <p>
@@ -118,21 +116,7 @@
                   <a tal:omit-tag="not:context/event_page"
                      tal:attributes="href context/event_page/to_path">${context/event_title}</a>
                 </h2>
-                <div class="lead">
-                    <p tal:replace="structure context/event_text/output"></p>
-                </div>
-                <p>
-                  <a href="#" class="btn btn-primary">
-                    <i class="fa fa-chevron-circle-right"></i>
-                    Add an event
-                  </a>
-                </p>
-                <p>
-                  <a href="#" class="btn btn-primary">
-                    <i class="fa fa-chevron-circle-right"></i>
-                    All events
-                  </a>
-                </p>
+                <p tal:replace="structure context/event_text/output"></p>
               </div>
 
               <div class="events">
@@ -179,7 +163,10 @@
           <div class="container">
             <div class="page-header">
               <h2>
-                Community activity
+                <a tal:omit-tag="not:context/community_page"
+                   tal:attributes="href context/community_page/to_path">
+                  ${context/community_title}
+                </a>
                 <a href="https://pypi.python.org/pypi?:action=browse&show=all&c=518" class="btn btn-sm btn-default">
                   <i class="fa fa-star"></i>
                   PyPI
@@ -264,16 +251,6 @@
                   </a>
                 </h2>
                 <p tal:replace="structure context/sponsor_text/output"></p>
-                <p>
-                  <a href="#" class="btn btn-primary">
-                    <i class="fa fa-chevron-circle-right"></i>
-                    Become a sponsor
-                  </a>
-                  <a href="#" class="btn btn-primary">
-                    <i class="fa fa-chevron-circle-right"></i>
-                    All sponsors
-                  </a>
-                </p>
               </div>
 
               <a class="logos"
