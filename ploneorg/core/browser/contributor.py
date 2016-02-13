@@ -287,6 +287,10 @@ class UpdateContributorData(JsonApiView):
         response_data['done'] = True
 
     def __call__(self):
+        from plone.protect.interfaces import IDisableCSRFProtection
+        from zope.interface import alsoProvides
+
+        alsoProvides(self.request, IDisableCSRFProtection)
         data = self.read_json()
         response_data = {
             'github_members': {},
