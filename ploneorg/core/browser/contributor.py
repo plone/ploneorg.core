@@ -6,7 +6,9 @@ from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone import api
 from plone.memoize.view import memoize_contextless
+from plone.protect.interfaces import IDisableCSRFProtection
 from ploneorg.core import HOMEPAGE_ID
+from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
 from zope.publisher.interfaces import NotFound
@@ -287,9 +289,6 @@ class UpdateContributorData(JsonApiView):
         response_data['done'] = True
 
     def __call__(self):
-        from plone.protect.interfaces import IDisableCSRFProtection
-        from zope.interface import alsoProvides
-
         alsoProvides(self.request, IDisableCSRFProtection)
         data = self.read_json()
         response_data = {
