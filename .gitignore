@@ -4,7 +4,7 @@
 bin
 develop-eggs
 parts
-src
+!src
 var
 *.egg
 *.egg-info
