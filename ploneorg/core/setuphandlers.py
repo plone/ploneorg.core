@@ -433,13 +433,13 @@ def create_homepage(portal, sponsors_page):
                 </p>
                 <p>
                   <a href="#" class="btn btn-primary">
-                    <i class="fa fa-chevron-circle-right"></i>
+                    <span class="fa fa-chevron-circle-right"></span>
                     Add an event
                   </a>
                 </p>
                 <p>
                   <a href="#" class="btn btn-primary">
-                    <i class="fa fa-chevron-circle-right"></i>
+                    <span class="fa fa-chevron-circle-right"></span>
                     All events
                   </a>
                 </p>

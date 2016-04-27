@@ -66,13 +66,13 @@
             <tal:block condition="view/has_social">
               <ul class="member-info">
                 <li tal:condition="contributor/home_page">
-                  <i class="fa fa-github"></i>
+                  <span class="fa fa-github"></span>
                   <a tal:attributes="href string:${contributor/home_page}">
                     <span tal:replace="contributor/home_page">Homepage</span>
                   </a>
                 </li>
                 <li tal:condition="contributor/twitter">
-                  <i class="fa fa-twitter"></i>
+                  <span class="fa fa-twitter"></span>
                   <a tal:attributes="href string:${contributor/twitter}">
                     <span tal:replace="contributor/twitter">Twitter username</span>
                   </a>
@@ -90,15 +90,15 @@
           <h2>
             Community activity
             <a href="#" class="btn btn-sm btn-default">
-              <i class="fa fa-star"></i>
+              <span class="fa fa-star"></span>
               PyPI
             </a>
             <a href="#" class="btn btn-sm btn-default">
-              <i class="fa fa-github-alt"></i>
+              <span class="fa fa-github-alt"></span>
               Plone
             </a>
             <a href="#" class="btn btn-sm btn-default">
-              <i class="fa fa-github-alt"></i>
+              <span class="fa fa-github-alt"></span>
               Collective
             </a>
           </h2>
@@ -108,7 +108,7 @@
 
           <div class="column">
             <div class="well">
-              <i class="fa fa-download"></i>
+              <span class="fa fa-download"></span>
               <h3>First commit</h3>
               <p>17/08/1976</p>
             </div>
@@ -116,7 +116,7 @@
 
           <div class="column">
             <div class="well">
-              <i class="fa fa-ticket"></i>
+              <span class="fa fa-ticket"></span>
               <h3>Plone Contributions</h3>
               <p tal:content="python:int(contributor['plone_commits'])+int(contributor['collective_commits'])">85</p>
             </div>
@@ -124,7 +124,7 @@
 
           <div class="column">
             <div class="well">
-              <i class="fa fa-code"></i>
+              <span class="fa fa-code"></span>
               <h3>Plone Commits</h3>
               <p tal:content="contributor/plone_commits">35</p>
             </div>
@@ -132,7 +132,7 @@
 
           <div class="column">
             <div class="well">
-              <i class="fa fa-code-fork"></i>
+              <span class="fa fa-code-fork"></span>
               <h3>Collective Commits</h3>
               <p tal:content="contributor/collective_commits">450</p>
             </div>
@@ -140,7 +140,7 @@
 
           <div class="column">
             <div class="well">
-              <i class="fa fa-bicycle"></i>
+              <span class="fa fa-bicycle"></span>
               <h3>StackOverflow</h3>
               <p tal:content="contributor/stackoverflow_questions">9</p>
             </div>
@@ -148,7 +148,7 @@
 
           <div class="column">
             <div class="well">
-              <i class="fa fa-plane"></i>
+              <span class="fa fa-plane"></span>
               <h3>Tweets about Plone</h3>
               <p tal:content="contributor/tweets">9</p>
             </div>

@@ -18,7 +18,7 @@
   <metal:content-core fill-slot="main">
 
         <section class="jumbotron jumbotron-home">
-          <div class="container" 
+          <div class="container"
                tal:condition="context/text"
                tal:content="structure context/text/output">
           </div>
@@ -168,15 +168,15 @@
                   ${context/community_title}
                 </a>
                 <a href="https://pypi.python.org/pypi?:action=browse&show=all&c=518" class="btn btn-sm btn-default">
-                  <i class="fa fa-star"></i>
+                  <span class="fa fa-star"></span>
                   PyPI
                 </a>
                 <a href="https://github.com/plone" class="btn btn-sm btn-default">
-                  <i class="fa fa-github-alt"></i>
+                  <span class="fa fa-github-alt"></span>
                   Plone
                 </a>
                 <a href="https://github.com/collective" class="btn btn-sm btn-default">
-                  <i class="fa fa-github-alt"></i>
+                  <span class="fa fa-github-alt"></span>
                   Collective
                 </a>
               </h2>
@@ -186,7 +186,7 @@
 
               <div class="column">
                 <div class="well">
-                  <i class="fa fa-download"></i>
+                  <span class="fa fa-download"></span>
                   <h3>Downloads</h3>
                   <p>${context/stats_downloads}</p>
                 </div>
@@ -194,7 +194,7 @@
 
               <div class="column">
                 <div class="well">
-                  <i class="fa fa-ticket"></i>
+                  <span class="fa fa-ticket"></span>
                   <h3>New issues</h3>
                   <p>${context/stats_new_issues}</p>
                 </div>
@@ -202,7 +202,7 @@
 
               <div class="column">
                 <div class="well">
-                  <i class="fa fa-code"></i>
+                  <span class="fa fa-code"></span>
                   <h3>Commits</h3>
                   <p>${context/stats_commits}</p>
                 </div>
@@ -210,7 +210,7 @@
 
               <div class="column">
                 <div class="well">
-                  <i class="fa fa-ban"></i>
+                  <span class="fa fa-ban"></span>
                   <h3>Blockers</h3>
                   <p>${context/stats_blockers}</p>
                 </div>
@@ -218,7 +218,7 @@
 
               <div class="column">
                 <div class="well">
-                  <i class="fa fa-code-fork fa-flip-vertical"></i>
+                  <span class="fa fa-code-fork fa-flip-vertical"></span>
                   <h3>Pull&nbsp;requests</h3>
                   <p>${context/stats_pull_requests}</p>
                 </div>
@@ -226,7 +226,7 @@
 
               <div class="column">
                 <div class="well">
-                  <i class="fa fa-file-code-o"></i>
+                  <span class="fa fa-file-code-o"></span>
                   <h3>Need&nbsp;review</h3>
                   <p>${context/stats_needs_review}</p>
                 </div>
