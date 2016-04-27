@@ -3,6 +3,14 @@
        xmlns="http://namespaces.plone.org/supermodel/schema"
        i18n:domain="plone">
   <schema name="member-fields">
+    <field name="description" type="zope.schema.Text"
+      users:forms="In User Profile">
+      <description i18n:translate="help_biography">
+          A short overview of who you are and what you do. Will be displayed on your author page, linked from the items you create.
+      </description>
+      <required>False</required>
+      <title i18n:translate="label_biography">Biography</title>
+    </field>
     <field
         name="country"
         type="zope.schema.TextLine"
@@ -12,16 +20,6 @@
       </description>
       <required>False</required>
       <title i18n:translate="label_country">Country</title>
-    </field>
-    <field
-        name="github_url"
-        type="zope.schema.URI"
-        users:forms="In User Profile">
-      <description i18n:translate="help_github_url">
-        [Contributor] The GitHub profile URL for personal stats retrieval.
-      </description>
-      <required>False</required>
-      <title i18n:translate="label_github_url">GitHub profile URL</title>
     </field>
     <field name="stackoverflow_url"
         type="zope.schema.URI"
