@@ -57,11 +57,12 @@ class contributorProfile(BrowserView):
 
     def contributor(self):
         member_data = self.get_member_data()
-
         return {'fullname': member_data.getProperty('fullname'),
                 'name': member_data.getUserName(),
                 'bio': member_data.getProperty('description'),
-                'github': member_data.getProperty('github_url'),
+                'avatar_url': member_data.getProperty('avatar_url'),
+                'location': member_data.getProperty('location'),
+                'country': member_data.getProperty('country'),
                 'plone_commits': member_data.getProperty('plone_commits'),
                 'collective_commits': member_data.getProperty(
                     'collective_commits'),
