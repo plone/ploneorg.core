@@ -36,6 +36,7 @@ setup(
         'PyGithub',
         'collective.monkeypatcher',
         'collective.badge',
+        'collective.themefragments'
         'plone.api',
         'plone.app.referenceablebehavior',
         'plone.app.vulnerabilities',
