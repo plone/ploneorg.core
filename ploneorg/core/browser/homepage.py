@@ -36,16 +36,10 @@ class HomePage(BrowserView):
         return result[:4]
 
     def get_sponsors(self):
-        # pc = api.portal.get_tool('portal_catalog')
-        # # TODO: Filter on type `premium` sponsors.
-        # result = pc.searchResults(
-        #     portal_type='Sponsor',
-        #     sort_on='title',
-        #     review_state='published'
-        # )
-        # return result
-        return [
-            {'title': 'AcmeCorp'},
-            {'title': 'AcmeCorp'},
-            {'title': 'AcmeCorp'},
-        ]
+        pc = api.portal.get_tool('portal_catalog')
+        result = pc.searchResults(
+            portal_type='Image',
+            Subject=['sponsor logo'],
+            sort_on='sortable_title'
+        )
+        return result
