@@ -259,11 +259,9 @@
               <a class="logos"
                  tal:condition="context/sponsor_page"
                  tal:attributes="href context/sponsor_page/to_path">
-                <div class="row" tal:repeat="item view/get_sponsors">
-                    <div class="column">
+                <div class="column" tal:repeat="item view/get_sponsors">
                       <img src="static/sponsors/square.svg"
                            tal:attributes="src item/getURL">
-                    </div>
                 </div>
               </a>
 
