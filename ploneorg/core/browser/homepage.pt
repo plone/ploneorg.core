@@ -111,7 +111,7 @@
 
             <div class="row">
 
-              <div class="about">
+              <div class="about column">
                 <h2>
                   <a tal:omit-tag="not:context/event_page"
                      tal:attributes="href context/event_page/to_path">${context/event_title}</a>
@@ -119,7 +119,7 @@
                 <p tal:replace="structure context/event_text/output"></p>
               </div>
 
-              <div class="events">
+              <div class="events column">
                 <div class="row">
 
                   <tal:block tal:repeat="item view/get_events">
@@ -245,7 +245,7 @@
 
             <div class="row">
 
-              <div class="about">
+              <div class="about column">
                 <h2>
                   <a tal:omit-tag="not:context/sponsor_page"
                      tal:attributes="href context/sponsor_page/to_path;
@@ -256,7 +256,7 @@
                 <p tal:replace="structure context/sponsor_text/output"></p>
               </div>
 
-              <a class="logos"
+              <a class="logos column"
                  tal:condition="context/sponsor_page"
                  tal:attributes="href context/sponsor_page/to_path">
                 <div class="row">
