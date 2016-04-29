@@ -23,7 +23,7 @@
                tal:attributes="src contributor/avatar_url" />
         </div>
         <div class="text">
-          <h1 tal:content="contributor/fullname">Coen Van der Kamp</h1>
+          <h1 tal:content="string:${contributor/fullname} (${contributor/name})">Coen Van der Kamp</h1>
           <p class="lead"
              tal:content="string:${contributor/location}, ${contributor/country}">Rotterdam, The Netherlands  </p>
         </div>
@@ -58,14 +58,14 @@
                 </p>
           </article>
           <article>
-              <h3>Events/Sprints attended</h3>
+              <h3>Events/Sprints Attended</h3>
               <p class=""
                  tal:condition="contributor/sprints_attended"
                  tal:content="structure contributor/sprints_attended">Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus...
               </p>
           </article>
           <article>
-            <h3>Contact</h3>
+            <h3>Links</h3>
             <tal:block condition="view/has_social">
               <ul class="member-info">
                 <li tal:condition="contributor/home_page">
