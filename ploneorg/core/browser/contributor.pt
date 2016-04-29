@@ -33,7 +33,7 @@
     <section class="sec-badges">
       <div class="container">
         <div class="row contributor-badges">
-          <div class="col-xs-4 col-sm-6 col-lg-12"
+          <div class="col-xs-12"
                tal:define="badges view/get_user_badges">
             <a tal:repeat="badge badges" class="col-md-2"
                tal:attributes="href badge/absolute_url; title badge/Title">
