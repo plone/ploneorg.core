@@ -72,6 +72,7 @@ class contributorProfile(BrowserView):
                     'stackoverflow_url'),
                 'stackoverflow_questions': member_data.getProperty(
                     'stackoverflow_questions'),
+                'sprints_attended': member_data.getProperty('sprints_attended'),
                 'contributing_since': member_data.getProperty(
                     'contributing_since'),
                 'tweets': member_data.getProperty('tweets'),

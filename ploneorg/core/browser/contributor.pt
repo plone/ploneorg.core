@@ -59,7 +59,10 @@
           </article>
           <article>
               <h3>Events/Sprints attended</h3>
-              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus...</p>
+              <p class=""
+                 tal:condition="contributor/sprints_attended"
+                 tal:content="contributor/sprints_attended">Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus...
+              </p>
           </article>
           <article>
             <h3>Contact</h3>
