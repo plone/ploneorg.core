@@ -37,6 +37,7 @@ setup(
         'collective.monkeypatcher',
         'collective.badge',
         'collective.themefragments',
+        'launchpadlib',
         'plone.api',
         'plone.app.referenceablebehavior',
         'plone.app.vulnerabilities',

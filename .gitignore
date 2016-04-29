@@ -35,3 +35,4 @@ cache
 contributions.cfg
 htmlcov
 share/
+.launchpadlib/
