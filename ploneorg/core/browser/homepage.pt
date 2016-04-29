@@ -114,7 +114,7 @@
               <div class="about column">
                 <h2>
                   <a tal:omit-tag="not:context/event_page"
-                     tal:attributes="href context/event_page/to_path">${context/event_title}</a>
+                     tal:attributes="href context/event_page/to_object/absolute_url">${context/event_title}</a>
                 </h2>
                 <p tal:replace="structure context/event_text/output"></p>
               </div>
