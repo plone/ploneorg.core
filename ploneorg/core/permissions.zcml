@@ -14,5 +14,9 @@
     id="ploneorg.core.foundationmember.manage"
     title="Foundation Member: Manage Members"
     />
+  <permission
+    id="ploneorg.core.plonerelease.add"
+    title="Add Plone Release"
+    />
 
 </configure>

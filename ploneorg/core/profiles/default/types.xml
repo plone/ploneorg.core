@@ -4,4 +4,5 @@
  <object name="FoundationMember" meta_type="Dexterity FTI"/>
  <object name="homepage" meta_type="Dexterity FTI"/>
  <object name="site_link" meta_type="Dexterity FTI"/>
+ <object name="plonerelease" meta_type="Dexterity FTI"/>
 </object>

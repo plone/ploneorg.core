@@ -52,6 +52,14 @@
       <required>False</required>
       <title i18n:translate="label_additional_emails">Additional emails</title>
     </field>
+    <field name="sprints_attended" type="zope.schema.Text"
+      users:forms="In User Profile">
+      <description i18n:translate="help_sprints_attended">
+        What events or sprints have you attended to?
+      </description>
+      <required>False</required>
+      <title i18n:translate="label_sprints_attended">Events/Sprints attended</title>
+    </field>
     <field
         name="contributing_since"
         type="zope.schema.TextLine"

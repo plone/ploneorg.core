@@ -57,4 +57,12 @@
       permission="zope2.View"
       />
 
+    <browser:page
+      name="past-releases"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".releases.LaunchpadReleases"
+      template="past_releases.pt"
+      permission="zope2.View"
+      />
+
 </configure>
