@@ -58,6 +58,14 @@
       />
 
     <browser:page
+      name="view"
+      for="ploneorg.core.content.plonerelease.IPloneRelease"
+      class=".releases.PloneReleaseView"
+      template="plone_release.pt"
+      permission="zope2.View"
+      />
+
+    <browser:page
       name="past-releases"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".releases.LaunchpadReleases"
