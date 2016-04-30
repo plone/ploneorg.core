@@ -92,7 +92,7 @@ def create_folder(portal, uid, title):
 
 def create_folders(portal):
     items = [
-        ('getting-started', 'Getting started'),
+        ('get-started', 'Get started'),
         ('community', 'Community'),
         ('foundation', 'Foundation'),
         ('related-websites', 'Related websites'),
@@ -527,7 +527,7 @@ def delete_content(portal):
 
 def order_content(portal):
     items = [
-        ('getting-started', 'Getting started'),
+        ('get-started', 'Get started'),
         ('community', 'Community'),
         ('foundation', 'Foundation'),
     ]
