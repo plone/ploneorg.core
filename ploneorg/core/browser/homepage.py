@@ -26,14 +26,10 @@ class HomePage(BrowserView):
         return [i.getObject() for i in results[:4]]
 
     def get_news(self):
-        pc = api.portal.get_tool('portal_catalog')
-        result = pc.searchResults(
-            portal_type='News Item',
-            sort_on='Date',
-            sort_order='reverse',
-            review_state='published'
-        )
-        return result[:4]
+        portal = api.portal.get()
+        front_page_news = portal['news']['front-page-news']
+        result = front_page_news.results(brains=True)
+        return result
 
     def get_sponsors(self):
         pc = api.portal.get_tool('portal_catalog')
