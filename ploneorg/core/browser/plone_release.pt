@@ -32,6 +32,15 @@
   ${context/changelog|nothing}
 
 
+  <h4>Learn about Plone</h4>
+  <ul>
+    <li><a href="http://docs.plone.org/manage/installing/index.html">Installing Plone</a></li>
+    <li><a href="http://docs.plone.org/quickstart/index.html">Plone quickstart guide</a></li>
+    <li><a href="http://docs.plone.org/working-with-content/index.html">Working with content</a></li>
+    <li><a href="http://docs.plone.org/adapt-and-extend/index.html">Adapting and extending Plone</a></li>
+  </ul>
+
+
   </metal:content-core>
 
 </body>
