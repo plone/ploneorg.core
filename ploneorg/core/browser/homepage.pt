@@ -70,11 +70,7 @@
                   <article>
                     <a tal:define="obj item/getObject"
                        tal:attributes="href obj/absolute_url">
-                      <img tal:define="images obj/@@images;
-                                       thumbnail python: images.scale('image', width=360, height=203, direction='down')"
-                           tal:condition="thumbnail"
-                           tal:attributes="src thumbnail/url;
-                               alt obj/image_caption"/>
+                      <img tal:replace="structure obj/@@images/image/preview" />
 
                       <h3>${obj/title}</h3>
                       <p class="truncate">${obj/description}</p>
