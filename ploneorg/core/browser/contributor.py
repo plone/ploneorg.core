@@ -270,8 +270,8 @@ class UpdateContributorData(JsonApiView):
         if pypidata is None:
             response_data['done'] = 'No data'
             return
-        if pypidata['last_day'] >= 0:
-            hp.stats_downloads = pypidata['last_day']
+        if pypidata['last_month'] >= 0:
+            hp.stats_downloads = pypidata['last_month']
         response_data['done'] = True
 
     def add_community_stats(self, data, response_data):
