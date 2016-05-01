@@ -25,12 +25,19 @@ class IPloneRelease(Schema):
     )
     release_notes = RichText(
         title=_(u'Release notes'),
+        default_mime_type='text/html',
+        output_mime_type='text/html',
+        allowed_mime_types=('text/plain', 'text/html', 'text/restructured', 'text/x-web-markdown'),
         required=False,
     )
     changelog = RichText(
         title=_(u"Changelog"),
+        default_mime_type='text/restructured',
+        output_mime_type='text/html',
+        allowed_mime_types=('text/plain', 'text/html', 'text/restructured', 'text/x-web-markdown'),
         required=False,
     )
+
 
 @implementer(IPloneRelease)
 class PloneRelease(Item):

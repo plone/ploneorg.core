@@ -30,7 +30,7 @@
         <tr><th>Release manager</th><td><a href="${portal_url}/profile/esteele">Eric Steele</a></td></tr>
       </tbody>
     </table>
-    ${release/notes}
+    ${context/release_notes}
 
   <tal:changes condition="context/changelog">
     <h4>Changes</h4>
