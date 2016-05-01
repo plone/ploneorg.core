@@ -70,11 +70,11 @@
                   <article>
                     <a tal:define="obj item/getObject"
                        tal:attributes="href obj/absolute_url">
-                      <img tal:define="images obj/@@images;
-                                       thumbnail python: images.scale('image', width=360, height=203, direction='down')"
-                           tal:condition="thumbnail"
-                           tal:attributes="src thumbnail/url;
-                               alt obj/image_caption"/>
+                          <tal:image define="scale_func obj/@@images;
+                                             scaled_image python: getattr(obj.aq_explicit, 'image', False) and scale_func.scale('image', scale='mini')"
+                                     condition="python: scaled_image">
+                            <img tal:replace="structure python: scaled_image.tag(css_class='newsImage')" />
+                          </tal:image>
 
                       <h3>${obj/title}</h3>
                       <p class="truncate">${obj/description}</p>

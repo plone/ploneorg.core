@@ -19,23 +19,14 @@ class IPloneRelease(Schema):
         title=_(u"Description"),
         required=False,
     )
-    features = schema.Text(
-        title=_(u"Features"),
+    release_date = schema.Date(
+        title=_(u'Release date'),
         required=False,
     )
-    fixes = schema.Text(
-        title=_(u"Fixes"),
+    changelog = schema.Text(
+        title=_(u"Changelog"),
         required=False,
     )
-    incompatibilities = schema.Text(
-        title=_(u"Incompatibilities"),
-        required=False,
-    )
-    dependency_changes = schema.Text(
-        title=_(u"Dependency Version Changes"),
-        required=False,
-    )
-
 
 @implementer(IPloneRelease)
 class PloneRelease(Item):

@@ -9,6 +9,10 @@ from Products.Five import BrowserView
 from plone.memoize import ram
 
 
+class PloneReleaseView(BrowserView):
+    """ Default view for a Plone release """
+
+
 @functools.total_ordering
 class NumberedVersion(version.Version):
     """
