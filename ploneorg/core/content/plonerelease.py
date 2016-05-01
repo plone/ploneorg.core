@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 from plone.app.textfield import RichText
 from plone.dexterity.content import Item
 from plone.supermodel.directives import fieldset
@@ -49,6 +50,7 @@ class IPloneRelease(Schema):
     release_date = schema.Date(
         title=_(u'Release date'),
         required=False,
+        default=datetime.date.today()
     )
     release_notes = RichText(
         title=_(u'Release notes'),
