@@ -258,7 +258,7 @@
 
               <a class="logos column"
                  tal:condition="context/sponsor_page"
-                 tal:attributes="href context/sponsor_page/to_path">
+                 tal:attributes="href context/sponsor_page/to_object/absolute_url">
                 <div class="row">
                   <div class="column" tal:repeat="item view/get_sponsors">
                         <img src="static/sponsors/square.svg"
