@@ -109,13 +109,13 @@
         <p class="lead">Text that explains where those numbers are from. Mention the period. E.g: The actvity in the past seven days.</p>
         <div class="row">
 
-          <div class="column">
+          <!-- <div class="column">
             <div class="well">
               <span class="fa fa-download"></span>
               <h3>First commit</h3>
               <p>17/10/2006</p>
             </div>
-          </div>
+          </div> -->
 
           <div class="column">
             <div class="well">
