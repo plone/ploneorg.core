@@ -23,7 +23,11 @@ class IPloneRelease(Schema):
         title=_(u'Release date'),
         required=False,
     )
-    changelog = schema.Text(
+    release_notes = RichText(
+        title=_(u'Release notes'),
+        required=False,
+    )
+    changelog = RichText(
         title=_(u"Changelog"),
         required=False,
     )

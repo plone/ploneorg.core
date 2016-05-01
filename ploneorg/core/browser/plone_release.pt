@@ -15,6 +15,8 @@
   <metal:content-core fill-slot="main">
     <h1 class="documentFirstHeading">${context/Title}</h1>
 
+
+  <h4>Release notes:</h4>
     <table class="invisible-grid">
       <tbody>
         <tr><th>License</th><td><a href="http://creativecommons.org/licenses/GPL/2.0/">GPL</a></td></tr>
@@ -22,11 +24,7 @@
         <tr><th>Release manager</th><td><a href="/profile/esteele">Eric Steele</a></td></tr>
       </tbody>
     </table>
-
-  <h4>Release Notes:</h4>
-  <p>Windows users: use the Vagrant kit. We anticipate having a binary Windows installer for later releases.</p>
-  <p>OS X users: use the Vagrant kit or install XCode command-line tools and use the Unified Installer.</p>
-  <p>Automated provisioning: See <a href="http://docs.plone.org/external/ansible-playbook/docs">Plone's Ansible Playbook</a> for a full-stack installation kit.</p>
+    ${release/notes}
 
   <h4>Changes:</h4>
   ${context/changelog|nothing}
