@@ -32,6 +32,10 @@
     </table>
     ${context/release_notes/output|nothing}
 
+  <tal:download repeat="file context/files">
+    <a href="${file/url}">${file/platform}</a>
+  </tal:download>
+
   <tal:changes condition="context/changelog">
     <h4>Changes</h4>
     ${context/changelog/output|nothing}

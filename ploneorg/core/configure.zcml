@@ -10,6 +10,7 @@
   <include file="permissions.zcml" />
   <include package="ploneorg.theme" />
   <include package=".browser" />
+  <include package="collective.z3cform.datagridfield" />
 
   <plone:behavior
       description="Stores the Plone Statistics Data"
