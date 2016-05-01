@@ -109,13 +109,13 @@
         <p class="lead">Numbers are never a complete indication of one's activity. Plus, we're still working on the scripts to gather them, so don't take any number here as an absolute...</p>
         <div class="row">
 
-          <div class="column">
+          <!-- <div class="column">
             <div class="well">
               <span class="fa fa-download"></span>
               <h3>First commit</h3>
               <p>17/10/2006</p>
             </div>
-          </div>
+          </div> -->
 
           <div class="column">
             <div class="well">

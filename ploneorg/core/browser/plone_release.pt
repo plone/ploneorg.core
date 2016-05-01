@@ -9,28 +9,41 @@
 <body>
 
   <metal:block fill-slot="top_slot"
-                   tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',0);
+                   tal:define="disable_column_one python:request.set('disable_plone.leftcolumn', 1);
                                disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
 
   <metal:content-core fill-slot="main">
-    <h1 class="documentFirstHeading">${context/Title}</h1>
+    <h1 class="documentFirstHeading">
+      ${context/Title}
+      <tal:date condition="context/release_date">(${python:context.release_date.strftime('%B %d, %Y')})</tal:date>
+    </h1>
 
+    <div class="alert alert-warning">
+      <p>There may be hotfixes applicable to this release. Always check the <a href="${portal_url}/security/hotfixes/">Plone Hotfix page</a> before production deployment.</p>
+    </div>
+
+  <h4>Release notes</h4>
     <table class="invisible-grid">
       <tbody>
         <tr><th>License</th><td><a href="http://creativecommons.org/licenses/GPL/2.0/">GPL</a></td></tr>
         <tr><th>Date released</th><td>${context/release_date|nothing}</td></tr>
-        <tr><th>Release manager</th><td><a href="/profile/esteele">Eric Steele</a></td></tr>
+        <tr><th>Release manager</th><td><a href="${portal_url}/profile/esteele">Eric Steele</a></td></tr>
       </tbody>
     </table>
+    ${context/release_notes/output|nothing}
 
-  <h4>Release Notes:</h4>
-  <p>Windows users: use the Vagrant kit. We anticipate having a binary Windows installer for later releases.</p>
-  <p>OS X users: use the Vagrant kit or install XCode command-line tools and use the Unified Installer.</p>
-  <p>Automated provisioning: See <a href="http://docs.plone.org/external/ansible-playbook/docs">Plone's Ansible Playbook</a> for a full-stack installation kit.</p>
+  <tal:changes condition="context/changelog">
+    <h4>Changes</h4>
+    ${context/changelog/output|nothing}
+  </tal:changes>
 
-  <h4>Changes:</h4>
-  ${context/changelog|nothing}
 
+  <h4>Project resources</h4>
+  <ul>
+    <li><a href="${portal_url}/security">Security</a></li>
+    <li><a href="https://github.com/plone/Products.CMFPlone/issues/new">Issue tracker</a></li>
+    <li><a href="${portal_url}/support">Support</a></li>
+  </ul>
 
   <h4>Learn about Plone</h4>
   <ul>
