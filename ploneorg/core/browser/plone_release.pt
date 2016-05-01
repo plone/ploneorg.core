@@ -16,12 +16,15 @@
     <h1 class="documentFirstHeading">${context/Title}</h1>
 
 
+  <p>There may be hotfixes applicable to this release. Always check the <a href="${portal_url}/security/hotfixes/">Plone Hotfix page</a> before production deployment.</p>
+
+
   <h4>Release notes:</h4>
     <table class="invisible-grid">
       <tbody>
         <tr><th>License</th><td><a href="http://creativecommons.org/licenses/GPL/2.0/">GPL</a></td></tr>
         <tr><th>Date released</th><td>${context/release_date|nothing}</td></tr>
-        <tr><th>Release manager</th><td><a href="/profile/esteele">Eric Steele</a></td></tr>
+        <tr><th>Release manager</th><td><a href="${portal_url}/profile/esteele">Eric Steele</a></td></tr>
       </tbody>
     </table>
     ${release/notes}
