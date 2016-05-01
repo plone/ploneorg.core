@@ -18,9 +18,9 @@
       <tal:date condition="context/release_date">(${python:context.release_date.strftime('%B %d, %Y')})</tal:date>
     </h1>
 
-
-  <p>There may be hotfixes applicable to this release. Always check the <a href="${portal_url}/security/hotfixes/">Plone Hotfix page</a> before production deployment.</p>
-
+    <div class="alert alert-warning">
+      <p>There may be hotfixes applicable to this release. Always check the <a href="${portal_url}/security/hotfixes/">Plone Hotfix page</a> before production deployment.</p>
+    </div>
 
   <h4>Release notes</h4>
     <table class="invisible-grid">
