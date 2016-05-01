@@ -22,7 +22,7 @@
   <p>There may be hotfixes applicable to this release. Always check the <a href="${portal_url}/security/hotfixes/">Plone Hotfix page</a> before production deployment.</p>
 
 
-  <h4>Release notes:</h4>
+  <h4>Release notes</h4>
     <table class="invisible-grid">
       <tbody>
         <tr><th>License</th><td><a href="http://creativecommons.org/licenses/GPL/2.0/">GPL</a></td></tr>
@@ -33,9 +33,17 @@
     ${release/notes}
 
   <tal:changes condition="context/changelog">
-    <h4>Changes:</h4>
+    <h4>Changes</h4>
     ${context/changelog|nothing}
   </tal:changes>
+
+
+  <h4>Project resources</h4>
+  <ul>
+    <li><a href="${portal_url}/security">Security</a></li>
+    <li><a href="https://github.com/plone/Products.CMFPlone/issues/new">Issue tracker</a></li>
+    <li><a href="${portal_url}/support">Support</a></li>
+  </ul>
 
   <h4>Learn about Plone</h4>
   <ul>
