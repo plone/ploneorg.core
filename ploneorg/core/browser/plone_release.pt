@@ -10,7 +10,7 @@
 
   <metal:block fill-slot="top_slot"
                    tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',0);
-                               disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+                               disable_column_two python:request.set('disable_plone.rightcolumn',0);" />
 
   <metal:content-core fill-slot="main">
     <h1 class="documentFirstHeading">${context/Title}</h1>
