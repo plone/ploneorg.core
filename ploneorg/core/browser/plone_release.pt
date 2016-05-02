@@ -35,7 +35,7 @@
   <h4>Downloads</h4>
   <tal:download repeat="file context/files">
     <a href="${file/url}">${file/description}</a>:
-    ${file/platform} <tal:size condition="file/file_size">($file/file_size)</tal:size>
+    ${file/platform} <tal:size condition="file/file_size">(${file/file_size})</tal:size>
   </tal:download>
 
   <tal:changes condition="context/changelog">
