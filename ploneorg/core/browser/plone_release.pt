@@ -34,9 +34,9 @@
 
   <h4>Downloads</h4>
   <ul>
-    <li repeat="file context/files">
+    <li tal:repeat="file context/files">
       <a href="${file/url}" class="btn btn-primary">${file/description}</a><br />
-      <small>${file/platform} <tal:size condition="file/file_size">(${file/file_size})</tal:size></small>
+      <small>${file/platform} <tal:size tal:condition="file/file_size">(${file/file_size})</tal:size></small>
     </li>
   </ul>
   <tal:changes condition="context/changelog">
