@@ -14,27 +14,26 @@
                          dummy python:request.set('disable_border',1)" />
 
   <metal:content-core fill-slot="main"
-                      tal:define="contributor view/contributor|nothing;
-                                  profile_complete view/has_complete_profile;">
+                      tal:define="contributor view/contributor|nothing;">
 
     <section class="jumbotron sec-profile">
       <div class="container">
         <div class="image">
-          <img class="img-circle" src="${contributor/avatar_url}" tal:condition="profile_complete" />
+          <img class="img-circle" src="${contributor/avatar_url}" tal:condition="contributor" />
         </div>
         <div class="text">
           <h1>
-            <tal:has_profile tal:condition="profile_complete">${contributor/fullname} (${contributor/name})</tal:has_profile>
-            <tal:no_profile tal:condition="not:profile_complete">${view/username}</tal:no_profile>
+            <tal:has_profile tal:condition="contributor">${contributor/fullname} (${contributor/name})</tal:has_profile>
+            <tal:no_profile tal:condition="not:contributor">${view/username}</tal:no_profile>
           </h1>
-          <p class="lead" tal:condition="profile_complete">
+          <p class="lead" tal:condition="contributor">
             ${contributor/location}, ${contributor/country}"
           </p>
         </div>
       </div>
     </section>
 
-    <section class="sec-badges" tal:condition="profile_complete">
+    <section class="sec-badges" tal:condition="contributor">
       <div class="container">
         <div class="row contributor-badges">
           <div class="col-xs-12"
@@ -50,7 +49,7 @@
       </div>
     </section>
 
-    <section class="sec-missing" tal:condition="not:profile_complete">
+    <section class="sec-missing" tal:condition="not:contributor">
       <div class="container">
       <div class="row">
           <article>This user has not created a plone.org account yet.</article>
@@ -58,7 +57,7 @@
       </div>
     </section>
 
-    <section class="sec-community" tal:condition="profile_complete">
+    <section class="sec-community" tal:condition="contributor">
       <div class="container">
       <div class="row">
           <article>
@@ -99,7 +98,7 @@
         </div>
     </section>
 
-    <section class="sec-github-totals" tal:condition="profile_complete">
+    <section class="sec-github-totals" tal:condition="contributor">
       <div class="container">
         <div class="page-header">
           <h2>
