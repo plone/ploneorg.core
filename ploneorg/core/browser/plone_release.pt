@@ -22,7 +22,7 @@
       <p>There may be hotfixes applicable to this release. Always check the <a href="${portal_url}/security/hotfixes/">Plone Hotfix page</a> before production deployment.</p>
     </div>
 
-  <h4>Release notes</h4>
+  <h3>Release notes</h3>
     <table class="invisible-grid">
       <tbody>
         <tr><th>License</th><td><a href="http://creativecommons.org/licenses/GPL/2.0/">GPL</a></td></tr>
@@ -30,26 +30,31 @@
         <tr><th>Release manager</th><td><a href="${portal_url}/profile/esteele">Eric Steele</a></td></tr>
       </tbody>
     </table>
-    ${context/release_notes/output|nothing}
+    <div tal:content="structure context/release_notes/output|nothing"></div>
 
-  <tal:download repeat="file context/files">
-    <a href="${file/url}">${file/platform}</a>
-  </tal:download>
-
+  <h3>Downloads</h3>
+  <ul>
+    <li tal:repeat="file context/files">
+      <a href="${file/url}" class="btn btn-default btn-lg">
+        ${file/description}<br />
+        <small>${file/platform} <tal:size tal:condition="file/file_size">(${file/file_size})</tal:size></small>
+      </a>
+    </li>
+  </ul>
   <tal:changes condition="context/changelog">
-    <h4>Changes</h4>
-    ${context/changelog/output|nothing}
+    <h3>Changes</h3>
+    <div tal:content="structure context/changelog/output|nothing"></div>
   </tal:changes>
 
 
-  <h4>Project resources</h4>
+  <h3>Project resources</h3>
   <ul>
     <li><a href="${portal_url}/security">Security</a></li>
     <li><a href="https://github.com/plone/Products.CMFPlone/issues/new">Issue tracker</a></li>
     <li><a href="${portal_url}/support">Support</a></li>
   </ul>
 
-  <h4>Learn about Plone</h4>
+  <h3>Learn about Plone</h3>
   <ul>
     <li><a href="http://docs.plone.org/manage/installing/index.html">Installing Plone</a></li>
     <li><a href="http://docs.plone.org/quickstart/index.html">Plone quickstart guide</a></li>
