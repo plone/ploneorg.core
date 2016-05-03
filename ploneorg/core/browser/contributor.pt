@@ -27,7 +27,7 @@
             <tal:no_profile tal:condition="not:contributor">${view/username}</tal:no_profile>
           </h1>
           <p class="lead" tal:condition="contributor">
-            ${contributor/location}, ${contributor/country}"
+            ${contributor/location}, ${contributor/country}
           </p>
         </div>
       </div>
