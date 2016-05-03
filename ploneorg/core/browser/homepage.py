@@ -3,7 +3,7 @@ from Products.Five import BrowserView
 
 from datetime import datetime
 from plone import api
-
+from random import shuffle
 
 class HomePage(BrowserView):
 
@@ -36,6 +36,7 @@ class HomePage(BrowserView):
         result = pc.searchResults(
             portal_type='Image',
             Subject=['sponsor logo'],
-            sort_on='sortable_title'
         )
-        return result
+        result_list = list(result)
+        random.shuffle(result_list)
+        return result_list
