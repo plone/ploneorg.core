@@ -38,5 +38,5 @@ class HomePage(BrowserView):
             Subject=['sponsor logo'],
         )
         result_list = list(result)
-        random.shuffle(result_list)
+        shuffle(result_list)
         return result_list
