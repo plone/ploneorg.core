@@ -57,8 +57,6 @@ class contributorProfile(BrowserView):
 
     def contributor(self):
         member_data = self.get_member_data()
-        if member_data is None:
-            raise NotFound(self, self.username, request)
         return {'fullname': member_data.getProperty('fullname'),
                 'name': member_data.getUserName(),
                 'bio': member_data.getProperty('description'),
