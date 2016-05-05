@@ -35,7 +35,8 @@ class HomePage(BrowserView):
         pc = api.portal.get_tool('portal_catalog')
         result = pc.searchResults(
             portal_type='Image',
-            Subject=['sponsor logo', 'premium sponsor',],
+            Subject={'query':['sponsor logo', 'premium sponsor',],
+                     'operator':'and'}
         )
         result_list = list(result)
         shuffle(result_list)
