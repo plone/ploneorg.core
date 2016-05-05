@@ -31,11 +31,11 @@ class HomePage(BrowserView):
         result = front_page_news.results(brains=True)
         return result
 
-    def get_sponsors(self):
+    def get_premium_sponsors(self):
         pc = api.portal.get_tool('portal_catalog')
         result = pc.searchResults(
             portal_type='Image',
-            Subject=['sponsor logo'],
+            Subject=['sponsor logo', 'premium sponsor',],
         )
         result_list = list(result)
         shuffle(result_list)
