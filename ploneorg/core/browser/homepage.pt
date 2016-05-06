@@ -263,7 +263,7 @@
                   <div class="column" tal:repeat="item view/get_premium_sponsors">
                         <img src="static/sponsors/square.svg"
                              tal:attributes="src item/getURL;
-                                             alt item/getTitle">
+                                             alt item/Title">
                   </div>
                 </div>
               </a>
