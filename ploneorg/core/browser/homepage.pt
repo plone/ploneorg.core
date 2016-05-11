@@ -243,7 +243,7 @@
         <section class="sec-full-width sec-sponsors-home">
           <div class="container">
 
-            <div class="row">
+            <div class="wasrow">
 
               <div class="about column">
                 <h2>
@@ -263,7 +263,7 @@
                   <div class="column" tal:repeat="item view/get_premium_sponsors">
                         <img src="static/sponsors/square.svg"
                              tal:attributes="src item/getURL;
-                                             alt item/Title">
+                                             alt item/getTitle">
                   </div>
                 </div>
               </a>
