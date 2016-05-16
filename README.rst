@@ -5,7 +5,7 @@ This is the core policy package of the 2015 reboot of plone.org site project.
 
 Other related packages:
 
-* ploneorg.theme
+* `ploneorg.theme <https://github.com/plone/ploneorg.theme>`_
 
 
 The project
