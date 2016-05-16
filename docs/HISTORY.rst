@@ -4,4 +4,5 @@ Changelog
 1.0dev (unreleased)
 -------------------
 
-- Initial release
+- We launched the new plone.org on May 10, 2016. 
+
