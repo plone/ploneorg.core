@@ -2,4 +2,4 @@
 Authentication
 ==============
 
-How we do that we the new site, hint link to the docs about the new GitHub thinngie
+How we do that on the new site,link to the docs about the new GitHub thinngie

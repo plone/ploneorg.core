@@ -32,9 +32,11 @@ here::
 
     https://github.com/settings/tokens
 
-The configuration look like this::
+The configuration look like this:
 
-     [general]
+.. code-block:: ini
+
+    [general]
     plone_url = http://localhost:8080/ploneorg/
     datadir = ./var/contributor_data
     admin_user = admin
@@ -55,7 +57,7 @@ The configuration look like this::
 
 Make sure that all the values matches de ones in your site.
 
-note::
+.. note::
 
         At the moment only the Github, Pypi, Stackoverflow and Twitter stats are available.
 

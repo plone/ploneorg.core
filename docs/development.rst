@@ -2,7 +2,7 @@
 Development
 ===========
 
-What to do to get a development setup up and running
+What to do to get a development setup up and running.
 
 Requirements
 ------------
@@ -25,9 +25,11 @@ and the configuration of the pipeline lives in:
 
 So basically you have to configure the [catalogsource] section accordingly by
 informing the location of the source instance and the sections to be migrated,
-for example::
+for example:
+
+.. code-block:: ini
    
-        [catalogsource]
+    [catalogsource]
     blueprint = ploneorg.migration.catalogsource
     remote-url = http://localhost:8081
     remote-username = admin
@@ -37,7 +39,9 @@ for example::
     catalog-query = {'path': {'query': '/plone.org/foundation'}}
     remote-skip-paths = /foundation/members
 
-The migration should go smoothly, for the content in::
+The migration should go smoothly, for the content in:
+
+.. code-block:: shell
 
     /foundation
     /news
