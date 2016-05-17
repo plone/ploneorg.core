@@ -59,7 +59,7 @@ Make sure that all the values matches de ones in your site.
 
 .. note::
 
-        At the moment only the Github, Pypi, Stackoverflow and Twitter stats are available.
+        At the moment only the GitHub, PyPI, Stackoverflow and Twitter stats are available.
 
 Stats receiver view
 -------------------
