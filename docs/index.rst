@@ -7,6 +7,8 @@ ploneorg.core
 
    badges
    auth
+   stats
+   migration
    development
    deployment
 
