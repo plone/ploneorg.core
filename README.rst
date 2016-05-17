@@ -19,13 +19,13 @@ Full documentation for end users can be found in the "docs" folder.
 Contribute
 ----------
 
-- Issue Tracker: github.com/plone/ploneorg.core/issues
-- Source Code: github.com/plone/ploneorg.core
+- `Issue Tracker <https://github.com/plone/ploneorg.core/issues>`_
+- `Source Code <https://github.com/plone/ploneorg.core>`_
 
 Support
 -------
 
-If you are having issues, please let us know.
+If you are having issues, please let us know !
 
 License
 -------
