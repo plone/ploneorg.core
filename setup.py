@@ -28,8 +28,12 @@ setup(
     include_package_data=True,
     zip_safe=False,
     extras_require={
-        'test': ['plone.app.testing[robot]>=5.0',
-                 'plone.app.contenttypes[test]'],
+        'test': [
+            'plone.app.testing[robot]>=5.0',
+            'plone.app.contenttypes[test]',
+        ],
+        'migration': ['ploneorg.migration'],
+        'develop': ['ipdb', 'ipython'],
     },
     install_requires=[
         'Products.CMFPlone',
@@ -45,6 +49,7 @@ setup(
         'plone.app.vulnerabilities',
         'plone.directives.form',
         'ploneorg.theme',
+        'ploneorg.addonlisting',
         'pycountry',
         'requests',
         'setuptools',
