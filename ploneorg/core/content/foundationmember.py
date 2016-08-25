@@ -109,13 +109,14 @@ class IFoundationMember(Schema):
         title=_(u'Organization size'),
         description=_(
             u'Number of people in your organization. It\'s fine to estimate.'),
+        required=False
     )
 
     read_permission(ploneuse='ploneorg.core.foundationmember.view')
     ploneuse = RichText(
         title=_(u'Plone use'),
         description=_(u'How is Plone used by your organization?'),
-        required=True
+        required=False
     )
 
 
