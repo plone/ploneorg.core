@@ -1,4 +1,6 @@
+.Python
 .pip-selfcheck.json
+pip-selfcheck.json
 .DS_Store
 .installed.cfg
 .mr.developer.cfg
