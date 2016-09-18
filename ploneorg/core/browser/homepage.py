@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from Products.Five import BrowserView
-
 from datetime import datetime
 from plone import api
+from Products.Five import BrowserView
 from random import shuffle
+
 
 class HomePage(BrowserView):
 

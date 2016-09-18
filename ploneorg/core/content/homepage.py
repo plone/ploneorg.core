@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from zope.interface import implements
 from plone.app.textfield import RichText
 from plone.dexterity.content import Item
-from zope import schema
 from plone.supermodel.directives import fieldset
 from plone.supermodel.model import Schema
 from z3c.relationfield.schema import RelationChoice
+from zope import schema
+from zope.interface import implements
 
 
 class IHomePage(Schema):

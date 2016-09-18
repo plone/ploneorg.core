@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from collective.badge.api import badges_for_user
 from OFS.Image import Image
-from Products.CMFCore.utils import getToolByName
-from Products.Five import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone import api
 from plone.memoize.view import memoize_contextless
 from plone.protect.interfaces import IDisableCSRFProtection
 from ploneorg.core import HOMEPAGE_ID
+from Products.CMFCore.utils import getToolByName
+from Products.Five import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse

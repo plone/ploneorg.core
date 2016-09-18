@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
 from plone.dexterity.interfaces import IDexterityFTI
 from ploneorg.core.content.foundationmember import IFoundationMember
 from ploneorg.core.content.homepage import IHomePage

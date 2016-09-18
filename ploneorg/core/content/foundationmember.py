@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from plone.app.content.interfaces import INameFromTitle
 from plone.app.dexterity import _ as _PMF
 from plone.app.textfield import RichText
 from plone.autoform.directives import read_permission
@@ -9,6 +10,7 @@ from ploneorg.core import _
 from ploneorg.core.vocabularies import country_vocabulary
 from zope import schema
 from zope.interface import implementer
+from zope.interface import implements
 
 
 class IFoundationMember(Schema):
@@ -162,8 +164,6 @@ class FoundationMember(Item):
         return out
 
 
-from plone.app.content.interfaces import INameFromTitle
-from zope.interface import implements
 
 
 class INameFromPersonNames(INameFromTitle):

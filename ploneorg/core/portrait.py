@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
+from cStringIO import StringIO
 from OFS.Image import Image
 from PIL import ImageOps
 from Products.CMFCore.permissions import ManageUsers
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
-from cStringIO import StringIO
 
 import PIL
 
