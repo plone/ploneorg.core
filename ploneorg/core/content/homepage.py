@@ -5,7 +5,7 @@ from plone.supermodel.directives import fieldset
 from plone.supermodel.model import Schema
 from z3c.relationfield.schema import RelationChoice
 from zope import schema
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class IHomePage(Schema):
@@ -121,8 +121,8 @@ class IHomePage(Schema):
     )
 
 
+@implementer(IHomePage)
 class HomePage(Item):
     """
     Dexterity content item for Cases
     """
-    implements(IHomePage)

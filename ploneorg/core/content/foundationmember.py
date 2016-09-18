@@ -10,7 +10,6 @@ from ploneorg.core import _
 from ploneorg.core.vocabularies import country_vocabulary
 from zope import schema
 from zope.interface import implementer
-from zope.interface import implements
 
 
 class IFoundationMember(Schema):
@@ -164,15 +163,13 @@ class FoundationMember(Item):
         return out
 
 
-
-
 class INameFromPersonNames(INameFromTitle):
     def title():
         """Return a processed title"""
 
 
+@implementer(INameFromPersonNames)
 class NameFromPersonNames(object):
-    implements(INameFromPersonNames)
 
     def __init__(self, context):
         self.context = context
