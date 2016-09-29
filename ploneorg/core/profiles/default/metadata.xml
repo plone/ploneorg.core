@@ -5,5 +5,7 @@
   	<dependency>profile-plone.app.contenttypes:plone-content</dependency>
     <dependency>profile-ploneorg.theme:default</dependency>
     <dependency>profile-collective.badge:default</dependency>
+    <dependency>profile-ploneorg.addonlisting:default</dependency>
+    <dependency>profile-ploneorg.releasesecurityinfo:default</dependency>
 </dependencies>
 </metadata>
