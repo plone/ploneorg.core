@@ -1,12 +1,12 @@
-import re
-import functools
-import os
 from distutils import version
+from launchpadlib.launchpad import Launchpad
+from plone.memoize import ram
+from Products.Five import BrowserView
 from time import time
 
-from launchpadlib.launchpad import Launchpad
-from Products.Five import BrowserView
-from plone.memoize import ram
+import functools
+import os
+import re
 
 
 class PloneReleaseView(BrowserView):
@@ -141,4 +141,3 @@ class LaunchpadReleases(BrowserView):
         releases = sorted(releases, key=lambda r: NumberedVersion(r['version']))
         releases.reverse()
         return releases
-

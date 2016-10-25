@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from plone.app.content.interfaces import INameFromTitle
 from plone.app.dexterity import _ as _PMF
 from plone.app.textfield import RichText
 from plone.autoform.directives import read_permission
@@ -109,13 +110,14 @@ class IFoundationMember(Schema):
         title=_(u'Organization size'),
         description=_(
             u'Number of people in your organization. It\'s fine to estimate.'),
+        required=False
     )
 
     read_permission(ploneuse='ploneorg.core.foundationmember.view')
     ploneuse = RichText(
         title=_(u'Plone use'),
         description=_(u'How is Plone used by your organization?'),
-        required=True
+        required=False
     )
 
 
@@ -161,17 +163,13 @@ class FoundationMember(Item):
         return out
 
 
-from plone.app.content.interfaces import INameFromTitle
-from zope.interface import implements
-
-
 class INameFromPersonNames(INameFromTitle):
     def title():
         """Return a processed title"""
 
 
+@implementer(INameFromPersonNames)
 class NameFromPersonNames(object):
-    implements(INameFromPersonNames)
 
     def __init__(self, context):
         self.context = context

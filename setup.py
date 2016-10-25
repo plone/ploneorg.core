@@ -2,17 +2,15 @@
 from setuptools import find_packages
 from setuptools import setup
 
-import os
-
 version = '1.0a1'
 
 README = open("README.rst").read()
-HISTORY = open(os.path.join("docs", "HISTORY.rst")).read()
+HISTORY = open("CHANGES.rst").read()
 
 setup(
     name='ploneorg.core',
     version=version,
-    description="plone.org 2014 site core",
+    description="plone.org Core Package",
     long_description=README + "\n" + HISTORY,
     classifiers=[
         "Framework :: Plone",

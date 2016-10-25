@@ -2,6 +2,8 @@
 from ConfigParser import SafeConfigParser
 from github import Github
 from github import UnknownObjectException
+from twitter import OAuth
+from twitter import Twitter
 
 import argparse
 import datetime
@@ -11,8 +13,6 @@ import os
 import requests
 import stackexchange
 import time
-from twitter import Twitter
-from twitter import OAuth
 
 
 logging.basicConfig()

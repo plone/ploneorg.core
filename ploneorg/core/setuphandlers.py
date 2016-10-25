@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime, timedelta
-from PIL import Image, ImageDraw, ImageColor
-from random import choice
-import cStringIO
-import logging
-import pytz
-
+from datetime import datetime
+from datetime import timedelta
+from PIL import Image
+from PIL import ImageColor
+from PIL import ImageDraw
 from plone import api
 from plone.app.textfield.value import RichTextValue
 from plone.dexterity.utils import createContentInContainer
@@ -14,9 +12,15 @@ from plone.registry.interfaces import IRegistry
 from ploneorg.core import HOMEPAGE_ID
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
+from random import choice
 from z3c.relationfield.relation import RelationValue
 from zope.component import getUtility
 from zope.intid.interfaces import IIntIds
+
+import cStringIO
+import logging
+import pytz
+
 
 PROFILE_ID = 'profile-ploneorg.core:default'
 logger = logging.getLogger("ploneorg.core")

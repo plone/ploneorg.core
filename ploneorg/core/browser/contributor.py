@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from collective.badge.api import badges_for_user
 from OFS.Image import Image
-from Products.CMFCore.utils import getToolByName
-from Products.Five import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone import api
 from plone.memoize.view import memoize_contextless
 from plone.protect.interfaces import IDisableCSRFProtection
 from ploneorg.core import HOMEPAGE_ID
+from Products.CMFCore.utils import getToolByName
+from Products.Five import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
@@ -59,26 +59,29 @@ class contributorProfile(BrowserView):
         member_data = self.get_member_data()
         if member_data is None:
             return None
-        return {'fullname': member_data.getProperty('fullname'),
-                'name': member_data.getUserName(),
-                'bio': member_data.getProperty('description'),
-                'avatar_url': member_data.getProperty('avatar_url'),
-                'location': member_data.getProperty('location'),
-                'country': member_data.getProperty('country'),
-                'plone_commits': member_data.getProperty('plone_commits'),
-                'collective_commits': member_data.getProperty(
-                    'collective_commits'),
-                'home_page': member_data.getProperty('home_page'),
-                'twitter': member_data.getProperty('twitter_url'),
-                'stackoverflow_url': member_data.getProperty(
-                    'stackoverflow_url'),
-                'stackoverflow_questions': member_data.getProperty(
-                    'stackoverflow_questions'),
-                'sprints_attended': '<br/>'.join(member_data.getProperty('sprints_attended').split('\r\n')),
-                'contributing_since': member_data.getProperty(
-                    'contributing_since'),
-                'tweets': member_data.getProperty('tweets'),
-                }
+        return {
+            'fullname': member_data.getProperty('fullname'),
+            'name': member_data.getUserName(),
+            'bio': member_data.getProperty('description'),
+            'avatar_url': member_data.getProperty('avatar_url'),
+            'location': member_data.getProperty('location'),
+            'country': member_data.getProperty('country'),
+            'plone_commits': member_data.getProperty('plone_commits'),
+            'collective_commits': member_data.getProperty(
+                'collective_commits'),
+            'home_page': member_data.getProperty('home_page'),
+            'twitter': member_data.getProperty('twitter_url'),
+            'stackoverflow_url': member_data.getProperty(
+                'stackoverflow_url'),
+            'stackoverflow_questions': member_data.getProperty(
+                'stackoverflow_questions'),
+            'sprints_attended':
+                '<br/>'.join(
+                    member_data.getProperty('sprints_attended').split('\r\n')),
+            'contributing_since': member_data.getProperty(
+                'contributing_since'),
+            'tweets': member_data.getProperty('tweets'),
+        }
 
     @memoize_contextless
     def portal(self):
