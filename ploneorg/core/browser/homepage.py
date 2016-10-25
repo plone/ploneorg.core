@@ -27,7 +27,10 @@ class HomePage(BrowserView):
 
     def get_news(self):
         portal = api.portal.get()
-        front_page_news = portal['news']['front-page-news']
+        try:
+            front_page_news = portal['news']['front-page-news']
+        except:
+            return
         result = front_page_news.results(brains=True)
         return result
 

@@ -63,9 +63,15 @@
                   </a>
                 </h2>
               </div>
-              <div class="row">
+              <div class="row" tal:define="news_items view/get_news">
 
-                <tal:block tal:repeat="item view/get_news">
+		<div tal:condition="not: news_items">
+		  <em>
+		    missing news folder or news/front-page-news collection, or there are no items in that collection
+		  </em>
+		</div>
+
+                <tal:block tal:repeat="item news_items">
 
                   <article>
                     <a tal:define="obj item/getObject"
