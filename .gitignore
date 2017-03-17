@@ -38,3 +38,4 @@ cache
 contributions.cfg
 htmlcov
 share/
+src/*/
