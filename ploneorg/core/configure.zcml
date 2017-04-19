@@ -38,8 +38,9 @@
       description=""
       handler="ploneorg.core.setuphandlers.setupVarious"
       name="ploneorg.core.setupstep"
-      title="ploneorg.core special import handlers"
-  />
+      title="ploneorg.core special import handlers">
+      <depends name="types" />
+  </genericsetup:importStep>
 
   <genericsetup:registerProfile
       description="Installs the ploneorg.core package"
