@@ -26,15 +26,17 @@ setup(
     include_package_data=True,
     zip_safe=False,
     extras_require={
-        'test': ['plone.app.testing[robot]>=4.2.2'],
-        'migration': ['ploneorg.migration'],
+        'test': ['plone.app.testing[robot]>=5.0',
+                 'plone.app.contenttypes[test]'],
     },
     install_requires=[
+        'Products.CMFPlone',
         'Py-StackExchange',
         'PyGithub',
         'collective.monkeypatcher',
         'collective.badge',
         'collective.themefragments',
+        'collective.z3cform.datagridfield',
         'launchpadlib',
         'plone.api',
         'plone.app.referenceablebehavior',
@@ -44,6 +46,7 @@ setup(
         'pycountry',
         'requests',
         'setuptools',
+        'simplejson',
         'twitter',
     ],
     entry_points="""

@@ -2,6 +2,7 @@
 <metadata>
   <version>1000</version>
   <dependencies>
+  	<dependency>profile-plone.app.contenttypes:plone-content</dependency>
     <dependency>profile-ploneorg.theme:default</dependency>
     <dependency>profile-collective.badge:default</dependency>
 </dependencies>
