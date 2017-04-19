@@ -4,7 +4,7 @@
  <property name="title" i18n:translate="">Homepage</property>
  <property name="description"
     i18n:translate="">The plone.org homepage</property>
- <property name="factory">HomePage</property>
+ <property name="factory">homepage</property>
  <property
     name="add_view_expr">string:${folder_url}/++add++homepage</property>
  <property name="link_target"></property>
