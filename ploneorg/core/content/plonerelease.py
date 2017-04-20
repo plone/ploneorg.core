@@ -1,17 +1,21 @@
 # -*- coding: utf-8 -*-
+import datetime
+
 from collective.z3cform.datagridfield import DictRow
 from collective.z3cform.datagridfield.datagridfield import DataGridFieldFactory
+from plone.app.content.interfaces import INameFromTitle
 from plone.app.textfield import RichText
 from plone.dexterity.content import Item
 from plone.directives import form
-from plone.supermodel.directives import fieldset
+from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
 from plone.supermodel.model import Schema
 from ploneorg.core import _
 from ploneorg.core.vocabularies import platform_vocabulary
 from zope import schema
+from zope.interface import alsoProvides
 from zope.interface import implementer
-
-import datetime
+from zope.interface import implements
+from zope.publisher.interfaces.http import IHTTPRequest
 
 
 class IReleaseUpload(Schema):
@@ -74,9 +78,52 @@ class IPloneRelease(Schema):
         required=False
     )
 
+
 @implementer(IPloneRelease)
 class PloneRelease(Item):
+    """ """
+    # @property
+    # def title(self):
+    #     import pdb; pdb.set_trace( )
+    #     return "Plone %s" % self.version
+
+
+class INameFromVersion(INameFromTitle):
+    def title():
+        """ Return the version number"""
+
+
+@implementer(INameFromVersion)
+class NameFromVersion(object):
+
+    def __init__(self, context):
+        self.context = context
+        alsoProvides(self.context.REQUEST, IChooseMyOwnDamnName)
 
     @property
     def title(self):
-        return "Plone %s" % self.version
+        return self.context.version
+
+
+class IChooseMyOwnDamnName(IHTTPRequest):
+    """We need to be able to adapt the request for PloneRelease objects to
+       get to our own IUserPreferredURLNormalizer.
+    """
+
+
+@implementer(IUserPreferredURLNormalizer)
+class VersionNumberURLNormalizer(object):
+    """Override the id normalizer so that we get something that looks like
+    a version number.
+    """
+
+    def __init__(self, context):
+        self.context = context
+
+    def normalize(self, text):
+        """Returns the text as submitted, otherwise we wind up with version
+        numbers like '5-0.7'.
+        Also, unicode fails the folder's checkIdAvailable test, so we make sure
+        it's a string.
+        """
+        return str(text)

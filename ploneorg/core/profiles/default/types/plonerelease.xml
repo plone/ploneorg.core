@@ -21,6 +21,7 @@
  <property name="add_permission">ploneorg.core.plonerelease.add</property>
  <property name="klass">ploneorg.core.content.plonerelease.PloneRelease</property>
  <property name="behaviors">
+    <element value="ploneorg.core.content.plonerelease.INameFromVersion"/>
  </property>
  <property name="schema">ploneorg.core.content.plonerelease.IPloneRelease</property>
  <property name="model_source"></property>
