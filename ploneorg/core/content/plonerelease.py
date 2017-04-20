@@ -12,6 +12,7 @@ from plone.supermodel.model import Schema
 from ploneorg.core import _
 from ploneorg.core.vocabularies import platform_vocabulary
 from zope import schema
+from zope.globalrequest import getRequest
 from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.interface import implements
@@ -98,7 +99,11 @@ class NameFromVersion(object):
 
     def __init__(self, context):
         self.context = context
-        alsoProvides(self.context.REQUEST, IChooseMyOwnDamnName)
+        request = getattr(context, "REQUEST", None)
+        if request is None or isinstance(request, basestring):
+            # Handle '<Special Object Used to Force Acquisition>' case
+            request = getRequest()
+        alsoProvides(request, IChooseMyOwnDamnName)
 
     @property
     def title(self):
