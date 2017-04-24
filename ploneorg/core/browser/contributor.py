@@ -323,7 +323,8 @@ class UpdateContributorData(JsonApiView):
             response_data['twitter']
         )
         self.add_github_overall_stats(data, response_data['github_stats'])
-        self.add_pypi_stats(data, response_data['pypi'])
+        # Disable pypi stats since they always return 0
+        # self.add_pypi_stats(data, response_data['pypi'])
         self.add_community_stats(data, response_data['community'])
         return self.json_success(response_data)
 
