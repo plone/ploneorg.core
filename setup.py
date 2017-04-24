@@ -48,6 +48,7 @@ setup(
         'setuptools',
         'simplejson',
         'twitter',
+        'plone.app.mosaic'
     ],
     entry_points="""
     # -*- Entry points: -*-
