@@ -25,6 +25,18 @@
       factory=".content.foundationmember.NameFromPersonNames"
       />
 
+  <adapter
+    for="ploneorg.core.content.plonerelease.IPloneRelease"
+    provides="ploneorg.core.content.plonerelease.INameFromVersion"
+    factory="ploneorg.core.content.plonerelease.NameFromVersion"
+    />
+
+  <adapter
+    for="ploneorg.core.content.plonerelease.IChooseMyOwnDamnName"
+    provides="plone.i18n.normalizer.interfaces.IUserPreferredURLNormalizer"
+    factory="ploneorg.core.content.plonerelease.VersionNumberURLNormalizer"
+    />
+
   <include package="collective.monkeypatcher" />
 
   <monkey:patch
