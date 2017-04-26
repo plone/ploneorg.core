@@ -98,6 +98,7 @@
         </div>
     </section>
 
+    <tal:comment replace="nothing">
     <section class="sec-github-totals" tal:condition="contributor">
       <div class="container">
         <div class="page-header">
@@ -171,6 +172,7 @@
         </div>
       </div>
     </section>
+    </tal:comment>
 
 </metal:content-core>
 
