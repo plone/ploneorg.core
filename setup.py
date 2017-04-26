@@ -48,7 +48,8 @@ setup(
         'setuptools',
         'simplejson',
         'twitter',
-        'plone.app.mosaic'
+        'plone.app.mosaic',
+        'pyquery'
     ],
     entry_points="""
     # -*- Entry points: -*-
@@ -56,5 +57,6 @@ setup(
     target = plone
     [console_scripts]
     update_contributions = ploneorg.core.contributions:update_contributions
+    get_downloads = ploneorg.core.downloads:get_downloads
     """,
 )
