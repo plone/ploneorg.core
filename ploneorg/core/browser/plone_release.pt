@@ -15,7 +15,6 @@
   <metal:content-core fill-slot="main">
     <h1 class="documentFirstHeading">
       ${context/Title}
-      <tal:date condition="context/release_date">(${python:context.release_date.strftime('%B %d, %Y')})</tal:date>
     </h1>
 
     <div class="alert alert-warning">

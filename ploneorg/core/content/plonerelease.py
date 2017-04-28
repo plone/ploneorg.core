@@ -83,10 +83,12 @@ class IPloneRelease(Schema):
 @implementer(IPloneRelease)
 class PloneRelease(Item):
     """ """
-    # @property
-    # def title(self):
-    #     import pdb; pdb.set_trace( )
-    #     return "Plone %s" % self.version
+    @property
+    def title(self):
+        return "Plone %s" % self.version
+
+    def Title(self):
+        return self.title
 
 
 class INameFromVersion(INameFromTitle):
