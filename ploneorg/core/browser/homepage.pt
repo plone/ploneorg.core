@@ -194,7 +194,7 @@
             <div class="row">
 
               <div class="column">
-                <div class="well">
+                <div class="well downloads">
                   <span class="fa fa-download"></span>
                   <h3>Downloads</h3>
                   <p>${context/stats_downloads}</p>
