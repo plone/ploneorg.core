@@ -2,7 +2,7 @@
 from setuptools import find_packages
 from setuptools import setup
 
-version = '1.0a1'
+version = '1.0.1'
 
 README = open("README.rst").read()
 HISTORY = open("CHANGES.rst").read()

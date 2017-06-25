@@ -20,6 +20,7 @@ var
 *.project
 *.settings
 *.pydevproject
+*~
 passwd
 data
 dist

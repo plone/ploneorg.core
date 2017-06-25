@@ -2,3 +2,6 @@ recursive-include ploneorg *
 recursive-include docs *
 include *
 global-exclude *.pyc
+global-exclude *~
+recursive-exclude .launchpadlib *
+exclude .launchpadlib
