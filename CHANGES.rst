@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.0.2 (unreleased)
+------------------
+
+- Fix workflow for members to make renewal easier, and hook
+  up broken transitions
+  [cdw9]
+
 1.0.1 (2017-06-25)
 ------------------
 
