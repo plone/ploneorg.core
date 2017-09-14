@@ -10,8 +10,34 @@
  <state state_id="approved" title="Approved member">
   <exit-transition transition_id="reject"/>
   <exit-transition transition_id="resign"/>
+  <exit-transition transition_id="suspend"/>
+  <exit-transition transition_id="retire"/>
+  <permission-map name="Access contents information"
+                  acquired="True">
+   <permission-role>Anonymous</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+  </permission-map>
+  <permission-map name="Change portal events"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="True">
+   <permission-role>Anonymous</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+  </permission-map>
+ </state>
+ <state state_id="pending_renewal" title="Pending Renewal">
   <exit-transition transition_id="renew"/>
   <exit-transition transition_id="retire"/>
+  <exit-transition transition_id="resign"/>
   <permission-map name="Access contents information"
                   acquired="True">
    <permission-role>Anonymous</permission-role>
@@ -136,15 +162,26 @@
              title="Member renews membership"
              new_state="approved" trigger="USER"
              before_script="" after_script="">
-  <action url="%(content_url)s/view" category="workflow">Renew</action>
+  <action url="%(content_url)s/content_publish_form"
+          category="workflow">Renew</action>
   <guard>
-   <guard-permission>Modify portal content</guard-permission>
+   <guard-permission>Request review</guard-permission>
+  </guard>
+ </transition>
+ <transition transition_id="suspend"
+             title="Suspend for Renewal"
+             new_state="pending_renewal" trigger="USER"
+             before_script="" after_script="">
+  <action url="%(content_url)s/content_publish_form"
+          category="workflow">Suspend for Renewal</action>
+  <guard>
+   <guard-permission>Foundation Member: Manage Members</guard-permission>
   </guard>
  </transition>
  <transition transition_id="resign" title="Resign"
-             new_state="initial" trigger="USER"
+             new_state="emeritus" trigger="USER"
              before_script="" after_script="">
-  <action url="http://" category="workflow">Resign</action>
+  <action url="%(content_url)s/content_publish_form" category="workflow">Resign</action>
   <guard>
    <guard-role>Owner</guard-role>
   </guard>
@@ -152,7 +189,7 @@
  <transition transition_id="retire" title="Retire member"
              new_state="emeritus" trigger="USER"
              before_script="" after_script="">
-  <action url="%(content_url)s/view" category="workflow">Retire</action>
+  <action url="%(content_url)s/content_publish_form" category="workflow">Retire</action>
   <guard>
    <guard-permission>Foundation Member: Manage Members</guard-permission>
   </guard>
