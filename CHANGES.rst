@@ -4,6 +4,9 @@ Changelog
 1.0.2 (unreleased)
 ------------------
 
+- Allow viewing of Foundation Member merit if have View Details permission
+  [tkimnguyen]
+
 - Fix workflow for members to make renewal easier, and hook
   up broken transitions
   [cdw9]

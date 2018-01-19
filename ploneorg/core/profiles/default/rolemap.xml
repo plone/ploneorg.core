@@ -1,6 +1,13 @@
 <rolemap>
+    <roles>
+        <role name="Foundation Membership Committee"/>
+    </roles>
     <permissions>
         <permission name="Add Plone Release" acquire="True">
+            <role name="Manager" />
+        </permission>
+        <permission name="Foundation Member: View Detail" acquire="True">
+            <role name="Foundation Membership Committee"/>
             <role name="Manager" />
         </permission>
     </permissions>

@@ -30,6 +30,10 @@
       </h3>
     </div>
 
+    <div tal:condition="python: view.canViewDetails() and context.merit">
+        <span tal:content="structure context/merit/output">Merit</span>
+    </div>
+
   </metal:content-core>
 
 </body>
