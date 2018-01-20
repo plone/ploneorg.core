@@ -48,6 +48,24 @@ class TestSetup(unittest.TestCase):
             workflow_tool.getChainForPortalType('FoundationMember')
         )
 
+    def test_foundation_sponsor_workflow(self):
+        """Check that the workflow is installed."""
+        workflow_tool = api.portal.get_tool('portal_workflow')
+        self.assertIn(
+            'foundation_sponsor_workflow',
+            workflow_tool.listWorkflows()
+        )
+
+    def test_workflow_for_foundation_sponsor(self):
+        """Check that the foundation sponsor content type has the right
+        workflow.
+        """
+        workflow_tool = api.portal.get_tool('portal_workflow')
+        self.assertIn(
+            'foundation_sponsor_workflow',
+            workflow_tool.getChainForPortalType('FoundationSponsor')
+        )
+
     def test_memberdata_properties(self):
         """Check that the member data properties are installed."""
         member_properties = api.portal.get_tool('portal_memberdata')

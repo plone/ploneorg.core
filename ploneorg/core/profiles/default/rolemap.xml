@@ -1,6 +1,7 @@
 <rolemap>
     <roles>
         <role name="Foundation Membership Committee"/>
+        <role name="Foundation Sponsorship Committee"/>
     </roles>
     <permissions>
         <permission name="Add Plone Release" acquire="True">
@@ -8,6 +9,18 @@
         </permission>
         <permission name="Foundation Member: View Detail" acquire="True">
             <role name="Foundation Membership Committee"/>
+            <role name="Manager" />
+        </permission>
+        <permission name="Foundation Sponsor: View Detail" acquire="True">
+            <role name="Foundation Sponsorship Committee"/>
+            <role name="Manager" />
+        </permission>
+        <permission name="Foundation Sponsor: Add Foundation Sponsor" acquire="True">
+            <role name="Foundation Sponsorship Committee"/>
+            <role name="Manager" />
+        </permission>
+        <permission name="Foundation Sponsor: Manage Sponsors" acquire="True">
+            <role name="Foundation Sponsorship Committee"/>
             <role name="Manager" />
         </permission>
     </permissions>

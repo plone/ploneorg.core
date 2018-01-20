@@ -4,6 +4,7 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.dexterity.interfaces import IDexterityFTI
 from ploneorg.core.content.foundationmember import IFoundationMember
+from ploneorg.core.content.foundationsponsor import IFoundationSponsor
 from ploneorg.core.content.homepage import IHomePage
 from ploneorg.core.content.plonerelease import VersionNumberURLNormalizer
 from ploneorg.core.testing import PLONEORG_CORE_INTEGRATION_TESTING
@@ -41,6 +42,27 @@ class ContentTypesTest(unittest.TestCase):
         fti.global_allow = True
         self.portal.invokeFactory('FoundationMember', 'member')
         self.assertTrue(IFoundationMember.providedBy(self.portal.member))
+
+    def test_schema_foundation_sponsor(self):
+        fti = queryUtility(IDexterityFTI, name='FoundationSponsor')
+        schema = fti.lookupSchema()
+        self.assertEqual(IFoundationSponsor, schema)
+
+    def test_fti_foundation_sponsor(self):
+        fti = queryUtility(IDexterityFTI, name='FoundationSponsor')
+        self.assertTrue(fti)
+
+    def test_factory_foundation_sponsor(self):
+        fti = queryUtility(IDexterityFTI, name='FoundationSponsor')
+        factory = fti.factory
+        sponsor = createObject(factory)
+        self.assertTrue(IFoundationSponsor.providedBy(sponsor))
+
+    def test_adding_foundation_sponsor(self):
+        fti = queryUtility(IDexterityFTI, name='FoundationSponsor')
+        fti.global_allow = True
+        self.portal.invokeFactory('FoundationSponsor', 'sponsor')
+        self.assertTrue(IFoundationSponsor.providedBy(self.portal.sponsor))
 
     def test_schema_homepage(self):
         fti = queryUtility(IDexterityFTI, name='homepage')
