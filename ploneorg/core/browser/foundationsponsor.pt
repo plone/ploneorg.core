@@ -56,7 +56,12 @@
            tal:attributes="src string:${context/absolute_url}/@@images/logo/mini" />
     </div>
 
-    <div class="details" tal:condition="view/canViewDetails">
+      <div class="publicnotes" tal:define="public_notes context/public_notes" tal:condition="public_notes" >
+          <div tal:content="structure public_notes/output">Public Notes</div>
+      </div>
+
+      <div class="details" tal:condition="view/canViewDetails">
+          <h4>Private Details</h4>
         <div class="organization">Organization size: <span tal:content="string: ${context/orgsize}">organization size</span></div>
         <div class="provider">Is a provider? <span tal:condition="context/is_provider">yes</span><span tal:condition="not: context/is_provider">no</span></div>
         <div class="primarycontact">Primary contact: <span tal:content="structure string: ${context/fname} ${context/lname} <a href='mailto:${context/email}'>${context/email}</a>">primary contact</span></div>
@@ -67,9 +72,6 @@
         <div class="notes">Private notes: <div tal:define="notes context/notes" tal:condition="notes" tal:content="structure notes/output">Private notes</div></div>
     </div>
 
-    <div class="publicnotes" tal:define="public_notes context/public_notes" tal:condition="public_notes" >
-        <div tal:content="structure public_notes/output">Public Notes</div>
-    </div>
 
   </metal:content-core>
 
