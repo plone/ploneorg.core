@@ -15,6 +15,7 @@
    <permission-role>Anonymous</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Foundation Sponsorship Committee</permission-role>
   </permission-map>
   <permission-map name="Change portal events"
                   acquired="False">
@@ -25,11 +26,13 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Foundation Sponsorship Committee</permission-role>
   </permission-map>
   <permission-map name="View" acquired="True">
    <permission-role>Anonymous</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Foundation Sponsorship Committee</permission-role>
   </permission-map>
  </state>
  <state state_id="pending_renewal" title="Pending Renewal">
@@ -40,6 +43,7 @@
    <permission-role>Anonymous</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Foundation Sponsorship Committee</permission-role>
   </permission-map>
   <permission-map name="Change portal events"
                   acquired="False">
@@ -50,11 +54,13 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Foundation Sponsorship Committee</permission-role>
   </permission-map>
   <permission-map name="View" acquired="True">
    <permission-role>Anonymous</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Foundation Sponsorship Committee</permission-role>
   </permission-map>
  </state>
  <state state_id="emeritus" title="Emeritus sponsor">
@@ -66,6 +72,7 @@
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Reviewer</permission-role>
+   <permission-role>Foundation Sponsorship Committee</permission-role>
   </permission-map>
   <permission-map name="Change portal events"
                   acquired="False">
@@ -76,12 +83,14 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Foundation Sponsorship Committee</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Reviewer</permission-role>
    <permission-role>Anonymous</permission-role>
+   <permission-role>Foundation Sponsorship Committee</permission-role>
   </permission-map>
  </state>
  <state state_id="initial" title="Non-sponsor">
@@ -92,6 +101,7 @@
    <permission-role>Editor</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Foundation Sponsorship Committee</permission-role>
   </permission-map>
   <permission-map name="Change portal events"
                   acquired="False">
@@ -104,11 +114,13 @@
    <permission-role>Editor</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Foundation Sponsorship Committee</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>Editor</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Foundation Sponsorship Committee</permission-role>
   </permission-map>
  </state>
  <state state_id="pending" title="Waiting for reviewer">
@@ -120,6 +132,7 @@
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Reviewer</permission-role>
+   <permission-role>Foundation Sponsorship Committee</permission-role>
   </permission-map>
   <permission-map name="Change portal events"
                   acquired="False">
@@ -130,11 +143,13 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>Foundation Sponsorship Committee</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Reviewer</permission-role>
+   <permission-role>Foundation Sponsorship Committee</permission-role>
   </permission-map>
  </state>
  <transition transition_id="approve"
@@ -209,7 +224,7 @@
   <action url="%(portal_url)s/search?review_state=pending"
           category="global">Pending (%(count)d)</action>
   <guard>
-   <guard-role>PFSponsorshipCommittee</guard-role>
+   <guard-role>Foundation Sponsorship Committee</guard-role>
   </guard>
   <match name="review_state" values="pending"/>
  </worklist>
