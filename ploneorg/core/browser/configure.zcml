@@ -73,4 +73,12 @@
       permission="zope2.View"
       />
 
+    <browser:page
+      name="view"
+      for="ploneorg.core.content.foundationsponsor.IFoundationSponsor"
+      class=".foundationsponsor.FoundationSponsorView"
+      template="foundationsponsor.pt"
+      permission="zope2.View"
+      />
+
 </configure>

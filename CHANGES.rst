@@ -4,6 +4,9 @@ Changelog
 1.0.2 (unreleased)
 ------------------
 
+- new Foundation Sponsor content type, workflow, role, permissions, view
+  [tkimnguyen]
+
 - Allow viewing of Foundation Member merit if have View Details permission
   [tkimnguyen]
 

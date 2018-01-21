@@ -2,6 +2,7 @@
 <object name="portal_types" meta_type="Plone Types Tool">
  <property name="title">Controls the available content types in your portal</property>
  <object name="FoundationMember" meta_type="Dexterity FTI"/>
+ <object name="FoundationSponsor" meta_type="Dexterity FTI"/>
  <object name="homepage" meta_type="Dexterity FTI"/>
  <object name="site_link" meta_type="Dexterity FTI"/>
  <object name="plonerelease" meta_type="Dexterity FTI"/>

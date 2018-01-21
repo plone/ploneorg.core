@@ -18,5 +18,17 @@
     id="ploneorg.core.plonerelease.add"
     title="Add Plone Release"
     />
+  <permission
+    id="ploneorg.core.foundationsponsor.add"
+    title="Foundation Sponsor: Add Foundation Sponsor"
+    />
+  <permission
+    id="ploneorg.core.foundationsponsor.view"
+    title="Foundation Sponsor: View Detail"
+    />
+  <permission
+    id="ploneorg.core.foundationsponsor.manage"
+    title="Foundation Sponsor: Manage Sponsors"
+    />
 
 </configure>

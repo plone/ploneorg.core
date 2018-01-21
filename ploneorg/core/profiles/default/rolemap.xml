@@ -1,6 +1,7 @@
 <rolemap>
     <roles>
         <role name="Foundation Membership Committee"/>
+        <role name="Foundation Sponsorship Committee"/>
     </roles>
     <permissions>
         <permission name="Add Plone Release" acquire="True">
@@ -9,6 +10,27 @@
         <permission name="Foundation Member: View Detail" acquire="True">
             <role name="Foundation Membership Committee"/>
             <role name="Manager" />
+        </permission>
+        <permission name="Foundation Sponsor: View Detail" acquire="True">
+            <role name="Foundation Sponsorship Committee"/>
+            <role name="Manager" />
+        </permission>
+        <permission name="Foundation Sponsor: Add Foundation Sponsor" acquire="True">
+            <role name="Foundation Sponsorship Committee"/>
+            <role name="Manager" />
+        </permission>
+        <permission name="Foundation Sponsor: Manage Sponsors" acquire="True">
+            <role name="Foundation Sponsorship Committee"/>
+            <role name="Manager" />
+        </permission>
+        <permission name="CMFEditions: Access previous versions" acquire="True">
+            <role name="Foundation Sponsorship Committee"/>
+        </permission>
+        <permission name="CMFEditions: Revert to previous versions" acquire="True">
+            <role name="Foundation Sponsorship Committee"/>
+        </permission>
+        <permission name="CMFEditions: Save new version" acquire="True">
+            <role name="Foundation Sponsorship Committee"/>
         </permission>
     </permissions>
 </rolemap>
