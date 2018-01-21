@@ -23,5 +23,14 @@
             <role name="Foundation Sponsorship Committee"/>
             <role name="Manager" />
         </permission>
+        <permission name="CMFEditions: Access previous versions" acquire="True">
+            <role name="Foundation Sponsorship Committee"/>
+        </permission>
+        <permission name="CMFEditions: Revert to previous versions" acquire="True">
+            <role name="Foundation Sponsorship Committee"/>
+        </permission>
+        <permission name="CMFEditions: Save new version" acquire="True">
+            <role name="Foundation Sponsorship Committee"/>
+        </permission>
     </permissions>
 </rolemap>
