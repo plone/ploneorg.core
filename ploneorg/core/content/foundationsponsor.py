@@ -28,8 +28,8 @@ def isEmail(value):
      return True
 
 def isHTTP(value):
-    if not value.startswith('http'):
-        raise Invalid(_PMF(u'is not a valid HTTP or HTTPS web address.'))
+    if not value.startswith('http://') and not value.startswith('https://'):
+        raise Invalid(_PMF(u'web address must start with http:// or https://'))
     return True
 
 
