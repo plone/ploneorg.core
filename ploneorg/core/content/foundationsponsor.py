@@ -121,6 +121,13 @@ class IFoundationSponsor(Schema):
         constraint=isHTTP,
     )
 
+    provider_listing_url = schema.URI(
+        title=_PMF(u'Plone.com provider listing', default=u'Plone.com provider listing'),
+        description=_(u'Enter a http:// or https:// web address'),
+        required=False,
+        constraint=isHTTP,
+    )
+
     read_permission(fname='ploneorg.core.foundationsponsor.view')
     fname = schema.TextLine(
         title=_PMF(u'Contact first name', default=u'Contact first name'),
@@ -143,7 +150,7 @@ class IFoundationSponsor(Schema):
     read_permission(address='ploneorg.core.foundationsponsor.view')
     address = schema.TextLine(
         title=_PMF(u'Address', default=u'Address'),
-        required=True
+        required=False
     )
 
     read_permission(address2='ploneorg.core.foundationsponsor.view')
@@ -160,13 +167,13 @@ class IFoundationSponsor(Schema):
     read_permission(state='ploneorg.core.foundationsponsor.view')
     state = schema.TextLine(
         title=_PMF(u'State', default=u'State'),
-        required=True
+        required=False
     )
 
     read_permission(postalCode='ploneorg.core.foundationsponsor.view')
     postalCode = schema.TextLine(
         title=_PMF(u'Postal code', default=u'Postal code'),
-        required=True
+        required=False
     )
 
     country = schema.Choice(
@@ -261,7 +268,12 @@ class IFoundationSponsor(Schema):
 
     read_permission(notes='ploneorg.core.foundationsponsor.view')
     notes = RichText(
-        title=_PMF(u'Notes', default=u'Notes'),
+        title=_PMF(u'Private notes', default=u'Private notes'),
+        required=False
+    )
+
+    public_notes = RichText(
+        title=_PMF(u'Public notes', default=u'Public notes'),
         required=False
     )
 
