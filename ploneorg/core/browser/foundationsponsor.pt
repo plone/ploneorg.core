@@ -16,18 +16,29 @@
     <h1 class="documentFirstHeading"
         tal:content="context/org_name">Organization name</h1>
 
-    <div tal:define="url context/website" tal:condition="url">
-      <h3 tal:content="structure python: '<a href=''%s''>%s</a>' % (url, url)">
-        web site URL
-      </h3>
+    <div class="sponsorship_type" tal:define="sponsorship_type context/sponsorship_type">
+        <h4>
+            <span tal:content="python: sponsorship_type.title()">sponsorship_type</span> sponsor
+        </h4>
     </div>
-    <div tal:condition="context/city">
-      <h3>
+
+    <div tal:define="url context/website" tal:condition="url">
+      <h4 tal:content="structure python: '<a href=''%s''>%s</a>' % (url, url)">
+        web site URL
+      </h4>
+    </div>
+    <div class="location" tal:condition="context/city">
+      <h4>
         <span tal:content="context/city">City</span>
         <tal:country condition="context/country">
           (<span tal:content="context/country">Country</span>)
         </tal:country>
-      </h3>
+      </h4>
+    </div>
+
+    <div class="logo">
+      <img tal:condition="python:getattr(context, 'logo', None)"
+           tal:attributes="src string:${context/absolute_url}/@@images/logo/mini" />
     </div>
 
   </metal:content-core>

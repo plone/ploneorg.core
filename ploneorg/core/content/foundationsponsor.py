@@ -11,8 +11,25 @@ from ploneorg.core.vocabularies import country_vocabulary, payment_frequency_voc
     sponsorship_type_vocabulary, org_size_vocabulary, payment_currency_vocabulary
 from zope import schema
 from zope.interface import implementer
+from plone.namedfile import field as namedfile
+import zope.interface
+import re
 
-# TODO ensure a good short name is used for the newly added Foundation Sponsor item
+# email re w/o leading '^'
+EMAIL_RE = "([0-9a-zA-Z_&.'+-]+!)*[0-9a-zA-Z_&.'+-]+@(([0-9a-zA-Z]([0-9a-zA-Z-]*[0-9a-z-A-Z])?\.)+[a-zA-Z]{2,}|([0-9]{1,3}\.){3}[0-9]{1,3})$"
+
+def isEmail(value):
+     prog = re.compile('^'+EMAIL_RE)
+     result = prog.match(value)
+     if result is None:
+         raise zope.interface.Invalid(_PMF(u'is not a valid email address.'))
+     return True
+
+def isHTTP(value):
+    if not value.startswith('http'):
+        raise zope.interface.Invalid(_PMF(u'is not a valid HTTP or HTTPS web address.'))
+    return True
+
 
 class IFoundationSponsor(Schema):
     """A Foundation sponsor"""
@@ -71,6 +88,11 @@ class IFoundationSponsor(Schema):
         required=True
     )
 
+    logo = namedfile.NamedBlobImage(
+        title=_(u"Logo"),
+        required=False,
+    )
+
     sponsorship_type = schema.Choice(
         title=_PMF(u'Sponsor Type', default=u'Sponsor Type'),
         vocabulary=sponsorship_type_vocabulary,
@@ -90,11 +112,11 @@ class IFoundationSponsor(Schema):
         title=_PMF(u'Is a Plone provider', default=u'Is a Plone provider'),
     )
 
-    website = schema.TextLine(
+    website = schema.URI(
         title=_PMF(u'Web Site', default=u'Web Site'),
-        default=u'http://',
-        # TODO plone dexterity URL validator
-        required=False
+        description=_(u'Enter a http:// or https:// web address'),
+        required=False,
+        constraint=isHTTP,
     )
 
     read_permission(fname='ploneorg.core.foundationsponsor.view')
@@ -112,7 +134,7 @@ class IFoundationSponsor(Schema):
     read_permission(email='ploneorg.core.foundationsponsor.view')
     email = schema.TextLine(
         title=_PMF(u'Email', default=u'Email'),
-        # TODO plone dexterity email validator
+        constraint=isEmail,
         required=True
     )
 
@@ -167,13 +189,13 @@ class IFoundationSponsor(Schema):
     read_permission(alt_email='ploneorg.core.foundationsponsor.view')
     alt_email = schema.TextLine(
         title=_PMF(u'Alternate email', default=u'Alternate email'),
-        # TODO plone dexterity email validator
+        constraint=isEmail,
         required=False
     )
 
     twitter = schema.TextLine(
         title=_PMF(u'Twitter account', default=u'Twitter account'),
-        description=_PMF(u'(without the ''@'')', default=u'(without the ''@'')'),
+        description=_PMF(u'(without the leading ''@'')', default=u'(without the leading ''@'')'),
         required=False
     )
 
@@ -276,4 +298,19 @@ class FoundationSponsor(Item):
         out += '</foundationsponsor>'
         return out
 
+
+class INameFromPersonNames(INameFromTitle):
+    def title():
+        """Return a processed title"""
+
+
+@implementer(INameFromPersonNames)
+class NameFromPersonNames(object):
+
+    def __init__(self, context):
+        self.context = context
+
+    @property
+    def title(self):
+        return self.context.org_name
 

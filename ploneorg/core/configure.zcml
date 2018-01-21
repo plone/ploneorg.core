@@ -25,6 +25,11 @@
       factory=".content.foundationmember.NameFromPersonNames"
       />
 
+  <adapter for=".content.foundationsponsor.IFoundationSponsor"
+      provides=".content.foundationsponsor.INameFromPersonNames"
+      factory=".content.foundationsponsor.NameFromPersonNames"
+      />
+
   <adapter
     for="ploneorg.core.content.plonerelease.IPloneRelease"
     provides="ploneorg.core.content.plonerelease.INameFromVersion"
