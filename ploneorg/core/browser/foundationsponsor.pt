@@ -41,6 +41,17 @@
            tal:attributes="src string:${context/absolute_url}/@@images/logo/mini" />
     </div>
 
+    <div class="details" tal:condition="view/canViewDetails">
+        <div class="organization">Organization size: <span tal:content="string: ${context/orgsize}">organization size</span></div>
+        <div class="provider">Is a provider? <span tal:condition="context/is_provider">yes</span><span tal:condition="not: context/is_provider">no</span></div>
+        <div class="primarycontact">Primary contact: <span tal:content="structure string: ${context/fname} ${context/lname} <a href='mailto:${context/email}'>${context/email}</a>">primary contact</span></div>
+        <div class="alternatecontact">Alternate contact: <span tal:content="structure string: ${context/alt_fname} ${context/alt_lname} <a href='mailto:${context/alt_email}'>${context/alt_email}</a>">alternate contact</span></div>
+        <div class="address">Address: <span tal:content="string: ${context/address}, ${context/address2}, ${context/city}, ${context/state} ${context/postalCode} ${context/country}">full address</span></div>
+        <div class="payment">Last payment: <span tal:content="string: ${context/payment_frequency} ${context/payment_method}, ${context/payment_amount} ${context/payment_currency} ${context/payment_date}">payment details</span></div>
+        <div class="dates">Active dates: <span tal:content="string: ${context/start_date} to ${context/end_date} (last verified on ${context/last_verified_date})">dates</span></div>
+        <div class="notes">Notes: <div tal:define="notes context/notes" tal:condition="notes" tal:content="structure notes/output">Notes</div></div>
+    </div>
+
   </metal:content-core>
 
 </body>
