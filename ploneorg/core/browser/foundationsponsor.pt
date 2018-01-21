@@ -34,7 +34,7 @@
       </h4>
     </div>
 
-    <div tal:define="twitter_username python: context.twitter.strip().lstrip('@'); url string: https://twitter.com/${twitter_username}" tal:condition="context/twitter">
+    <div tal:define="twitter_username python: context.twitter.strip().lstrip('@'); url string: https://twitter.com/${twitter_username}" tal:condition="python: context.twitter is not None and context.twitter != ''">
       <h4 tal:content="structure python: '<a href=''%s''>%s</a>' % (url, url)">
         Twitter
       </h4>
