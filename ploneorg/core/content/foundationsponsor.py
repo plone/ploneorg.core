@@ -12,6 +12,7 @@ from ploneorg.core.vocabularies import country_vocabulary, payment_frequency_voc
 from zope import schema
 from zope.interface import implementer, alsoProvides
 from plone.namedfile import field as namedfile
+from zope.interface import Invalid
 import re
 from plone.rfc822.interfaces import IPrimaryField
 
@@ -23,12 +24,12 @@ def isEmail(value):
      prog = re.compile('^'+EMAIL_RE)
      result = prog.match(value)
      if result is None:
-         raise zope.interface.Invalid(_PMF(u'is not a valid email address.'))
+         raise Invalid(_PMF(u'is not a valid email address.'))
      return True
 
 def isHTTP(value):
     if not value.startswith('http'):
-        raise zope.interface.Invalid(_PMF(u'is not a valid HTTP or HTTPS web address.'))
+        raise Invalid(_PMF(u'is not a valid HTTP or HTTPS web address.'))
     return True
 
 
