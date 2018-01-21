@@ -34,6 +34,12 @@
       </h4>
     </div>
 
+    <div tal:define="twitter_username python: context.twitter.strip().lstrip('@'); url string: https://twitter.com/${twitter_username}" tal:condition="context/twitter">
+      <h4 tal:content="structure python: '<a href=''%s''>%s</a>' % (url, url)">
+        Twitter
+      </h4>
+    </div>
+
     <div class="location" tal:condition="context/city">
       <h4>
         <span tal:content="context/city">City</span>
