@@ -10,10 +10,11 @@ from ploneorg.core import _
 from ploneorg.core.vocabularies import country_vocabulary, payment_frequency_vocabulary, payment_method_vocabulary, \
     sponsorship_type_vocabulary, org_size_vocabulary, payment_currency_vocabulary
 from zope import schema
-from zope.interface import implementer
+from zope.interface import implementer, alsoProvides
 from plone.namedfile import field as namedfile
-import zope.interface
 import re
+from plone.rfc822.interfaces import IPrimaryField
+
 
 # email re w/o leading '^'
 EMAIL_RE = "([0-9a-zA-Z_&.'+-]+!)*[0-9a-zA-Z_&.'+-]+@(([0-9a-zA-Z]([0-9a-zA-Z-]*[0-9a-z-A-Z])?\.)+[a-zA-Z]{2,}|([0-9]{1,3}\.){3}[0-9]{1,3})$"
@@ -262,6 +263,9 @@ class IFoundationSponsor(Schema):
         title=_PMF(u'Notes', default=u'Notes'),
         required=False
     )
+
+
+alsoProvides(IFoundationSponsor['logo'], IPrimaryField)
 
 
 @implementer(IFoundationSponsor)
