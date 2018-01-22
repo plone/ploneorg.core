@@ -22,6 +22,10 @@
  <property name="klass">ploneorg.core.content.foundationsponsor.FoundationSponsor</property>
  <property name="behaviors">
     <element value="plone.app.versioningbehavior.behaviors.IVersionable" />
+    <element value="plone.app.dexterity.behaviors.id.IShortName" />
+    <element value="plone.app.dexterity.behaviors.metadata.IPublication" />
+    <element value="plone.app.contenttypes.behaviors.leadimage.ILeadImage" />
+    <element value="plone.app.dexterity.behaviors.metadata.ICategorization" />
  </property>
  <property name="schema">ploneorg.core.content.foundationsponsor.IFoundationSponsor</property>
  <property name="model_source"></property>
