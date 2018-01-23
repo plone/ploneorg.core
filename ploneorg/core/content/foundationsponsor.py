@@ -16,6 +16,14 @@ from zope.interface import Invalid
 import re
 from plone.rfc822.interfaces import IPrimaryField
 
+# TODO: add workflow state Waiting for Initial Payment
+# TODO: display effective and expiry date in view template
+# TODO: display status in view template
+# TODO: use logo as lead image
+# TODO: add button to send an email to the primary contact
+# TODO: set effective and expiry dates from payment start and end dates
+# TODO: make payment date not required (e.g. waiting for payment)
+# TODO: enable commenting/discussion instead of commenting with change comments?
 
 # email re w/o leading '^'
 EMAIL_RE = "([0-9a-zA-Z_&.'+-]+!)*[0-9a-zA-Z_&.'+-]+@(([0-9a-zA-Z]([0-9a-zA-Z-]*[0-9a-z-A-Z])?\.)+[a-zA-Z]{2,}|([0-9]{1,3}\.){3}[0-9]{1,3})$"
