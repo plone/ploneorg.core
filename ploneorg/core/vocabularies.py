@@ -39,7 +39,7 @@ payment_method_vocabulary = SimpleVocabulary(
             value=a,
             token=a,
             title=a)
-        for a in [u'wire', u'check', u'PayPal', u'Ammado', u'in kind', u'cash']
+        for a in [u'wire', u'check', u'PayPal', u'in kind', u'cash']
     ]
 )
 

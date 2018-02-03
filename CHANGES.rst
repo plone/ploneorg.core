@@ -4,6 +4,9 @@ Changelog
 1.0.2 (unreleased)
 ------------------
 
+- make some Sponsor fields optional, remove Ammado payment method
+  [tkimnguyen]
+
 - new Foundation Sponsor content type, workflow, role, permissions, view
   [tkimnguyen]
 

@@ -254,24 +254,24 @@ class IFoundationSponsor(Schema):
 
     start_date = schema.Date(
         title=_PMF(u'Start Date', default=u'Start Date'),
-        required=True
+        required=False
     )
 
     end_date = schema.Date(
         title=_PMF(u'End Date', default=u'End Date'),
-        required=True
+        required=False
     )
 
     read_permission(payment_date='ploneorg.core.foundationsponsor.view')
     payment_date = schema.Date(
         title=_PMF(u'Payment Date', default=u'Payment Date'),
-        required=True
+        required=False
     )
 
     read_permission(last_verified_date='ploneorg.core.foundationsponsor.view')
     last_verified_date = schema.Date(
         title=_PMF(u'Status last verified date', default=u'Status last verified date'),
-        required=True
+        required=False
     )
 
     read_permission(notes='ploneorg.core.foundationsponsor.view')
