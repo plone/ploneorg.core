@@ -38,7 +38,10 @@ class HomePage(BrowserView):
         pc = api.portal.get_tool('portal_catalog')
         result = pc.searchResults(
             portal_type='FoundationSponsor',
-            sponsorship_type='premium'
+            sponsorship_type='premium',
+            review_state='approved',
+            effective={'query': datetime.now(), 'range': 'max'},
+            expires={'query': datetime.now(), 'range': 'min'}
         )
         result_list = list(result)
         shuffle(result_list)
