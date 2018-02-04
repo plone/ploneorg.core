@@ -4,6 +4,10 @@ Changelog
 1.0.2 (unreleased)
 ------------------
 
+- change home page to display premium sponsor logos taken from new
+  FoundationSponsor objects instead of the logo images
+  [tkimnguyen]
+
 - make some Sponsor fields optional, remove Ammado payment method
   [tkimnguyen]
 
