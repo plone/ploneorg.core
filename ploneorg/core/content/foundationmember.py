@@ -67,6 +67,7 @@ class IFoundationMember(Schema):
 
     email = schema.TextLine(
         title=_PMF(u'Email', default=u'Email'),
+        constraint=isEmail,
         required=True
     )
 
@@ -161,7 +162,6 @@ class IFoundationMember(Schema):
         required=False
     )
 
-    #read_permission(ploneuse='ploneorg.core.foundationmember.view')
     ploneuse = RichText(
         title=_(u'Plone use'),
         description=_(u'How is Plone used by your organization?'),
