@@ -16,22 +16,64 @@
     <h1 class="documentFirstHeading"
         tal:content="context/get_full_name">First name</h1>
 
-    <div tal:condition="context/organization">
-      <h3 tal:content="context/organization">
-        City
-      </h3>
-    </div>
-    <div tal:condition="context/city">
-      <h3>
-        <span tal:content="context/city">City</span>
-        <tal:country condition="context/country">
-          (<span tal:content="context/country">Country</span>)
-        </tal:country>
-      </h3>
+    <div class="email" tal:condition="python:context.email and (context.showEmail or view.canViewDetails())">
+      <i class="fa fa-envelope"></i>
+      <a href="mailto:${context/email}">${context/email}</a>
     </div>
 
-    <div tal:condition="python: view.canViewDetails() and context.merit">
-        <span tal:content="structure context/merit/output">Merit</span>
+    <div class="website" tal:define="url context/website" tal:condition="url">
+      <i class="fa fa-globe"></i>
+      <a href="${url}">${url}</a>
+    </div>
+
+    <div title="Twitter" class="twitter" tal:condition="context/twitter_url">
+      <i class="fa fa-twitter"></i>
+      <a href="${context/twitter_url}">@${context/twitter}</a>
+    </div>
+
+    <div title="Facebook" class="facebook" tal:condition="context/facebook_url">
+      <i class="fa fa-facebook"></i>
+      <a href="${context/facebook_url}">${context/facebook}</a>
+    </div>
+
+    <div title="LinkedIn" class="linkedin" tal:condition="context/linkedin_url">
+      <i class="fa fa-linkedin"></i>
+      <a href="${context/linkedin_url}">${context/linkedin}</a>
+    </div>
+
+    <div title="Github" class="github" tal:condition="context/github_url">
+      <i class="fa fa-github"></i>
+      <a href="${context/github_url}">${context/github}</a>
+    </div>
+
+    <div tal:condition="context/organization">
+      <h3>Organization</h3>
+      <div tal:content="context/organization">
+        Organization
+      </div>
+
+      <div tal:condition="context/city">
+        <span tal:content="context/city">City</span>
+        <tal:country condition="python: context.country or contact.state">
+          (<span tal:content="context/country_name">Country</span>, <span tal:content="context/state">State</span>)
+        </tal:country>
+      </div>
+    </div>
+
+    <div tal:define="merit context/merit/output | nothing"
+         tal:condition="python:merit and view.canViewDetails()">
+      <h3>Contributions to the project</h3>
+      <div tal:content="structure merit">
+        Merit
+      </div>
+    </div>
+
+    <div tal:define="ploneuse context/ploneuse/output | nothing"
+         tal:condition="ploneuse">
+      <h3>Plone use</h3>
+      <div tal:content="structure ploneuse">
+        Plone use
+      </div>
     </div>
 
   </metal:content-core>

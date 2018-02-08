@@ -7,6 +7,7 @@ from plone.dexterity.content import Item
 from plone.supermodel.directives import fieldset
 from plone.supermodel.model import Schema
 from ploneorg.core import _
+from ploneorg.core.content.foundationsponsor import isHTTP, isEmail
 from ploneorg.core.vocabularies import country_vocabulary
 from zope import schema
 from zope.interface import implementer
@@ -22,6 +23,12 @@ class IFoundationMember(Schema):
             'fname',
             'lname',
             'email',
+            'showEmail',
+            'website',
+            'twitter',
+            'facebook',
+            'linkedin',
+            'github',
             'address',
             'city',
             'state',
@@ -58,10 +65,53 @@ class IFoundationMember(Schema):
         required=True
     )
 
-    read_permission(email='ploneorg.core.foundationmember.view')
     email = schema.TextLine(
         title=_PMF(u'Email', default=u'Email'),
         required=True
+    )
+
+    showEmail = schema.Bool(
+        title=_PMF(
+            u'Share email address to everyone',
+            default=u'Share email address to everyone'),
+        description=_PMF(
+            u'If unchecked, email will be visible to managers and foundation membership committee only.',
+            default=u'If unchecked, email will be visible to managers and foundation membership committee only.'),
+        default=False
+    )
+
+    website = schema.URI(
+        title=_PMF(u'Personal web Site', default=u'Personal web Site'),
+        description=_(u'Enter a http:// or https:// web address'),
+        required=False,
+        constraint=isHTTP,
+    )
+
+    twitter = schema.TextLine(
+        title=_PMF(u'Twitter account', default=u'Twitter account'),
+        description=_PMF(u'(without the leading ''@'')', default=u'(without the leading ''@'')'),
+        required=False
+    )
+
+    facebook = schema.TextLine(
+        title=_PMF(u'Facebook account', default=u'Facebook account'),
+        description=_PMF(u'Only the account name, not the full url.',
+                         default=u'Only the account name, not the full url.'),
+        required=False
+    )
+
+    linkedin = schema.TextLine(
+        title=_PMF(u'LinkedIn account', default=u'LinkedIn account'),
+        description=_PMF(u'Only the account name, not the full url.',
+                         default=u'Only the account name, not the full url.'),
+        required=False
+    )
+
+    github = schema.TextLine(
+        title=_PMF(u'Github account', default=u'Github account'),
+        description=_PMF(u'Only the account name, not the full url.',
+                         default=u'Only the account name, not the full url.'),
+        required=False
     )
 
     read_permission(address='ploneorg.core.foundationmember.view')
@@ -75,7 +125,6 @@ class IFoundationMember(Schema):
         required=True
     )
 
-    read_permission(state='ploneorg.core.foundationmember.view')
     state = schema.TextLine(
         title=_PMF(u'State', default=u'State'),
         required=True
@@ -98,7 +147,6 @@ class IFoundationMember(Schema):
         required=True
     )
 
-    read_permission(merit='ploneorg.core.foundationmember.view')
     merit = RichText(
         title=_(u'Contributions'),
         description=_(u'Describe your contributions to the project.'),
@@ -113,7 +161,7 @@ class IFoundationMember(Schema):
         required=False
     )
 
-    read_permission(ploneuse='ploneorg.core.foundationmember.view')
+    #read_permission(ploneuse='ploneorg.core.foundationmember.view')
     ploneuse = RichText(
         title=_(u'Plone use'),
         description=_(u'How is Plone used by your organization?'),
@@ -139,12 +187,41 @@ class FoundationMember(Item):
     def setTitle(self, value):
         return
 
+    def country_name(self):
+        if not self.country:
+            return None
+        return country_vocabulary.getTerm(self.country).title
+
     def get_full_name(self):
         names = [
             self.fname,
             self.lname,
         ]
         return u' '.join([name for name in names if name])
+
+    def twitter_url(self):
+        twitter = self.twitter and self.twitter.strip() or None
+        if not twitter:
+            return None
+        return "https://twitter.com/%s" % (twitter)
+
+    def facebook_url(self):
+        facebook = self.facebook and self.facebook.strip() or None
+        if not facebook:
+            return None
+        return "https://www.facebook.com/%s" % (facebook)
+
+    def linkedin_url(self):
+        linkedin = self.linkedin and self.linkedin.strip() or None
+        if not linkedin:
+            return None
+        return "https://www.linkedin.com/in/%s" % (linkedin)
+
+    def github_url(self):
+        github = self.github and self.github.strip() or None
+        if not github:
+            return None
+        return "https://github.com/%s" % (github)
 
     def toXML(self, schematas=['contact', 'survey']):
         """To XML for Paul ;) """
