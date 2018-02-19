@@ -15,7 +15,7 @@
     <div class="sponsors-premium-from-database" tal:repeat="brain view/get_premium_sponsors">
         <a tal:define="sponsor brain/getObject; website sponsor/website; provider_listing_url sponsor/provider_listing_url; url python: provider_listing_url or website;"
                 href="${url}" target="_blank" class="sponsor">
-            <img src="${brain/getURL}/@@images/logo/thumb" alt="${brain/Title}">
+            <img src="${brain/getURL}/@@images/logo/preview" alt="${brain/Title}">
         </a>
     </div>
   </metal:content-core>
