@@ -4,6 +4,9 @@ Changelog
 1.0.2 (unreleased)
 ------------------
 
+- change sponsors page to display sponsor logos based on FoundationSponsor object queries
+  [tkimnguyen]
+
 - change home page to display premium sponsor logos taken from new
   FoundationSponsor objects instead of the logo images
   [tkimnguyen]

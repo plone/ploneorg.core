@@ -14,6 +14,30 @@
       />
 
     <browser:page
+      name="premium-sponsors-view"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".sponsorviews.PremiumSponsorsView"
+      template="premium_sponsors_view.pt"
+      permission="zope2.View"
+      />
+
+    <browser:page
+      name="standard-sponsors-view"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".sponsorviews.StandardSponsorsView"
+      template="standard_sponsors_view.pt"
+      permission="zope2.View"
+      />
+
+    <browser:page
+      name="university-sponsors-view"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".sponsorviews.UniversitySponsorsView"
+      template="university_sponsors_view.pt"
+      permission="zope2.View"
+      />
+
+    <browser:page
       name="profile"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".contributor.contributorProfile"
