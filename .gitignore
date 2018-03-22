@@ -40,3 +40,4 @@ htmlcov
 share/
 src/*/
 .python-version
+.ropeproject/
