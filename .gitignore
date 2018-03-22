@@ -39,3 +39,4 @@ contributions.cfg
 htmlcov
 share/
 src/*/
+.python-version
