@@ -1,4 +1,5 @@
 .pip-selfcheck.json
+pip-selfcheck.json
 .DS_Store
 .installed.cfg
 .mr.developer.cfg
@@ -36,3 +37,6 @@ cache
 contributions.cfg
 htmlcov
 share/
+/src
+.python-version
+.ropeproject/
