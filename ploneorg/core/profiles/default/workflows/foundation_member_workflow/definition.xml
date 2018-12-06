@@ -169,7 +169,7 @@
  </transition>
  <transition transition_id="reject"
              title="Reviewer rejects submission"
-             new_state="initial" trigger="USER"
+             new_state="rejected" trigger="USER"
              before_script="" after_script="">
   <action url="%(content_url)s/content_reject_form"
           category="workflow">Reject</action>
