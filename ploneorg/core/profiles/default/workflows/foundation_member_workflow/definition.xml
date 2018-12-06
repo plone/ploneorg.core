@@ -136,6 +136,28 @@
    <permission-role>Reviewer</permission-role>
   </permission-map>
  </state>
+ <state state_id="rejected" title="Rejected application">
+  <exit-transition transition_id="submit"/>
+  <permission-map name="Access contents information"
+                  acquired="True">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+  </permission-map>
+  <permission-map name="Change portal events"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="True">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+  </permission-map>
+ </state>
  <transition transition_id="approve"
              title="Member is approved" new_state="approved"
              trigger="USER" before_script="" after_script="">
