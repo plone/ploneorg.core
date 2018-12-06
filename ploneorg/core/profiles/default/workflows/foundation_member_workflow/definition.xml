@@ -182,6 +182,7 @@
   <action url="%(content_url)s/content_publish_form" category="workflow">Retire</action>
   <guard>
    <guard-role>Owner</guard-role>
+   <guard-role>Manager</guard-role>
   </guard>
  </transition>
  <transition transition_id="retract"
