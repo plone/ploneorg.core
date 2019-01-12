@@ -4,6 +4,9 @@ Changelog
 1.0.2 (unreleased)
 ------------------
 
+- add uwosh.pfg.d2c
+  [tkimnguyen]
+
 - change sponsors page to display sponsor logos based on FoundationSponsor object queries
   [tkimnguyen]
 
