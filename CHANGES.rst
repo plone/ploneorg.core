@@ -4,6 +4,10 @@ Changelog
 1.0.2 (unreleased)
 ------------------
 
+- temporarily remove releasesecurityinfo until we can deal with existing
+  content types by the same name on the live site
+  [tkimnguyen]
+
 - merge GSoC 2017 work! ploneorg.addonlisting and ploneorg.releasesecurityinfo
   [pavithirakc, loechel, tkimnguyen]
 
