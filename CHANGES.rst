@@ -4,6 +4,9 @@ Changelog
 1.0.2 (unreleased)
 ------------------
 
+- merge GSoC 2017 work! ploneorg.addonlisting and ploneorg.releasesecurityinfo
+  [pavithirakc, loechel, tkimnguyen]
+
 - add uwosh.pfg.d2c
   [tkimnguyen]
 
