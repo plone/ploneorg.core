@@ -4,6 +4,9 @@ Changelog
 1.0.2 (unreleased)
 ------------------
 
+- create a TinyMCE template for Board meeting minutes
+  [cdw9]
+
 - temporarily remove releasesecurityinfo until we can deal with existing
   content types by the same name on the live site
   [tkimnguyen]

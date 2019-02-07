@@ -1,9 +1,14 @@
 <configure
     xmlns="http://namespaces.zope.org/browser"
     xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="ploneorg.core">
 
     <include package="Products.CMFCore" file="permissions.zcml" />
+
+    <browser:resourceDirectory
+      name="templates"
+      directory="tinymce-templates" />
 
     <browser:viewlet
       name="links"
