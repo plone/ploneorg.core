@@ -6,7 +6,7 @@ from collective.z3cform.datagridfield.datagridfield import DataGridFieldFactory
 from plone.app.content.interfaces import INameFromTitle
 from plone.app.textfield import RichText
 from plone.dexterity.content import Item
-from plone.directives import form
+from plone.autoform import directives
 from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
 from plone.supermodel.model import Schema
 from ploneorg.core import _
@@ -72,7 +72,7 @@ class IPloneRelease(Schema):
         required=False,
     )
 
-    form.widget(files=DataGridFieldFactory)
+    directives.widget(files=DataGridFieldFactory)
     files = schema.List(
         title=_(u'Files'),
         value_type=DictRow(title=_(u'Uploads'), schema=IReleaseUpload),
