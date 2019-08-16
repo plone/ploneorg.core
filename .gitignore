@@ -40,3 +40,4 @@ share/
 /src
 .python-version
 .ropeproject/
+.vscode
