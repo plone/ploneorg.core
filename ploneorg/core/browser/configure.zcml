@@ -110,4 +110,28 @@
       permission="zope2.View"
       />
 
+    <browser:page
+      name="premium-providers-view"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".providerviews.PremiumProvidersView"
+      template="premium_providers_view.pt"
+      permission="zope2.View"
+      />
+
+    <browser:page
+      name="standard-providers-view"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".providerviews.StandardProvidersView"
+      template="standard_providers_view.pt"
+      permission="zope2.View"
+      />
+
+    <browser:page
+      name="basic-providers-view"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".providerviews.BasicProvidersView"
+      template="basic_providers_view.pt"
+      permission="zope2.View"
+      />
+
 </configure>
