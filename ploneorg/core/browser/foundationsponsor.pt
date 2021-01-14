@@ -9,49 +9,192 @@
 <body>
 
   <metal:block fill-slot="top_slot"
-                   tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',0);
+                   tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);
                                disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
 
   <metal:content-core fill-slot="main">
     <h1 class="documentFirstHeading"
         tal:content="context/org_name">Organization name</h1>
 
-    <div class="sponsorship_type" tal:define="sponsorship_type context/sponsorship_type">
-        <h4>
-            <span tal:content="python: sponsorship_type.title()">sponsorship_type</span> sponsor
-        </h4>
+    <div class="provider-meta">
+      <div class="provider-table">
+        <table class="vertical listing" style="float: right; width: auto; margin-left: 10px;" summary="Company details">
+          <tbody>
+            <tr class="even">
+              <td colspan="2" style="text-align: center;">
+                <a href="${context/website}" target="_blank">
+                  <img tal:condition="python:getattr(context, 'logo', None)"
+                       tal:attributes="src string:${context/absolute_url}/@@images/logo/mini" />
+                </a>
+              </td>
+            </tr>
+            <tr class="odd">
+              <td colspan="2" style="text-align: center;"
+                  tal:define="sponsorship_type context/sponsorship_type">
+                <img tal:condition="python:sponsorship_type=='premium'"
+                     src='++theme++ploneorg.theme/badges/badge-premium-sponsor.svg' />
+                <img tal:condition="python:sponsorship_type=='standard'"
+                     src='++theme++ploneorg.theme/badges/badge-sponsor.svg' />
+
+              </td>
+            </tr>
+            <tr class="even">
+              <th>
+                Website
+              </th>
+              <td tal:define="url context/website" tal:condition="url">
+                <a href="${url}" target="_blank">
+                  ${url}
+                </a>
+              </td>
+            </tr>  
+            <tr class="odd">
+              <th>
+                Location
+              </th>
+              <td tal:condition="context/country">
+                <span tal:condition="context/city"
+                  >${context/city}</span
+                ><span tal:condition="python:context.city and context.country">, <span>
+                <span tal:condition="context/country">
+                  ${context/country}
+                </span>
+              </td>
+            </tr>
+            <tr class="even">
+              <th>
+                Contact
+              </th>
+              <td tal:condition="context/email">
+                <a href="mailto:${context/email}">${context/email}</a>
+              </td>
+            </tr>
+            <tr class="odd">
+              <th>Twitter</th>
+              <td tal:condition="context/twitter"
+                  tal:define="twitter_username python:context.twitter.strip().lstrip('@');
+                              url string:https://twitter.com/${twitter_username}">
+                <a href="${url}" target="_blank">${twitter_username}</a>
+              </td>
+            </tr>
+            <tr class="even" tal:condition="context/start_date">
+              <th>Sponsor since</th>
+              <td>${python:context.start_date.year}</td>
+            </tr>
+            <tal:private condition="view/canViewDetails">
+            <tr class="even"><th colspan="2">Private Details</th></tr>
+            <tr class="odd">
+              <th>Organization size</th>
+              <td>${context/orgsize}</td>
+            </tr>
+            <tr class="even">
+              <th>Sponsorship type</th>
+              <td>${context/sponsorship_type}</td>
+            </tr>
+            <tr class="odd">
+              <th>Is a provider?</th>
+              <td>
+                ${python:context.is_provider and 'yes' or 'no'}
+              </td>
+            </tr>
+            <tr class="even">
+              <th>Primary contact</th>
+              <td>${context/fname} ${context/lname} 
+                <a href="mailto:${context/email}">${context/email}</a>
+              </td>
+            </tr>
+            <tr class="odd">
+              <th>Alternate contact</th>
+              <td>${context/alt_fname} ${context/alt_lname} 
+                <a href="mailto:${context/alt_email}">${context/alt_email}</a>
+              </td>
+            </tr>
+            <tr class="even">
+              <th>Address</th>
+              <td>
+                ${context/address}<br />
+                ${context/address2}<br />
+                ${context/city}, ${context/postalCode}<br />
+                ${context/state}<br />
+                ${context/country}
+              </td>
+            </tr>
+            <tr class="odd">
+              <th>Last payment</th>
+              <td>
+                ${context/payment_frequency}<br />
+                ${context/payment_method}<br />
+                ${context/payment_amount} ${context/payment_currency}<br />
+                ${context/payment_date}
+              </td>
+            </tr>
+            <tr class="even">
+              <th>Start date</th>
+              <td>${context/start_date}</td>
+            </tr>
+            <tr class="odd">
+              <th>End date</th>
+              <td>${context/end_date}</td>
+            </tr>
+            <tr class="even">
+              <th>Last verified</th>
+              <td>${context/last_verified_date}</td>
+            </tr>
+            <tr class="odd">
+              <th>Expiration</th>
+              <td>${context/expires}</td>
+            </tr>
+            <tr class="even">
+              <th>Private notes</th>
+              <td tal:define="notes context/notes"
+                  tal:condition="notes"
+                  tal:content="structure notes/output"
+                  style="width: 250px">
+              </td>
+            </tr>
+            </tal:private>
+          </tbody>
+        </table>
+        <tal:hide condition="nothing">
+            <div class="sponsorship_type" tal:define="sponsorship_type context/sponsorship_type">
+                <h4>
+                    <span tal:content="python: sponsorship_type.title()">sponsorship_type</span> sponsor
+                </h4>
+            </div>
+        
+            <div class="website" tal:define="url context/website" tal:condition="url">
+              <h4 tal:content="structure python: '<a href=''%s''>%s</a>' % (url, url)">
+                web site URL
+              </h4>
+            </div>
+        
+            <div class="providerlisting" tal:define="url context/provider_listing_url" tal:condition="url">
+              <h4 tal:content="structure python: '<a href=''%s''>%s</a>' % (url, url)">
+                Plone.com provider listing
+              </h4>
+            </div>
+        
+            <div class="twitter" tal:condition="python: context.twitter is not None and context.twitter.strip() != ''">
+                <div tal:define="twitter_username python: context.twitter.strip().lstrip('@'); url string: https://twitter.com/${twitter_username}" >
+                    <h4 tal:content="structure python: '<a href=''%s''>@%s</a>' % (url, twitter_username)">
+                        Twitter
+                    </h4>
+                </div>
+            </div>
+        
+            <div class="location" tal:condition="context/city">
+              <h4>
+                <span tal:content="context/city">City</span>
+                <tal:country condition="context/country">
+                  (<span tal:content="context/country">Country</span>)
+                </tal:country>
+              </h4>
+            </div>
+        </tal:hide>
+      </div>
     </div>
 
-    <div class="website" tal:define="url context/website" tal:condition="url">
-      <h4 tal:content="structure python: '<a href=''%s''>%s</a>' % (url, url)">
-        web site URL
-      </h4>
-    </div>
-
-    <div class="providerlisting" tal:define="url context/provider_listing_url" tal:condition="url">
-      <h4 tal:content="structure python: '<a href=''%s''>%s</a>' % (url, url)">
-        Plone.com provider listing
-      </h4>
-    </div>
-
-    <div class="twitter" tal:condition="python: context.twitter is not None and context.twitter.strip() != ''">
-        <div tal:define="twitter_username python: context.twitter.strip().lstrip('@'); url string: https://twitter.com/${twitter_username}" >
-            <h4 tal:content="structure python: '<a href=''%s''>@%s</a>' % (url, twitter_username)">
-                Twitter
-            </h4>
-        </div>
-    </div>
-
-    <div class="location" tal:condition="context/city">
-      <h4>
-        <span tal:content="context/city">City</span>
-        <tal:country condition="context/country">
-          (<span tal:content="context/country">Country</span>)
-        </tal:country>
-      </h4>
-    </div>
-
-    <div class="logo">
+    <div class="logo" tal:condition="nothing">
       <img tal:condition="python:getattr(context, 'logo', None)"
            tal:attributes="src string:${context/absolute_url}/@@images/logo/mini" />
     </div>
@@ -60,6 +203,7 @@
           <div tal:content="structure public_notes/output">Public Notes</div>
       </div>
 
+      <tal:hide condition="nothing">
       <div class="details" tal:condition="view/canViewDetails">
           <h4>Private Details</h4>
         <div class="organization">Organization size: <span tal:content="string: ${context/orgsize}">organization size</span></div>
@@ -71,6 +215,7 @@
         <div class="dates">Active dates: <span tal:content="string: ${context/start_date} to ${context/end_date} (last verified on ${context/last_verified_date})">dates</span></div>
         <div class="notes">Private notes: <div tal:define="notes context/notes" tal:condition="notes" tal:content="structure notes/output">Private notes</div></div>
     </div>
+    </tal:hide>
 
 
   </metal:content-core>
