@@ -52,7 +52,8 @@ setup(
         'simplejson',
         'twitter',
         'plone.app.mosaic',
-        'pyquery'
+        'pyquery',
+        'plone.app.imagecropping'
     ],
     entry_points="""
     # -*- Entry points: -*-
