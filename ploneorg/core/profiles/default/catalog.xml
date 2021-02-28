@@ -3,4 +3,7 @@
  <index name="sponsorship_type" meta_type="FieldIndex">
   <indexed_attr value="sponsorship_type"/>
  </index>
+ <index name="is_provider" meta_type="BooleanIndex">
+  <indexed_attr value="is_provider"/>
+ </index>
 </object>

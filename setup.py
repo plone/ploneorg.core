@@ -50,6 +50,7 @@ setup(
         "twitter",
         "plone.app.mosaic",
         "pyquery",
+        "plone.app.imagecropping",
     ],
     entry_points="""
     # -*- Entry points: -*-

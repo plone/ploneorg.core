@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+  <metal:block fill-slot="top_slot"
+      tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1); disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+
+  <metal:content-core fill-slot="main">
+    <div class="providers-premium-from-database" tal:repeat="brain view/get_premium_providers">
+        <a tal:define="sponsor brain/getObject; website sponsor/website; provider_listing_url sponsor/provider_listing_url; url python: provider_listing_url or website;"
+                href="${url}" target="_blank" class="provider">
+            <img src="${brain/getURL}/@@images/logo/preview" alt="${brain/Title}">
+        </a>
+    </div>
+  </metal:content-core>
+
+</body>
+</html>
