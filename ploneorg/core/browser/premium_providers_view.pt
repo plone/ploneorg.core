@@ -13,7 +13,7 @@
 
   <metal:content-core fill-slot="main">
     <div class="providers-premium-from-database" tal:repeat="brain view/get_premium_providers">
-        <a tal:define="sponsor brain/getObject; website sponsor/website; provider_listing_url sponsor/provider_listing_url; url python: provider_listing_url or website;"
+        <a tal:define="sponsor brain/getObject; website sponsor/website; provider_listing_url sponsor/absolute_url; url python: provider_listing_url or website;"
                 href="${url}" target="_blank" class="provider">
             <img src="${brain/getURL}/@@images/logo/preview" alt="${brain/Title}">
         </a>
