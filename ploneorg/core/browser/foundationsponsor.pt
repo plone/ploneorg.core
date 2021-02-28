@@ -69,10 +69,9 @@
                 <a href="mailto:${context/email}">${context/email}</a>
               </td>
             </tr>
-            <tr class="odd">
+            <tr class="odd" tal:condition="context/twitter">
               <th>Twitter</th>
-              <td tal:condition="context/twitter"
-                  tal:define="twitter_username python:context.twitter.strip().lstrip('@');
+              <td tal:define="twitter_username python:context.twitter.strip().lstrip('@');
                               url string:https://twitter.com/${twitter_username}">
                 <a href="${url}" target="_blank">${twitter_username}</a>
               </td>
