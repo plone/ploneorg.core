@@ -1,5 +1,5 @@
 <configure
-    xmlns="http://namespaces.zope.org/browser"
+    xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="ploneorg.core">
@@ -133,5 +133,30 @@
       template="basic_providers_view.pt"
       permission="zope2.View"
       />
+
+  <browser:page
+      name="export_content"
+      for="zope.interface.Interface"
+      class=".export.PloneOrgExportContent"
+      layer="ploneorg.theme.interfaces.ICustomTheme"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="export_all"
+      for="zope.interface.Interface"
+      class=".export.ExportAll"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="export_zope_users"
+      for="zope.interface.Interface"
+      class=".export.ExportZopeUsers"
+      permission="cmf.ManagePortal"
+      />
+
+  <!-- Handle ChecksummedFileValue -->
+  <adapter factory=".export.ChecksummedFileFieldSerializer" />
 
 </configure>
