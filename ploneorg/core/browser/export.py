@@ -1,6 +1,8 @@
 # -*- coding: UTF-8 -*-
+from Acquisition import aq_base
 from App.config import getConfiguration
 from collective.exportimport.export_content import ExportContent
+from collective.exportimport.export_content import fix_portal_type
 from collective.exportimport.export_other import safe_bytes
 from collective.exportimport.interfaces import IPathBlobsMarker
 from collective.exportimport.serializer import FileFieldSerializerWithBlobs
@@ -8,10 +10,12 @@ from plone import api
 from plone.app.vulnerabilities.field import IChecksummedFileField
 from plone.dexterity.interfaces import IDexterityContent
 from plone.restapi.interfaces import IFieldSerializer
+from plone.restapi.interfaces import ISerializeToJson
 from plone.restapi.serializer.converters import json_compatible
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import adapter
+from zope.component import getMultiAdapter
 from zope.interface import implementer
 
 import json
@@ -23,23 +27,27 @@ logger = logging.getLogger(__name__)
 
 
 TYPES_TO_MIGRATE = [
-    "Badge",
     "Collection",
     "Document",
     "Event",
     "File",
     "Folder",
-    "FoundationMember",
-    "FoundationSponsor",
-    "homepage",
-    "hotfix",
     "Image",
     "Link",
-    "News",
+    "News Item",
+    "FoundationMember",
+    "FoundationSponsor",
+    "hotfix",
     "plonerelease",
-    "site_link",
-    "sponsor",
     "vulnerability",
+]
+
+# These are made folderish by plone.volto
+FOLDERISH_TYPES = [
+    "Document",
+    "Event",
+    "News Item",
+    "Folder",
 ]
 
 
@@ -150,6 +158,9 @@ class PloneOrgExportContent(ExportContent):
     DROP_UIDS = [
     ]
 
+    def update(self):
+        self.transformed_default_pages = []
+
     def update_query(self, query):
         query['portal_type'] = self.portal_type or TYPES_TO_MIGRATE
         return query
@@ -168,6 +179,53 @@ class PloneOrgExportContent(ExportContent):
         """Used this to modify the serialized data.
         Return None if you want to skip this particular object.
         """
+        # this item is already exported to replace its container in dict_hook_folder
+        if item["UID"] in self.transformed_default_pages:
+            return
+        return item
+
+    def dict_hook_folder(self, item, obj):
+        # handle default pages
+        default_page = obj.getDefaultPage()
+        if not default_page:
+            # has no default-page, we keep it as a folder
+            return item
+
+        dp_obj = obj.get(default_page)
+        dp_obj = self.global_obj_hook(dp_obj)
+        if not dp_obj:
+            return
+
+        if dp_obj.portal_type not in FOLDERISH_TYPES:
+            # keep the old Folder for non-folderish content (Link)
+            return item
+
+        self.safe_portal_type = fix_portal_type(dp_obj.portal_type)
+        serializer = getMultiAdapter((dp_obj, self.request), ISerializeToJson)
+        dp_item = serializer(include_items=False)
+        dp_item = self.fix_url(dp_item, dp_obj)
+        dp_item = self.export_constraints(dp_item, dp_obj)
+        dp_item = self.export_workflow_history(dp_item, dp_obj)
+        if self.migration:
+            dp_item = self.update_data_for_migration(dp_item, dp_obj)
+        dp_item = self.global_dict_hook(dp_item, dp_obj)
+        if not dp_item:
+            logger.info(u"Skipping {}".format(dp_obj.absolute_url()))
+            return obj
+        dp_item = self.custom_dict_hook(dp_item, dp_obj)
+        if dp_item["@type"] != "Document":
+            logger.info(u"Default page is type {} for {}: {}".format(dp_item["@type"], item["@id"], dp_obj.absolute_url()))
+
+        dp_item["parent"] = item["parent"]
+        dp_item["@id"] = item["@id"]
+        dp_item["id"] = item["id"]
+        dp_item["is_folderish"] = True
+        # prevent importing the default page obj again
+        self.transformed_default_pages.append(dp_item["UID"])
+        return dp_item
+
+    def dict_hook_collection(self, item, obj):
+        item.pop("items", None)
         return item
 
 
