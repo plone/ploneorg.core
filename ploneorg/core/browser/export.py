@@ -158,14 +158,12 @@ class PloneOrgExportContent(ExportContent):
     DROP_UIDS = [
     ]
 
-    def update(self):
-        self.transformed_default_pages = []
-
     def update_query(self, query):
         query['portal_type'] = self.portal_type or TYPES_TO_MIGRATE
         return query
 
     def update(self):
+        self.transformed_default_pages = []
         self.portal_type = self.portal_type or TYPES_TO_MIGRATE
 
     def global_obj_hook(self, obj):
